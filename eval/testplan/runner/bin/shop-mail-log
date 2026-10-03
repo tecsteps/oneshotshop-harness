@@ -1,0 +1,31 @@
+#!/usr/bin/env python3
+"""Read the shop's mail log (all storage/logs/*.log files) written since MAILMARK (the last reset).
+Usage: shop-mail-log [--to ADDRESS] [--contains TEXT]   (filters are case-insensitive)
+Quoted-printable is decoded. Env: EVAL_APP_CONTAINER, EVAL_HELPER_LOG (optional)."""
+import argparse, datetime, os, quopri, re, subprocess, sys
+ap = argparse.ArgumentParser(); ap.add_argument("--to", default=""); ap.add_argument("--contains", default="")
+a = ap.parse_args()
+c = os.environ.get("EVAL_APP_CONTAINER") or sys.exit("EVAL_APP_CONTAINER not set")
+if os.environ.get("EVAL_HELPER_LOG"):
+    with open(os.environ["EVAL_HELPER_LOG"], "a") as f:
+        f.write(f"{datetime.datetime.now(datetime.timezone.utc):%FT%TZ} shop-mail-log to={a.to!r} contains={a.contains!r}\n")
+raw = subprocess.run(["docker", "exec", "-u", "agent", "-w", "/workspace", c, "bash", "-c",
+                      'for f in storage/logs/*.log; do [ -f "$f" ] || continue; '
+                      'm=$(awk -F"\t" -v f="$f" \'$2==f{print $1}\' /tmp/oss-eval/mailmarks 2>/dev/null); '
+                      'tail -c +$(( ${m:-0} + 1 )) "$f" | head -c 8000000; printf "\n"; done'],
+                     capture_output=True).stdout
+text = quopri.decodestring(raw).decode("utf-8", "replace")
+# MIME encoded words in headers (Subject: SG-1 =?utf-8?Q?—?= Order shipped) -> plain text
+text = re.sub(r"=\?[\w-]+\?[Qq]\?([^?]*)\?=", lambda m: m.group(1).replace("_", " "), text)
+text = re.sub(r"=\?([\w-]+)\?[Bb]\?([^?]*)\?=", lambda m: __import__("base64").b64decode(m.group(2) + "==").decode(m.group(1), "replace"), text)
+entries = [e for e in re.split(r"\n(?=\[\d{4}-\d{2}-\d{2}[ T]\d{2}:\d{2}:\d{2}[^\]]*\] [\w-]+\.[A-Z]+:)", text) if e.strip()]
+if a.to: entries = [e for e in entries if a.to.lower() in e.lower()]
+if a.contains: entries = [e for e in entries if a.contains.lower() in e.lower()]
+out = [f"{len(entries)} matching log entr{'y' if len(entries) == 1 else 'ies'} since the last reset"]
+size = len(out[0])
+for e in entries:
+    chunk = e if len(e) <= 15000 else e[:15000] + "\n[... entry truncated ...]"
+    if size + len(chunk) > 60000:
+        out.append("[... further entries omitted; narrow the filters ...]"); break
+    out.append("----- entry -----\n" + chunk); size += len(chunk)
+print("\n".join(out))

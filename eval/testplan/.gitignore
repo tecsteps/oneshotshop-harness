@@ -1,0 +1,4 @@
+.playwright/
+__pycache__/
+*.pyc
+.staging/

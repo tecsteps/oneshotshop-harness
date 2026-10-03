@@ -1,0 +1,10 @@
+{
+  "name": "oneshotshop-codequality",
+  "private": true,
+  "description": "Pinned host-side dependencies of eval/codequality (installed by lib/setup.sh into ./node_modules, git-ignored)",
+  "type": "module",
+  "dependencies": {
+    "intelephense": "1.18.5",
+    "yaml": "2.9.1"
+  }
+}

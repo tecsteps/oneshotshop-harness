@@ -1,0 +1,4201 @@
+{
+ "shop": "",
+ "evaluator": "",
+ "started_at": "",
+ "finished_at": "",
+ "berlin_time_at_S06": "",
+ "results": [
+  {
+   "id": "S01-01",
+   "area": "ACC",
+   "title": "Guests see no prices",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S01-02",
+   "area": "ACC",
+   "title": "Guests cannot order",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S01-03",
+   "area": "ACC",
+   "title": "Guests are invited to sign in or register",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S01-04",
+   "area": "CAT",
+   "title": "Home page shows active promotions",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S01-05",
+   "area": "CAT",
+   "title": "Product page shows the VAT rate",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S01-06",
+   "area": "CAT",
+   "title": "Category pages include subcategory products",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S01-07",
+   "area": "CAT",
+   "title": "Breadcrumb shows the category path",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S01-08",
+   "area": "CAT",
+   "title": "Discontinued product is not shown in its category",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S01-09",
+   "area": "CAT",
+   "title": "Search: partial word",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S01-10",
+   "area": "CAT",
+   "title": "Search: SKU in lower case",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S01-11",
+   "area": "CAT",
+   "title": "Search: category filter",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S01-12",
+   "area": "CAT",
+   "title": "Search without results says so",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S01-13",
+   "area": "CAT",
+   "title": "Search without results suggests alternatives",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S01-14",
+   "area": "CAT",
+   "title": "Category sorting by price",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S01-15",
+   "area": "INV",
+   "title": "Availability label \"low stock\"",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S01-16",
+   "area": "INV",
+   "title": "Availability label \"out of stock\"",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S01-17",
+   "area": "INV",
+   "title": "Out-of-stock product cannot be ordered",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S01-18",
+   "area": "INV",
+   "title": "Availability label \"backorder\"",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S01-19",
+   "area": "PRICE",
+   "title": "Prices are labelled as net",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S01-20",
+   "area": "DEP",
+   "title": "Deposit shown separately on the product page",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S01-21",
+   "area": "FRAC",
+   "title": "Price per litre for products sold by volume",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S01-22",
+   "area": "PRICE",
+   "title": "Comparison unit price for packaged goods",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S01-23",
+   "area": "PRICE",
+   "title": "Quantity price tiers are shown on the product page",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S01-24",
+   "area": "UIQ",
+   "title": "Page language is declared",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S01-25",
+   "area": "UIQ",
+   "title": "Home page has exactly one h1",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S01-26",
+   "area": "UIQ",
+   "title": "Images on the home page have alt attributes",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S01-27",
+   "area": "UIQ",
+   "title": "Product image has a text alternative",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S01-28",
+   "area": "UIQ",
+   "title": "Sign-in form fields are labelled",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S01-29",
+   "area": "UIQ",
+   "title": "Add to cart with the keyboard only",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S02-01",
+   "area": "ACC",
+   "title": "Active customer can sign in and sees prices",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S02-02",
+   "area": "ACC",
+   "title": "Blocked customer cannot sign in",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S02-03",
+   "area": "ACC",
+   "title": "Admin account cannot sign in to the storefront",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S02-04",
+   "area": "ADM",
+   "title": "Admin can sign in to the admin area",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S02-05",
+   "area": "ACC",
+   "title": "Customer cannot reach the admin area (URL check)",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S02-06",
+   "area": "ACC",
+   "title": "Customer sees open balance",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S02-07",
+   "area": "ACC",
+   "title": "Registration with all business fields",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S02-08",
+   "area": "ACC",
+   "title": "New registration starts without prices",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S02-09",
+   "area": "ADM",
+   "title": "Staff see the new registration as pending",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S02-10",
+   "area": "ACC",
+   "title": "After approval the customer sees prices",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S02-11",
+   "area": "ACC",
+   "title": "Password reset email",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S02-12",
+   "area": "ACC",
+   "title": "Password can be reset through the link",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S02-13",
+   "area": "ACC",
+   "title": "Order of one company user …",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S02-14",
+   "area": "ACC",
+   "title": "… is visible to the other user of the same company",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S02-15",
+   "area": "ACC",
+   "title": "The other user gets the company's negotiated price",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S02-16",
+   "area": "SHIP",
+   "title": "Shipping to a country outside the delivery area is impossible",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S02-17",
+   "area": "ACC",
+   "title": "Another customer cannot open a foreign order (URL check)",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S02-18",
+   "area": "ACC",
+   "title": "Another customer cannot open a foreign invoice (URL check)",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S02-19",
+   "area": "SHIP",
+   "title": "Cart persists across sessions",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S02-20",
+   "area": "ORD",
+   "title": "Reorder in one step",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S02-21",
+   "area": "ORD",
+   "title": "Reorder reports unavailable items",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S03-01",
+   "area": "PRICE",
+   "title": "Crate priced at the bottle price per bottle",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S03-02",
+   "area": "DEP",
+   "title": "Nested deposits: bottles plus crate",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S03-03",
+   "area": "VAT",
+   "title": "Review gross total with deposits",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S03-04",
+   "area": "PRICE",
+   "title": "Group discount on the packaging-unit price, rounded per unit",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S03-05",
+   "area": "DEP",
+   "title": "Deposits are not discounted by the group discount",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S03-06",
+   "area": "DEP",
+   "title": "No deposit for the six-pack carrier",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S03-07",
+   "area": "DEP",
+   "title": "Three-level packaging deposit total",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S03-08",
+   "area": "PRICE",
+   "title": "Product sold only in certain packaging units",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S03-09",
+   "area": "INV",
+   "title": "Stock check across packaging levels",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S03-10",
+   "area": "FRAC",
+   "title": "Fractional volume accepted and priced",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S03-11",
+   "area": "DEP",
+   "title": "Volume deposit: one canister per started 5 litres",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S03-12",
+   "area": "DEP",
+   "title": "Volume deposit for 5.5 litres",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S03-13",
+   "area": "FRAC",
+   "title": "Below minimum quantity is rejected",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S03-14",
+   "area": "FRAC",
+   "title": "Weight quantity priced per kg",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S03-15",
+   "area": "FRAC",
+   "title": "Quantity is shown with its unit",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S03-16",
+   "area": "FRAC",
+   "title": "Fine weight step accepted",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S03-17",
+   "area": "FRAC",
+   "title": "Weight off the fine step is rejected",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S03-18",
+   "area": "FRAC",
+   "title": "Weight above the maximum per line is rejected",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S03-19",
+   "area": "FRAC",
+   "title": "Decimal comma accepted",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S03-20",
+   "area": "FRAC",
+   "title": "Order in grams at the per-kg price",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S03-21",
+   "area": "FRAC",
+   "title": "Gram step enforced",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S03-22",
+   "area": "PRICE",
+   "title": "Half-cent rounding of a group price per kg",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S03-23",
+   "area": "PRICE",
+   "title": "Quantity tier applied in the cart",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S03-24",
+   "area": "PRICE",
+   "title": "Negotiated per-bag price also inside cartons",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S03-25",
+   "area": "PRICE",
+   "title": "Negotiated price only for one packaging unit",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S03-26",
+   "area": "PRICE",
+   "title": "Negotiated per-bottle price applied to a carton",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S03-27",
+   "area": "PRICE",
+   "title": "Negotiated crate price",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S03-28",
+   "area": "PRICE",
+   "title": "Box of the same product at normal pricing with group discount",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S03-29",
+   "area": "INV",
+   "title": "Maximum quantity per order",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S03-30",
+   "area": "PRICE",
+   "title": "Retail group discount with half-cent rounding",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S03-31",
+   "area": "PRICE",
+   "title": "Product excluded from discounts keeps its list price",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S03-32",
+   "area": "SHIP",
+   "title": "Switch the packaging unit of a cart line",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S03-33",
+   "area": "SHIP",
+   "title": "Quick order by SKU",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S03-34",
+   "area": "INV",
+   "title": "Stock limit in base units",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S03-35",
+   "area": "VAT",
+   "title": "VAT 7 % in a mixed cart",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S03-36",
+   "area": "VAT",
+   "title": "VAT 19 % including the deposit",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S03-37",
+   "area": "VAT",
+   "title": "Gross total of a mixed-rate cart",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S03-38",
+   "area": "VAT",
+   "title": "Product-specific VAT rate: dairy milk 7 %, oat drink 19 %",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S03-39",
+   "area": "DEP",
+   "title": "Deposits on three levels including the pallet",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S03-40",
+   "area": "VAT",
+   "title": "Pallet deposit always at 19 %, even on milk",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S03-41",
+   "area": "VAT",
+   "title": "Bottle and crate deposits on milk at 7 %",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S03-42",
+   "area": "PROMO",
+   "title": "Crates on a pallet do not count for the crate bonus",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S03-43",
+   "area": "DEP",
+   "title": "Pallet and crate deposits for beer",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S03-44",
+   "area": "INV",
+   "title": "Pallet quantities checked against stock in bottles",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S03-45",
+   "area": "SHIP",
+   "title": "Pallets only by truck or pickup",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S04-01",
+   "area": "PROMO",
+   "title": "Beer 6-for-5: one crate free",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S04-02",
+   "area": "PROMO",
+   "title": "Automatic promotion shown by name",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S04-03",
+   "area": "DEP",
+   "title": "Deposits charged for free crates too",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S04-04",
+   "area": "PROMO",
+   "title": "Prosecco Carton Deal",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S04-05",
+   "area": "PROMO",
+   "title": "Prosecco deal not applied to a negotiated-price line",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S04-06",
+   "area": "PROMO",
+   "title": "Free balsamic bottle at a goods value of 500.00",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S04-07",
+   "area": "PROMO",
+   "title": "Free item threshold uses the goods value after group discount",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S04-08",
+   "area": "PROMO",
+   "title": "Automatic promotion then code on the remaining amount",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S04-09",
+   "area": "PROMO",
+   "title": "Removing a code",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S04-10",
+   "area": "PROMO",
+   "title": "Code entry is case-insensitive; percentage on eligible goods",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S04-11",
+   "area": "PROMO",
+   "title": "Order with WELCOME10 shows the code on the order",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S04-12",
+   "area": "PROMO",
+   "title": "WELCOME10 only for the first order",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S04-13",
+   "area": "PROMO",
+   "title": "Group-restricted code for the wrong group",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S04-14",
+   "area": "PROMO",
+   "title": "Fixed discount",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S04-15",
+   "area": "VAT",
+   "title": "Fixed discount split across VAT rates: 7 %",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S04-16",
+   "area": "VAT",
+   "title": "Fixed discount split across VAT rates: 19 %",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S04-17",
+   "area": "VAT",
+   "title": "Discount split rounding: difference to the largest share",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S04-18",
+   "area": "PROMO",
+   "title": "Only one code per order",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S04-19",
+   "area": "PROMO",
+   "title": "Code usage per customer",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S04-20",
+   "area": "PROMO",
+   "title": "Cancelling the order gives the code use back",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S04-21",
+   "area": "PROMO",
+   "title": "Code removed when the cart no longer qualifies",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S04-22",
+   "area": "PROMO",
+   "title": "Category code with a category minimum",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S04-23",
+   "area": "PROMO",
+   "title": "Category minimum not reached (fish does not count)",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S04-24",
+   "area": "PROMO",
+   "title": "Per-unit discount with a cap",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S04-25",
+   "area": "PROMO",
+   "title": "No promotion on negotiated-price lines",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S04-26",
+   "area": "PROMO",
+   "title": "Key Account wine code; negotiated line not eligible",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S04-27",
+   "area": "PROMO",
+   "title": "Customer-specific code rejected for another customer",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S04-28",
+   "area": "PROMO",
+   "title": "Fixed discount capped at the eligible goods value",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S04-29",
+   "area": "PROMO",
+   "title": "Expired code rejected",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S04-30",
+   "area": "PROMO",
+   "title": "Expired code: customer is told",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S04-31",
+   "area": "PROMO",
+   "title": "Not-yet-valid code rejected",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S04-32",
+   "area": "PROMO",
+   "title": "Deactivated code rejected",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S04-33",
+   "area": "PROMO",
+   "title": "Code with a global usage limit: first use",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S04-34",
+   "area": "PROMO",
+   "title": "Global-limit code: once per customer",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S04-35",
+   "area": "PROMO",
+   "title": "Global usage limit of 3 uses",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S04-36",
+   "area": "ADM",
+   "title": "Staff can monitor promotion usage",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S05-01",
+   "area": "SHIP",
+   "title": "Truck offered for a Berlin address",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S05-02",
+   "area": "SHIP",
+   "title": "Free truck delivery from 250.00 goods value",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S05-03",
+   "area": "SHIP",
+   "title": "Free-shipping threshold uses goods value before promotions",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S05-04",
+   "area": "SHIP",
+   "title": "Free-shipping threshold uses goods value after group discount",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S05-05",
+   "area": "VAT",
+   "title": "Shipping takes the VAT rate of single-rate goods",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S05-06",
+   "area": "VAT",
+   "title": "Shipping split across VAT rates: 7 %",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S05-07",
+   "area": "VAT",
+   "title": "Shipping split across VAT rates: 19 %",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S05-08",
+   "area": "SHIP",
+   "title": "Minimum order value excludes deposits",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S05-09",
+   "area": "SHIP",
+   "title": "Chilled product blocks parcel shipping",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S05-10",
+   "area": "SHIP",
+   "title": "Truck depends on the chosen shipping address: outside the area",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S05-11",
+   "area": "SHIP",
+   "title": "Bulky surcharge per bulky item on parcel",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S05-12",
+   "area": "SHIP",
+   "title": "Express not offered with bulky items",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S05-13",
+   "area": "SHIP",
+   "title": "FREESHIP waives the base fee but not the bulky surcharge",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S05-14",
+   "area": "SHIP",
+   "title": "EXPRESSHALF halves the express fee",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S05-15",
+   "area": "SHIP",
+   "title": "EU Parcel offered for an Austrian address",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S05-16",
+   "area": "VAT",
+   "title": "Reverse charge: 0 % VAT",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S05-17",
+   "area": "VAT",
+   "title": "Reverse charge gross total",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S05-18",
+   "area": "SHIP",
+   "title": "Deposit product blocks EU Parcel",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S05-19",
+   "area": "SHIP",
+   "title": "Checkout names the deposit product that blocks the method",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S05-20",
+   "area": "VAT",
+   "title": "EU customer without VAT ID pays German VAT",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S05-21",
+   "area": "VAT",
+   "title": "Order gross total including truck fee",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S05-22",
+   "area": "SHIP",
+   "title": "Purchase order reference stored with the order",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S05-23",
+   "area": "SHIP",
+   "title": "Substitution permission per line visible to staff",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S05-24",
+   "area": "VAT",
+   "title": "Reverse-charge invoice note",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S05-25",
+   "area": "VAT",
+   "title": "Reverse-charge invoice total",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S06-01",
+   "area": "SHIP",
+   "title": "Earliest delivery date follows the cut-off rule",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S06-02",
+   "area": "SHIP",
+   "title": "No truck delivery on Saturdays",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S06-03",
+   "area": "SHIP",
+   "title": "Latest delivery date can be chosen",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S06-04",
+   "area": "SHIP",
+   "title": "No date beyond 14 days",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S06-05",
+   "area": "SHIP",
+   "title": "Delivery slots",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S06-06",
+   "area": "SHIP",
+   "title": "Pickup possible on Saturday",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S06-07",
+   "area": "ADM",
+   "title": "Staff can limit slot capacity",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S06-08",
+   "area": "SHIP",
+   "title": "Order stores date and slot",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S06-09",
+   "area": "SHIP",
+   "title": "Full slot cannot be chosen",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S06-10",
+   "area": "SHIP",
+   "title": "Other slots remain available",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S07-01",
+   "area": "PAY",
+   "title": "No invoice payment without permission",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S07-02",
+   "area": "PAY",
+   "title": "Invoice payment for approved customers",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S07-03",
+   "area": "PAY",
+   "title": "Invoice allowed within the remaining credit",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S07-04",
+   "area": "PAY",
+   "title": "Invoice blocked above the remaining credit",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S07-05",
+   "area": "PAY",
+   "title": "Cash on pickup offered with warehouse pickup",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S07-06",
+   "area": "PAY",
+   "title": "Declined card shows the reason",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S07-07",
+   "area": "PAY",
+   "title": "Declined payment creates no confirmed order",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S07-08",
+   "area": "PAY",
+   "title": "Cart kept after a declined payment",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S07-09",
+   "area": "PAY",
+   "title": "Insufficient funds message",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S07-10",
+   "area": "PAY",
+   "title": "Retry with another card succeeds",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S07-11",
+   "area": "PAY",
+   "title": "Card payment is authorised at order placement",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S07-12",
+   "area": "PAY",
+   "title": "Declined attempts are recorded",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S07-13",
+   "area": "PAY",
+   "title": "Invalid IBAN rejected",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S07-14",
+   "area": "PAY",
+   "title": "Valid IBAN confirms the order",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S07-15",
+   "area": "PAY",
+   "title": "SEPA order payment status open",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S07-16",
+   "area": "PAY",
+   "title": "Bank details shown for prepayment",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S07-17",
+   "area": "PAY",
+   "title": "Prepayment order is pending payment",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S07-18",
+   "area": "ADM",
+   "title": "Dashboard shows orders awaiting action",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S07-19",
+   "area": "PAY",
+   "title": "Staff record the prepayment; order becomes confirmed",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S07-20",
+   "area": "PAY",
+   "title": "Invoice order confirmed with payment status open",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S08-01",
+   "area": "ORD",
+   "title": "First order number",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S08-02",
+   "area": "ORD",
+   "title": "Confirmation email",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S08-03",
+   "area": "ORD",
+   "title": "Sequential order number",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S08-04",
+   "area": "ORD",
+   "title": "Customer cancels an unshipped order",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S08-05",
+   "area": "ORD",
+   "title": "Cancelled card order releases the authorisation",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S08-06",
+   "area": "ORD",
+   "title": "Cancellation email",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S08-07",
+   "area": "ORD",
+   "title": "Shipped state visible to the customer",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S08-08",
+   "area": "ORD",
+   "title": "Shipping email",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S08-09",
+   "area": "ORD",
+   "title": "Invoice number format",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S08-10",
+   "area": "VAT",
+   "title": "Invoice gross total",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S08-11",
+   "area": "DEP",
+   "title": "Invoice shows deposits separately",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S08-12",
+   "area": "ORD",
+   "title": "Shipped order cannot be cancelled by the customer",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S08-13",
+   "area": "ORD",
+   "title": "Delivered state",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S08-14",
+   "area": "ADM",
+   "title": "Order history with time and staff member",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S08-15",
+   "area": "ORD",
+   "title": "Order keeps its prices after a price change",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S08-16",
+   "area": "INV",
+   "title": "Backordered quantity marked in the cart",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S08-17",
+   "area": "VAT",
+   "title": "Gross total of the backorder order",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S08-18",
+   "area": "ORD",
+   "title": "Partial shipment state",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S08-19",
+   "area": "ORD",
+   "title": "First shipment has its own invoice",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S08-20",
+   "area": "PROMO",
+   "title": "Order discount allocated to the first invoice",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S08-21",
+   "area": "ORD",
+   "title": "Customer sees shipped and open quantities",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S08-22",
+   "area": "ORD",
+   "title": "Partial shipment email",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S08-23",
+   "area": "INV",
+   "title": "Staff see backorders that can now be fulfilled",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S08-24",
+   "area": "ORD",
+   "title": "Remaining quantity shipped completes the shipment",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S08-25",
+   "area": "ORD",
+   "title": "Second shipment has its own invoice",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S08-26",
+   "area": "PROMO",
+   "title": "Remaining discount on the last invoice",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S08-27",
+   "area": "ORD",
+   "title": "Staff cancel one unshipped line; totals adjusted",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S08-28",
+   "area": "FRAC",
+   "title": "Catch-weight order total at the estimate",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S08-29",
+   "area": "PAY",
+   "title": "Catch-weight card payment is only authorised",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S08-30",
+   "area": "FRAC",
+   "title": "Invoice shows the actual weight",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S08-31",
+   "area": "FRAC",
+   "title": "Invoice charges the actual weight",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S08-32",
+   "area": "INV",
+   "title": "Lots picked by earliest best-before date, expired lot skipped",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S08-33",
+   "area": "ORD",
+   "title": "Substitute shipped and visible",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S08-34",
+   "area": "ORD",
+   "title": "Substitute not charged more than the original",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S08-35",
+   "area": "PROMO",
+   "title": "Code shown on the invoice",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S08-36",
+   "area": "PROMO",
+   "title": "Invoice shows the discount amount",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S09-01",
+   "area": "INV",
+   "title": "Stock visible to staff in the base unit",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S09-02",
+   "area": "INV",
+   "title": "Expired lot is not sellable",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S09-03",
+   "area": "INV",
+   "title": "Stock reserved at order placement",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S09-04",
+   "area": "INV",
+   "title": "The last units cannot be sold twice",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S09-05",
+   "area": "INV",
+   "title": "Reserved stock shown as out of stock",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S09-06",
+   "area": "INV",
+   "title": "Cancellation releases the stock",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S09-07",
+   "area": "INV",
+   "title": "Backorder beyond stock accepted and marked",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S09-08",
+   "area": "INV",
+   "title": "Product with zero stock can be backordered",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S09-09",
+   "area": "INV",
+   "title": "Goods receipt with a reason",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S09-10",
+   "area": "INV",
+   "title": "Backorders that can now be fulfilled",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S09-11",
+   "area": "INV",
+   "title": "Stock correction with a reason",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S09-12",
+   "area": "INV",
+   "title": "Low-stock threshold per product",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S09-13",
+   "area": "INV",
+   "title": "Low-stock label follows the threshold",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S09-14",
+   "area": "INV",
+   "title": "Expiring lots are listed",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S09-15",
+   "area": "INV",
+   "title": "Earliest best-before lot picked first",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S10-01",
+   "area": "PROMO",
+   "title": "Percentage code across rates on a deposit order",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S10-02",
+   "area": "RET",
+   "title": "Customer requests a return",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S10-03",
+   "area": "RET",
+   "title": "Approved return produces a credit note",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S10-04",
+   "area": "RET",
+   "title": "Credit note gross amount",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S10-05",
+   "area": "RET",
+   "title": "Credit note refunds the deposit",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S10-06",
+   "area": "RET",
+   "title": "Credit note VAT 19 %",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S10-07",
+   "area": "RET",
+   "title": "Payment status after a partial refund",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S10-08",
+   "area": "RET",
+   "title": "Refund email",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S10-09",
+   "area": "RET",
+   "title": "Partly approved return",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S10-10",
+   "area": "RET",
+   "title": "Rejected return creates no credit note",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S10-11",
+   "area": "RET",
+   "title": "Refund on an invoice order",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S10-12",
+   "area": "RET",
+   "title": "Refund reduces the open balance",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S10-13",
+   "area": "RET",
+   "title": "Full refund sets the payment status to refunded",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S10-14",
+   "area": "DEP",
+   "title": "Returned empties credited",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S11-01",
+   "area": "ADM",
+   "title": "Back-office without the storefront header",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S11-02",
+   "area": "ADM",
+   "title": "Back-office has its own main navigation",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S11-03",
+   "area": "ADM",
+   "title": "Admin product list: search by SKU",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S11-04",
+   "area": "ADM",
+   "title": "Admin product list: sort by name",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S11-05",
+   "area": "ADM",
+   "title": "Packaging data edited without raw JSON",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S11-06",
+   "area": "ADM",
+   "title": "Customer data edited without raw JSON",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S11-07",
+   "area": "ADM",
+   "title": "Negotiated prices are editable form fields",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S11-08",
+   "area": "ADM",
+   "title": "Invalid price is rejected with a message",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S11-09",
+   "area": "ADM",
+   "title": "Packaging price changed through the form",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S11-10",
+   "area": "ADM",
+   "title": "Negotiated price added through form fields",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S11-11",
+   "area": "ADM",
+   "title": "Create a product",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S11-12",
+   "area": "ADM",
+   "title": "New product priced for customers",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S11-13",
+   "area": "ADM",
+   "title": "Deactivated product disappears from the storefront",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S11-14",
+   "area": "ADM",
+   "title": "Staff-defined quantity price",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S11-15",
+   "area": "SHIP",
+   "title": "Cart updates after a price change",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S11-16",
+   "area": "SHIP",
+   "title": "Cart tells the customer what changed",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S11-17",
+   "area": "ADM",
+   "title": "Change a customer's group",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S11-18",
+   "area": "ADM",
+   "title": "Maintain a negotiated price",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S11-19",
+   "area": "ADM",
+   "title": "Grant invoice payment and credit limit",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S11-20",
+   "area": "ADM",
+   "title": "Block a customer",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S11-21",
+   "area": "ADM",
+   "title": "Create a promotion code",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S11-22",
+   "area": "ADM",
+   "title": "Deactivate a promotion code",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S11-23",
+   "area": "ADM",
+   "title": "Change a shipping fee",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S11-24",
+   "area": "ADM",
+   "title": "Dashboard counts today's orders",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S12-01",
+   "area": "REP",
+   "title": "Sales by day: net amount",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S12-02",
+   "area": "REP",
+   "title": "Sales by day: VAT",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S12-03",
+   "area": "REP",
+   "title": "Sales by day: deposits",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S12-04",
+   "area": "REP",
+   "title": "Top-selling product",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S12-05",
+   "area": "REP",
+   "title": "Sales by customer",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S12-06",
+   "area": "REP",
+   "title": "Promotion usage count",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S12-07",
+   "area": "REP",
+   "title": "Total discount per promotion",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S12-08",
+   "area": "REP",
+   "title": "Open backorders report",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S13-01",
+   "area": "CATX",
+   "title": "A product with variants has one catalog entry",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S13-02",
+   "area": "CATX",
+   "title": "Choosing a variant shows its SKU",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S13-03",
+   "area": "CATX",
+   "title": "An out-of-stock variant cannot be ordered",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S13-04",
+   "area": "CATX",
+   "title": "Variant price follows the selection",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S13-05",
+   "area": "CATX",
+   "title": "Cart shows the chosen variant",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S13-06",
+   "area": "CATX",
+   "title": "Variant line priced at the variant's price",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S13-07",
+   "area": "CATX",
+   "title": "Stock is kept per variant",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S13-08",
+   "area": "CATX",
+   "title": "Search by variant SKU",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S13-09",
+   "area": "CATX",
+   "title": "Order and invoice show the variant",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S13-10",
+   "area": "CATX",
+   "title": "Stock decreases for the ordered variant only",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S13-11",
+   "area": "CATX",
+   "title": "Related product link",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S13-12",
+   "area": "CATX",
+   "title": "Related product link in the other direction",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S13-13",
+   "area": "CATX",
+   "title": "Several related products",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S13-14",
+   "area": "CATX",
+   "title": "Related products remain separate catalog entries",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S13-15",
+   "area": "CATX",
+   "title": "An option adds to the price",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S13-16",
+   "area": "CATX",
+   "title": "Several options add up",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S13-17",
+   "area": "CATX",
+   "title": "Group discount applies to the price including options",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S13-18",
+   "area": "CATX",
+   "title": "At most one extra topping",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S13-19",
+   "area": "CATX",
+   "title": "Different option choices form separate lines",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S13-20",
+   "area": "CATX",
+   "title": "Options shown on the order",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S13-21",
+   "area": "CATX",
+   "title": "Options shown on the invoice",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S13-22",
+   "area": "CATX",
+   "title": "Stock is counted per pizza across option lines",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S13-23",
+   "area": "CATX",
+   "title": "A bundle has its own catalog entry",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S13-24",
+   "area": "CATX",
+   "title": "Bundle availability follows its contents",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S13-25",
+   "area": "CATX",
+   "title": "Bundle price is final: no group discount",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S13-26",
+   "area": "CATX",
+   "title": "Bundle VAT split: 7 % share",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S13-27",
+   "area": "CATX",
+   "title": "Bundle VAT split: 19 % share",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S13-28",
+   "area": "CATX",
+   "title": "Bundle lists its contents in the cart",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S13-29",
+   "area": "CATX",
+   "title": "Contents' deposits charged on a bundle",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S13-30",
+   "area": "CATX",
+   "title": "Bundle counts toward a code minimum but is not discounted",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S13-31",
+   "area": "CATX",
+   "title": "Selling a bundle reduces the stock of its contents",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S13-32",
+   "area": "CATX",
+   "title": "Bundle with frozen contents keeps the delivery restriction",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S13-33",
+   "area": "ACC",
+   "title": "Restricted category hidden from guests",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S13-34",
+   "area": "ACC",
+   "title": "Restricted category hidden from a Standard customer",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S13-35",
+   "area": "ACC",
+   "title": "Restricted category hidden from a Retail customer",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S13-36",
+   "area": "ACC",
+   "title": "Restricted product page cannot be opened directly (URL check)",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S13-37",
+   "area": "ACC",
+   "title": "Bundle inherits the restriction",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S13-38",
+   "area": "ACC",
+   "title": "Restricted quick order refused",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S13-39",
+   "area": "ACC",
+   "title": "Restricted products are visible to the allowed group",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S13-40",
+   "area": "ACC",
+   "title": "Customer-exclusive product for its customer",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S13-41",
+   "area": "ACC",
+   "title": "Customer-exclusive product hidden from other customers",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S13-42",
+   "area": "ACC",
+   "title": "Customer-exclusive product URL not usable by others (URL check)",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S13-43",
+   "area": "CATX",
+   "title": "Accessories offered on the product page",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S13-44",
+   "area": "SHIP",
+   "title": "Saved order list available to its company",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S13-45",
+   "area": "SHIP",
+   "title": "Order list shared by all users of the company",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S13-46",
+   "area": "SHIP",
+   "title": "Whole list added to the cart: totals",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S13-47",
+   "area": "SHIP",
+   "title": "Unavailable list item reported and skipped",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S13-48",
+   "area": "SHIP",
+   "title": "Create an order list",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S13-49",
+   "area": "SHIP",
+   "title": "Edit an order list",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S13-50",
+   "area": "SHIP",
+   "title": "Delete an order list",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S14-01",
+   "area": "UIQ",
+   "title": "Phone: home page without horizontal scrolling",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S14-02",
+   "area": "UIQ",
+   "title": "Phone: category page without horizontal scrolling",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S14-03",
+   "area": "UIQ",
+   "title": "Phone: product page without horizontal scrolling",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S14-04",
+   "area": "UIQ",
+   "title": "Phone: cart without horizontal scrolling",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S14-05",
+   "area": "UIQ",
+   "title": "Phone: checkout without horizontal scrolling",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S14-06",
+   "area": "UIQ",
+   "title": "Tablet: no horizontal scrolling",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S14-07",
+   "area": "UIQ",
+   "title": "Phone: main navigation usable",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S14-08",
+   "area": "UIQ",
+   "title": "Phone: add to cart",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S14-09",
+   "area": "UIQ",
+   "title": "Phone: product image fits the screen",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S14-10",
+   "area": "UIQ",
+   "title": "Visible keyboard focus",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S14-11",
+   "area": "UIQ",
+   "title": "Checkout form fields are labelled",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S14-12",
+   "area": "UIQ",
+   "title": "Address form fields are labelled",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S14-13",
+   "area": "UIQ",
+   "title": "Main landmark",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S14-14",
+   "area": "UIQ",
+   "title": "Page titles are unique",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S14-15",
+   "area": "UIQ",
+   "title": "Product page title names the product",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S14-16",
+   "area": "UIQ",
+   "title": "Meta description",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S14-17",
+   "area": "UIQ",
+   "title": "Canonical address",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S14-18",
+   "area": "UIQ",
+   "title": "Structured product data",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S14-19",
+   "area": "UIQ",
+   "title": "Readable product address",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S14-20",
+   "area": "UIQ",
+   "title": "Restricted products are not in the sitemap",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S15-01",
+   "area": "ADM",
+   "title": "Admin order page offers only state-allowed actions",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S15-02",
+   "area": "ORD",
+   "title": "Payment-received email for prepayment",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S15-03",
+   "area": "SAFE",
+   "title": "Cancelling asks for confirmation; dismissing changes nothing",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S15-04",
+   "area": "SAFE",
+   "title": "Only the last four card digits are shown",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S15-05",
+   "area": "ORD",
+   "title": "Invoice as a printable or downloadable document",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S15-06",
+   "area": "RET",
+   "title": "Full refund of a paid order",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S15-07",
+   "area": "RET",
+   "title": "No refund beyond the amount paid",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S15-08",
+   "area": "ORD",
+   "title": "Invoice for purchase on invoice shows the due date",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S15-09",
+   "area": "SAFE",
+   "title": "Placing an order twice by double click creates one order",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S15-10",
+   "area": "ADM",
+   "title": "Customer admin page shows the company's users",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S15-11",
+   "area": "ADM",
+   "title": "Customer admin page shows negotiated prices",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S15-12",
+   "area": "SAFE",
+   "title": "Blocking asks for confirmation; dismissing changes nothing",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S15-13",
+   "area": "SAFE",
+   "title": "A block takes effect for a signed-in user",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S15-14",
+   "area": "SAFE",
+   "title": "Field-level validation message",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S15-15",
+   "area": "SAFE",
+   "title": "Entries are kept after a validation error",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S15-16",
+   "area": "SAFE",
+   "title": "Short password rejected",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S15-17",
+   "area": "ORD",
+   "title": "Registration-received email",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S15-18",
+   "area": "ORD",
+   "title": "Staff are notified about the new registration",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S15-19",
+   "area": "ORD",
+   "title": "Approval email",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S15-20",
+   "area": "VAT",
+   "title": "Unverified VAT ID: no reverse charge",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S15-21",
+   "area": "VAT",
+   "title": "Reverse charge after staff verify the VAT ID",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S15-22",
+   "area": "ACC",
+   "title": "New default shipping address used at checkout",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S15-23",
+   "area": "SAFE",
+   "title": "Another company never sees the address",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S15-24",
+   "area": "SAFE",
+   "title": "Another company cannot open an order list (URL check)",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S15-25",
+   "area": "CAT",
+   "title": "Footer with the seller's contact details",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S15-26",
+   "area": "CAT",
+   "title": "Imprint page",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S15-27",
+   "area": "CAT",
+   "title": "Category shows the number of products",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S15-28",
+   "area": "CAT",
+   "title": "Add to cart directly from a listing",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S15-29",
+   "area": "CAT",
+   "title": "Selecting a packaging unit shows its price",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S15-30",
+   "area": "CAT",
+   "title": "Selecting a packaging unit shows its image",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S15-31",
+   "area": "UIQ",
+   "title": "Restricted product page shown as a branded not-found page",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S15-32",
+   "area": "SAFE",
+   "title": "Password reset does not reveal registered emails",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S15-33",
+   "area": "SAFE",
+   "title": "Entered markup is shown as text, not executed",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S15-34",
+   "area": "ADM",
+   "title": "Staff accounts",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S15-35",
+   "area": "ADM",
+   "title": "Promotion list shows each promotion's status",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S15-36",
+   "area": "REP",
+   "title": "Orders export as CSV",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S15-37",
+   "area": "SAFE",
+   "title": "Sign-in locked after five failed attempts",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S15-38",
+   "area": "UIQ",
+   "title": "Empty cart state",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S15-39",
+   "area": "ADM",
+   "title": "Staff sign-in independent of the customer session",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S15-40",
+   "area": "ADM",
+   "title": "Prices are entered in euros, not cents",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S15-41",
+   "area": "ADM",
+   "title": "Category chosen from existing records",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S15-42",
+   "area": "ADM",
+   "title": "Seeded balances shown consistently in the admin",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S15-43",
+   "area": "UIQ",
+   "title": "No raw template code in the storefront",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S15-44",
+   "area": "UIQ",
+   "title": "No raw template code in the admin area",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S15-45",
+   "area": "UIQ",
+   "title": "Phone menu reaches every category",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S15-46",
+   "area": "CAT",
+   "title": "Packaging overview shows each unit's price",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S15-47",
+   "area": "SHIP",
+   "title": "Checkout review is read-only",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S15-48",
+   "area": "SHIP",
+   "title": "Checkout review shows the order lines as text",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S15-49",
+   "area": "ADM",
+   "title": "No unsaved-changes warning without changes",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S16-01",
+   "area": "B2BW",
+   "title": "Order within the budget is confirmed directly",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S16-02",
+   "area": "B2BW",
+   "title": "Order above the budget awaits approval",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S16-03",
+   "area": "B2BW",
+   "title": "Stock is reserved while the order awaits approval",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S16-04",
+   "area": "B2BW",
+   "title": "Company admin is asked for approval",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S16-05",
+   "area": "B2BW",
+   "title": "Company admin approves the order",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S16-06",
+   "area": "B2BW",
+   "title": "Buyer is told about the approval",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S16-07",
+   "area": "B2BW",
+   "title": "Rejection with a reason cancels the order",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S16-08",
+   "area": "B2BW",
+   "title": "Buyer receives the rejection reason",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S16-09",
+   "area": "B2BW",
+   "title": "Company admin invites a user",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S16-10",
+   "area": "B2BW",
+   "title": "Invited user joins the company",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S16-11",
+   "area": "B2BW",
+   "title": "Deactivated user cannot sign in",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S17-01",
+   "area": "B2BW",
+   "title": "Customer requests a quote",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S17-02",
+   "area": "B2BW",
+   "title": "Staff see the quote request",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S17-03",
+   "area": "B2BW",
+   "title": "Staff send a quote; the customer is notified",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S17-04",
+   "area": "B2BW",
+   "title": "Accepting a quote fills the cart at the quoted price",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S17-05",
+   "area": "B2BW",
+   "title": "Quoted lines are not discounted by a code",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S17-06",
+   "area": "B2BW",
+   "title": "An accepted quote becomes an order",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S17-07",
+   "area": "B2BW",
+   "title": "A declined quote cannot be accepted",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S17-08",
+   "area": "B2BW",
+   "title": "Expiry dates in the past are refused",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S17-09",
+   "area": "B2BW",
+   "title": "Customer sets up a standing order",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S17-10",
+   "area": "B2BW",
+   "title": "Staff generate the due occurrence",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S17-11",
+   "area": "B2BW",
+   "title": "Generated order is priced at the then-valid prices",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S17-12",
+   "area": "B2BW",
+   "title": "An occurrence is generated only once",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S17-13",
+   "area": "B2BW",
+   "title": "A skipped date is not generated",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S17-14",
+   "area": "B2BW",
+   "title": "A paused standing order is not generated",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S18-01",
+   "area": "FIN",
+   "title": "Invoice shows the early-payment discount",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S18-02",
+   "area": "FIN",
+   "title": "Invoice shows the discounted amount payable",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S18-03",
+   "area": "FIN",
+   "title": "Invoice shows the last day of the discount period",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S18-04",
+   "area": "FIN",
+   "title": "Paying the discounted amount settles the invoice",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S18-05",
+   "area": "FIN",
+   "title": "VAT correction of the discount: 7 %",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S18-06",
+   "area": "FIN",
+   "title": "VAT correction of the discount: 19 %",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S18-07",
+   "area": "FIN",
+   "title": "E-invoice with both VAT IDs",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S18-08",
+   "area": "FIN",
+   "title": "E-invoice with the VAT breakdown",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S18-09",
+   "area": "FIN",
+   "title": "E-invoice of a reverse-charge invoice",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S18-10",
+   "area": "FIN",
+   "title": "Partial payment shows the remaining amount",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S18-11",
+   "area": "FIN",
+   "title": "Partial payment status",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S18-12",
+   "area": "FIN",
+   "title": "Dunning run: first dunning notice with fee",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S18-13",
+   "area": "FIN",
+   "title": "Dunning run: second dunning notice with fee",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S18-14",
+   "area": "FIN",
+   "title": "Dunning run: payment reminder without fee",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S18-15",
+   "area": "FIN",
+   "title": "Dunning fees raise the open balance",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S18-16",
+   "area": "FIN",
+   "title": "Dunning notice by email",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S18-17",
+   "area": "FIN",
+   "title": "Second dunning level revokes purchase on invoice",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S18-18",
+   "area": "FIN",
+   "title": "A second run adds nothing",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S19-01",
+   "area": "INTL",
+   "title": "Swiss customer sees prices in CHF",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S19-02",
+   "area": "INTL",
+   "title": "UK customer sees prices in GBP",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S19-03",
+   "area": "INTL",
+   "title": "International Freight minimum in CHF",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S19-04",
+   "area": "INTL",
+   "title": "Deposit products are not delivered to Switzerland",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S19-05",
+   "area": "INTL",
+   "title": "Chilled products are not delivered to the United Kingdom",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S19-06",
+   "area": "INTL",
+   "title": "International Freight fee in CHF",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S19-07",
+   "area": "INTL",
+   "title": "Export delivery without VAT",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S19-08",
+   "area": "INTL",
+   "title": "Swiss gross total in CHF",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S19-09",
+   "area": "INTL",
+   "title": "UK gross total in GBP",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S19-10",
+   "area": "INTL",
+   "title": "Export invoice wording",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S19-11",
+   "area": "INTL",
+   "title": "Invoice in the order currency",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S19-12",
+   "area": "INTL",
+   "title": "Export e-invoice carries the export VAT category",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S19-13",
+   "area": "INTL",
+   "title": "Reports show the EUR equivalent",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S19-14",
+   "area": "INTL",
+   "title": "A rate change does not alter placed orders",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S19-15",
+   "area": "INTL",
+   "title": "A rate change applies to new carts",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S19-16",
+   "area": "INTL",
+   "title": "Country storefront for guests",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S20-01",
+   "area": "WFL",
+   "title": "Standard workflow diagram",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S20-02",
+   "area": "WFL",
+   "title": "Current state highlighted on an order",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S20-03",
+   "area": "WFL",
+   "title": "Chilled order follows the Chilled goods workflow",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S20-04",
+   "area": "WFL",
+   "title": "A transition is blocked while its condition fails",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S20-05",
+   "area": "WFL",
+   "title": "The transition is offered once its condition holds",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S20-06",
+   "area": "WFL",
+   "title": "Export order follows the Export workflow",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S20-07",
+   "area": "WFL",
+   "title": "Automatic action when a state is entered",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S20-08",
+   "area": "WFL",
+   "title": "Editing a workflow creates a new version",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S20-09",
+   "area": "WFL",
+   "title": "New orders use the new version",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S20-10",
+   "area": "WFL",
+   "title": "Running orders keep their version",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S20-11",
+   "area": "WFL",
+   "title": "An invalid workflow is refused",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S20-12",
+   "area": "WFL",
+   "title": "Versions can be compared",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S20-13",
+   "area": "WFL",
+   "title": "Fulfillment processes are shown as diagrams",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S21-01",
+   "area": "FIN",
+   "title": "Exact transfer confirms a prepayment order",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S21-02",
+   "area": "FIN",
+   "title": "Overpayment becomes credit balance",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S21-03",
+   "area": "FIN",
+   "title": "Underpayment leaves the order pending",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S21-04",
+   "area": "FIN",
+   "title": "Staff accept the difference",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S21-05",
+   "area": "FIN",
+   "title": "Transfer without a usable reference is unmatched",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S21-06",
+   "area": "FIN",
+   "title": "Manual matching confirms the order",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S21-07",
+   "area": "FIN",
+   "title": "Credit balance and card pay one order together",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S21-08",
+   "area": "FIN",
+   "title": "A refund is split back across the methods",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S21-09",
+   "area": "FIN",
+   "title": "A duplicate payment becomes credit balance",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S21-10",
+   "area": "FIN",
+   "title": "One transfer pays several named orders",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S21-11",
+   "area": "FIN",
+   "title": "Staff pay out a credit balance",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S21-12",
+   "area": "FIN",
+   "title": "Card amount captured at shipment",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S21-13",
+   "area": "FIN",
+   "title": "Chargeback flags the order",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S21-14",
+   "area": "FIN",
+   "title": "Staff are notified of a chargeback",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S21-15",
+   "area": "FIN",
+   "title": "Expired authorisation holds the shipment",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S21-16",
+   "area": "FIN",
+   "title": "Catch-weight capture within the tolerance",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S21-17",
+   "area": "FIN",
+   "title": "Catch-weight above the tolerance needs a new authorisation",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S21-18",
+   "area": "FIN",
+   "title": "Payments ledger",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S22-01",
+   "area": "FUL",
+   "title": "Stock is shown per warehouse",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S22-02",
+   "area": "FUL",
+   "title": "Allocation takes WH-BER first",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S22-03",
+   "area": "FUL",
+   "title": "Pick list per warehouse",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S22-04",
+   "area": "FUL",
+   "title": "Packing slip without prices",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S22-05",
+   "area": "FUL",
+   "title": "Two warehouses, two shipments, one shipping charge",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S22-06",
+   "area": "FUL",
+   "title": "Stock in transit cannot be sold",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S22-07",
+   "area": "FUL",
+   "title": "Received transfer is sellable again",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S22-08",
+   "area": "FUL",
+   "title": "Cross-docked product shows its lead time",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S22-09",
+   "area": "FUL",
+   "title": "Cross-docked order creates a supplier purchase order",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S22-10",
+   "area": "FUL",
+   "title": "Drop-shipped product creates a drop-shipment purchase order",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S22-11",
+   "area": "FUL",
+   "title": "Drop-shipment is a separate shipment",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S23-01",
+   "area": "RET",
+   "title": "Customer cancels one line before shipment",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S23-02",
+   "area": "RET",
+   "title": "Promotion re-checked after a cancellation",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S23-03",
+   "area": "RET",
+   "title": "Card authorisation reduced after a cancellation",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S23-04",
+   "area": "RET",
+   "title": "Staff cancel the open rest after a partial shipment",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S23-05",
+   "area": "RET",
+   "title": "Mistaken order: restocking fee",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S23-06",
+   "area": "RET",
+   "title": "Credit note after the restocking fee",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S23-07",
+   "area": "DEP",
+   "title": "Quality complaint refunds the deposits",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S23-08",
+   "area": "RET",
+   "title": "Quality complaint refund in full",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S23-09",
+   "area": "RET",
+   "title": "Catch-weight return by weight",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S23-10",
+   "area": "RET",
+   "title": "Chilled goods can be returned only for quality complaints",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S23-11",
+   "area": "RET",
+   "title": "Bundles are returned as a whole",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S23-12",
+   "area": "RET",
+   "title": "Exchange instead of refund",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S23-13",
+   "area": "RET",
+   "title": "Returned goods restocked to a chosen warehouse",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S24-01",
+   "area": "ADM",
+   "title": "Global search finds an order",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S24-02",
+   "area": "ADM",
+   "title": "Global search finds a customer and a product",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S24-03",
+   "area": "ADM",
+   "title": "Bulk action on selected rows",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S24-04",
+   "area": "ADM",
+   "title": "Saved view",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S24-05",
+   "area": "ADM",
+   "title": "Page size choice",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S24-06",
+   "area": "ADM",
+   "title": "Table export",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S24-07",
+   "area": "ADM",
+   "title": "Activity timeline shows a staff change",
+   "result": "",
+   "observed": "",
+   "note": ""
+  },
+  {
+   "id": "S24-08",
+   "area": "ADM",
+   "title": "Dashboard with a period comparison",
+   "result": "",
+   "observed": "",
+   "note": ""
+  }
+ ]
+}

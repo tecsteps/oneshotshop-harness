@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "eval/codequality summary (runs/<branch>/codequality/summary.json)",
+  "type": "object",
+  "required": ["schema", "run", "commit", "status", "catalogue", "model", "scores", "rules", "units", "judgements", "usage", "pricing", "timing", "static_metrics"],
+  "$defs": {
+    "score": { "type": ["number", "null"], "minimum": 0, "maximum": 100 },
+    "category": {
+      "type": "object",
+      "required": ["title", "weight", "score", "ai_score", "static_score", "rules_scored", "rules_total"],
+      "properties": {
+        "title": { "type": "string" }, "weight": { "type": "number" },
+        "score": { "$ref": "#/$defs/score" }, "ai_score": { "$ref": "#/$defs/score" }, "static_score": { "$ref": "#/$defs/score" },
+        "rules_scored": { "type": "integer", "minimum": 0 }, "rules_total": { "type": "integer", "minimum": 0 }
+      }
+    }
+  },
+  "properties": {
+    "schema": { "const": "oneshotshop-codequality/1" },
+    "run": { "type": ["string", "null"] },
+    "commit": { "type": ["string", "null"] },
+    "status": { "enum": ["complete", "incomplete"] },
+    "catalogue": { "type": "object", "required": ["version", "sha256", "approved_version", "approved_sha256", "matches_approved", "rules", "ai_rules", "static_rules"],
+      "properties": { "version": { "type": "string" }, "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" }, "rules": { "type": "integer" }, "ai_rules": { "type": "integer" }, "static_rules": { "type": "integer" } } },
+    "model": { "type": "object", "required": ["name", "reasoning_effort"], "properties": { "name": { "type": "string" }, "reasoning_effort": { "type": "string" } } },
+    "scores": { "type": "object", "required": ["cqi", "ai_index", "static_index", "categories"],
+      "properties": { "cqi": { "$ref": "#/$defs/score" }, "ai_index": { "$ref": "#/$defs/score" }, "static_index": { "$ref": "#/$defs/score" },
+        "categories": { "type": "object", "additionalProperties": { "$ref": "#/$defs/category" } } } },
+    "rules": { "type": "array", "items": { "type": "object", "required": ["rule_id", "category", "weight", "decided_by", "score"],
+      "properties": { "rule_id": { "type": "string" }, "decided_by": { "enum": ["ai", "static"] }, "score": { "type": ["number", "null"], "minimum": 0, "maximum": 1 } } } },
+    "units": { "type": "object" },
+    "judgements": { "type": "object", "required": ["total", "verified", "unverified"] },
+    "usage": { "type": "object", "required": ["calls", "input_tokens", "cached_input_tokens", "output_tokens", "cost_usd"] },
+    "pricing": { "type": "object" },
+    "timing": { "type": "object" },
+    "static_metrics": { "type": "object" }
+  }
+}

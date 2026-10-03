@@ -1,0 +1,21 @@
+# Harness-owned gitleaks config: gitleaks' default rules plus Laravel-specific ones. Passed with
+# --config, so a .gitleaks.toml in the run branch is never read; .gitleaksignore is ignored too.
+title = "oneshotshop eval/tools gitleaks config"
+
+[extend]
+useDefault = true
+
+[[rules]]
+id = "laravel-app-key"
+description = "Laravel APP_KEY committed"
+regex = '''APP_KEY\s*=\s*["']?(base64:[A-Za-z0-9+/]{40,}={0,2})'''
+secretGroup = 1
+keywords = ["app_key"]
+
+[[rules]]
+id = "dotenv-file-committed"
+description = "A .env file is committed (only .env.example is allowed)"
+path = '''(^|/)\.env(\.[A-Za-z0-9_.-]+)?$'''
+
+[[rules.allowlists]]
+paths = ['''(^|/)\.env\.example$''']

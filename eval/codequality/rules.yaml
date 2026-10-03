@@ -1,0 +1,1172 @@
+# #OneShotShop v2 — code-quality rule catalogue (machine-readable source of truth).
+#
+# rules.md is GENERATED from this file:  node eval/codequality/lib/catalogue.mjs render
+# The catalogue hash (sha256 over the canonical JSON of this file's parsed content) is printed by
+# `node eval/codequality/lib/catalogue.mjs hash` and recorded in every summary.json. Any edit
+# (wording, weight, sampling cap) changes the hash; bump `catalogue.version` with every edit so
+# results stay comparable only between builds judged with the same catalogue.
+#
+# decided_by:
+#   ai      judged by the AI (one small, stateless call per unit; only these rules are sent to it)
+#   static  decided by a deterministic check: eval/tools / eval/perf outputs or the extraction
+#           step of this folder (php/inventory.php AST, php/schema.php SQLite schema dump)
+#
+# Every ai rule carries `why_ai` (why a script cannot decide it). Every static rule names its
+# `check` (implemented in lib/static-checks.mjs) and how the measured value becomes a 0..1 score.
+
+catalogue:
+  id: oneshotshop-codequality
+  version: 1.0.0
+  status: approved by the owner 2026-10-03 (do not compare scores across catalogue versions)
+  language: PHP 8 / Laravel
+
+categories:
+  clean_code:   {title: Clean Code,               weight: 25}
+  solid:        {title: SOLID / design,           weight: 20}
+  laravel:      {title: Laravel & PHP practices,  weight: 20}
+  data_model:   {title: Data model,               weight: 15}
+  tests:        {title: Tests,                    weight: 10}
+  security:     {title: Security basics in code,  weight: 10}
+
+# Unit kinds (assigned deterministically by php/inventory.php, see README "Unit kinds").
+unit_kinds:
+  controller:        'HTTP controllers (App\Http\Controllers\*, or extends a *Controller)'
+  livewire:          'Livewire / Volt components, Filament resources/pages (UI component classes with actions)'
+  service:           'services, actions, domain/support classes, value objects, repositories (everything in app/ not matched below)'
+  model:             'Eloquent models (extends Model / Authenticatable / Pivot)'
+  form_request:      'extends FormRequest'
+  policy:            'authorization policies (*Policy)'
+  job:               'queued jobs, listeners, events'
+  command:           'Artisan console commands'
+  middleware:        'HTTP middleware'
+  mail_notification: 'Mailables and Notifications'
+  view:              'one Blade template (resources/views/**/*.blade.php)'
+  test:              'one test file (tests/**/*.php)'
+  routes:            'one route file (routes/*.php)'
+  schema:            'the whole database: SQLite schema dump after migrate --seed + the migration sources'
+procedure:
+  model: gpt-6-luna
+  reasoning_effort: none          # lowest effort the API accepts for gpt-6-luna (minimal is rejected)
+  votes_per_judgement: 1
+  seed: catalogue.version         # sampling seed = catalogue version, never the branch
+  # Deterministic sampling per kind: the `top` largest units (by source characters, ties by path) plus
+  # `random` units chosen by ascending sha256("<catalogue.version>:<unit id>") from the rest.
+  sampling:
+    controller:        {top: 6, random: 6}
+    livewire:          {top: 6, random: 6}
+    service:           {top: 6, random: 6}
+    model:             {top: 4, random: 6}
+    form_request:      {top: 0, random: 3}
+    policy:            {top: 0, random: 3}
+    job:               {top: 0, random: 2}
+    command:           {top: 0, random: 2}
+    middleware:        {top: 0, random: 2}
+    mail_notification: {top: 0, random: 2}
+    view:              {top: 6, random: 6}
+    test:              {top: 4, random: 4}
+    routes:            {top: 4, random: 0}
+    schema:            {top: 1, random: 0}
+  excluded_kinds: [provider, enum, seeder, factory, migration_class, other]
+  max_units_total: 90
+  min_unit_chars: 200             # smaller units (e.g. an empty base Controller) are not sampled; the schema unit is always included
+  # One unit's source is cut at this many lines/characters (the prompt says so); evidence beyond the cut is impossible.
+  unit_max_lines: 1500
+  unit_max_chars: 120000
+  evidence:
+    max_items_per_judgement: 3
+    max_quote_chars: 200
+    # fail needs >= 1 verified evidence item; pass/na may carry evidence (verified if present)
+    required_for: [fail]
+  reask_invalid_evidence: 1       # invalid evidence -> re-ask that rule once, then "unverified" (excluded from scores)
+  call_timeout_secs: 300
+  calibration:
+    repeats: 3
+    min_unanimity: 0.80           # rules whose unanimous-verdict share across repeats is below this are flagged
+  scoring:
+    # rule score = passes / (passes + fails) over sampled units where the rule applied (verified only)
+    # category score = weighted mean of its rule scores (rules without data drop out, weights renormalised)
+    # Code Quality Index (CQI) = weighted mean of category scores (category weights above), 0..100
+    ai_vs_static_within_category: by_rule_weight
+
+rules:
+
+# ═══════════════════════════════════════════════════════════════════════ CLEAN CODE — AI
+- id: CC-01
+  title: Names reveal intent
+  category: clean_code
+  decided_by: ai
+  weight: 3
+  applies_to: [controller, livewire, service, model, form_request, policy, job, command, middleware, mail_notification]
+  definition: >-
+    Class, method, property, parameter and local-variable names in the unit say what the thing is or
+    does in domain terms. FAIL when the unit relies on cryptic abbreviations or meaningless names for
+    non-trivial values (e.g. $d, $x, $tmp, $data2, $arr, proc(), handle2(), doStuff()) outside of
+    trivial loop counters / closures of one expression, or when a name says something different from
+    what the code does (e.g. getTotal() that also persists, $net holding a gross amount).
+  pass_example: |
+    public function applyVolumeDiscount(Money $netPrice, int $quantity): Money
+    { $tier = $this->tiers->forQuantity($quantity); return $netPrice->percentOff($tier->discountPercent); }
+  fail_example: |
+    public function calc($p, $q) { $d = $this->x($q); $t = $p * (1 - $d / 100); return $t; }
+  na_when: Never N/A for the listed kinds.
+  evidence: The declaration or use line(s) of up to 3 of the worst names, quoting the name in context.
+  why_ai: Whether a name "reveals intent" depends on domain meaning; length or dictionary checks cannot tell `$qty` (fine) from `$x` (not) or detect misleading names.
+
+- id: CC-02
+  title: One level of abstraction per method
+  category: clean_code
+  decided_by: ai
+  weight: 2
+  applies_to: [controller, livewire, service, model, job, command]
+  definition: >-
+    Each method reads at one level of abstraction: high-level steps call well-named helpers, and
+    low-level details (string building, array index juggling, raw arithmetic, query construction)
+    are not interleaved with high-level orchestration in the same method. FAIL when at least one
+    method of the unit mixes orchestration (e.g. "validate, price, persist, notify") with
+    low-level detail of several of those steps inline.
+  pass_example: |
+    public function place(Cart $cart): Order {
+        $this->guardCreditLimit($cart); $order = $this->orders->createFrom($cart);
+        $this->stock->reserve($order); $this->notifier->orderPlaced($order); return $order; }
+  fail_example: |
+    public function place(Request $r) { $total = 0; foreach ($r->session()->get('cart') as $i) { $total += $i['p'] * $i['q'] * (1 + 0.19); }
+      DB::table('orders')->insert([...]); Mail::raw('Order '.$id.' placed', fn($m) => $m->to($u->email)); ... }
+  na_when: The unit has no method longer than 5 statements.
+  evidence: Line range of the offending method with a quote of one high-level and one low-level statement.
+  why_ai: Abstraction levels are a semantic property; no metric distinguishes "calls a helper" from "does the helper's work inline".
+
+- id: CC-03
+  title: Methods do one thing
+  category: clean_code
+  decided_by: ai
+  weight: 3
+  applies_to: [controller, livewire, service, model, job, command, middleware]
+  definition: >-
+    Every method has a single purpose that can be named without "and". FAIL when a method performs
+    several independent tasks (e.g. validates input AND computes prices AND writes the order AND
+    sends mail AND builds the response), typically visible as sections separated by comments or blank
+    lines, or by a name like processAll()/handle() hiding several steps. Length alone is NOT the
+    criterion (that is static rule CC-S01).
+  pass_example: |
+    public function totals(Cart $cart): Totals { return new Totals($this->net($cart), $this->vat($cart), $this->shipping($cart)); }
+  fail_example: |
+    public function checkout(Request $r) { /* validate */ ... /* price */ ... /* save order */ ... /* email */ ... /* redirect */ ... }
+  na_when: The unit has only trivial methods (accessors, one-statement methods, relation definitions).
+  evidence: Lines of the method showing at least two of the unrelated tasks.
+  why_ai: Counting statements cannot tell one cohesive algorithm from several tasks glued together.
+
+- id: CC-04
+  title: Errors are not swallowed
+  category: clean_code
+  decided_by: ai
+  weight: 3
+  applies_to: [controller, livewire, service, model, job, command, middleware, mail_notification]
+  definition: >-
+    Failures are handled explicitly: a catch block either recovers in a way the caller can see
+    (returns a result that encodes the failure, rethrows/wraps, reports AND reacts), or is clearly
+    intentional with a reason. FAIL when an exception is caught and ignored, replaced by a silent
+    default (null/false/[]/0) the caller cannot distinguish from success, only logged while the
+    operation proceeds as if it succeeded, or suppressed with @. Empty catch blocks are also counted
+    statically (CC-S07); this rule covers the non-empty but still swallowing cases.
+  pass_example: |
+    try { $this->gateway->charge($order); } catch (PaymentDeclined $e) { $order->markPaymentFailed($e->reason); throw $e; }
+  fail_example: |
+    try { $this->gateway->charge($order); } catch (\Throwable $e) { Log::warning($e->getMessage()); } $order->update(['status' => 'paid']);
+  na_when: The unit contains no try/catch, no @-suppression and no rescue()/report() calls.
+  evidence: The catch (or @ / rescue) line(s) and the line that continues as if successful, if any.
+  why_ai: Whether a non-empty catch "handles" the error needs data-flow understanding of what the caller sees.
+
+- id: CC-05
+  title: Comments explain why, not what
+  category: clean_code
+  decided_by: ai
+  weight: 1
+  applies_to: [controller, livewire, service, model, job, command]
+  definition: >-
+    Comments (excluding PHPDoc type annotations) give reasons, constraints, business rules or
+    references that the code cannot express. FAIL when the unit has comments that merely restate the
+    next line(s) ("// increment i", "// save the order" above $order->save()), are outdated/contradict
+    the code, or contain commented-out code blocks.
+  pass_example: |
+    // Spec 4.2: key accounts are invoiced net 30, so the credit limit check uses open invoices, not orders.
+  fail_example: |
+    // get the user
+    $user = auth()->user();
+  na_when: The unit has no comments other than PHPDoc type/param annotations.
+  evidence: Up to 3 comment lines with the code line they restate (or the commented-out code).
+  why_ai: Telling a redundant comment from a reason requires reading comment and code together.
+
+- id: CC-06
+  title: A business rule lives in one place
+  category: clean_code
+  decided_by: ai
+  weight: 3
+  applies_to: [controller, livewire, service, model, view]
+  definition: >-
+    Each business rule or calculation (VAT, discounts, price tiers, shipping cost, stock availability,
+    credit limit, order-number format, status transitions) is implemented once and reused. FAIL when
+    the unit re-implements a rule that the unit itself or another class already implements (use the
+    LSP tools: references/definition to check for an existing implementation), e.g. the same VAT
+    computation in two methods, or a view recomputing a total that a service computes.
+  pass_example: |
+    $gross = $this->vat->gross($net, $company);   // single VatCalculator used everywhere
+  fail_example: |
+    // CartController
+    $gross = round($net * ($company->country === 'DE' ? 1.19 : 1.0), 2);
+    // OrderService (same rule again)
+    $gross = $net + ($company->country === 'DE' ? $net * 0.19 : 0);
+  na_when: The unit contains no business calculation or rule.
+  evidence: The duplicated rule in the unit plus (if found) the other location's file and lines.
+  why_ai: Clone detectors find copied text; the same rule written differently ("knowledge duplication") needs semantic comparison.
+
+- id: CC-07
+  title: No flag arguments that switch behaviour
+  category: clean_code
+  decided_by: ai
+  weight: 1
+  applies_to: [controller, livewire, service, model, job]
+  definition: >-
+    Methods do not take boolean/"mode" parameters that select between substantially different
+    behaviours (e.g. save($order, true) meaning "and send mail"; render($x, 'admin')). FAIL when such a
+    parameter is declared in the unit and branches into different behaviour. Booleans that are plain
+    data (e.g. $isActive written to a column) are fine.
+  pass_example: |
+    public function placeOrder(Cart $c): Order {...}   public function placeOrderSilently(Cart $c): Order {...}
+  fail_example: |
+    public function place(Cart $c, bool $notify = true, bool $isAdmin = false) { if ($isAdmin) { ...different flow... } }
+  na_when: No method of the unit has a bool/enum-like parameter.
+  evidence: The method signature and the branch on the flag.
+  why_ai: A bool parameter is detectable, but whether it is data or a behaviour switch needs reading the body.
+
+- id: CC-08
+  title: Queries do not have hidden side effects
+  category: clean_code
+  decided_by: ai
+  weight: 2
+  applies_to: [controller, livewire, service, model]
+  definition: >-
+    Methods whose name/return value suggests a query (get*, find*, is*, has*, calculate*, total*,
+    accessors, Blade-facing helpers) do not change state (DB writes, session writes, sending mail,
+    incrementing counters, mutating arguments). FAIL when such a method writes state.
+  pass_example: |
+    public function total(Cart $cart): int { return $cart->lines->sum(fn ($l) => $l->unit_price * $l->quantity); }
+  fail_example: |
+    public function getCart(User $u): Cart { $cart = Cart::firstOrCreate(['user_id' => $u->id]); $cart->touch(); session(['cart_id' => $cart->id]); return $cart; }
+  na_when: The unit has no query-style method.
+  evidence: The method signature and the state-changing line.
+  why_ai: Requires knowing intent from names and which calls write state (incl. through other classes via LSP).
+
+- id: CC-09
+  title: Domain states are explicit types, not scattered string literals
+  category: clean_code
+  decided_by: ai
+  weight: 2
+  applies_to: [controller, livewire, service, model, view]
+  definition: >-
+    Finite domain value sets (order/payment/shipment status, customer group, shipping method,
+    payment method, role) are represented by enums or class constants referenced everywhere. FAIL
+    when the unit compares or assigns such values as raw string/int literals ('paid', 'pending',
+    'truck', 3) in logic, especially the same literal in several places.
+  pass_example: |
+    if ($order->status === OrderStatus::Paid) { ... }
+  fail_example: |
+    if ($order->status == 'paid' || $order->status == 'shipped') { ... } $order->status = 'cancelled';
+  na_when: The unit does not handle any finite domain value set.
+  evidence: Up to 3 lines with the literal comparisons/assignments.
+  why_ai: Static magic-string detection cannot know which literals denote domain states versus labels, keys or messages.
+
+- id: CC-10
+  title: Business parameters are not hard-coded in logic
+  category: clean_code
+  decided_by: ai
+  weight: 2
+  applies_to: [controller, livewire, service, model, view, job]
+  definition: >-
+    Business parameters that the shop owner may change (VAT rates, free-shipping thresholds, minimum
+    order values, surcharges, discount percentages, credit limits, cut-off times, pack sizes) come
+    from configuration, the database, or one named constant/enum — not literals inside calculations.
+    FAIL when such a parameter appears as a literal inside logic (e.g. * 1.19, > 250.00, + 4.90).
+    Technical constants (pagination size, 100 for percent, 2 decimals) are not business parameters.
+  pass_example: |
+    if ($net->greaterThan(Money::cents(config('shop.free_shipping_threshold_cents')))) { ... }
+  fail_example: |
+    $shipping = $subtotal >= 250 ? 0 : 9.90; $vat = $subtotal * 0.19;
+  na_when: The unit contains no business calculation.
+  evidence: Up to 3 lines with the hard-coded parameters.
+  why_ai: Deciding that 0.19 is a VAT rate but 100 is a percent base requires domain judgement; Sonar's magic-number rule is the static complement (CC-S09).
+
+# ═══════════════════════════════════════════════════════════════════════ SOLID — AI
+- id: SO-01
+  title: Single responsibility (one reason to change)
+  category: solid
+  decided_by: ai
+  weight: 3
+  applies_to: [controller, livewire, service, model, job, command]
+  definition: >-
+    The class has one reason to change: one actor/feature area (e.g. "pricing", "checkout HTTP flow",
+    "order persistence"). FAIL when the class combines responsibilities that change for different
+    reasons, e.g. a controller that serves storefront, admin CRUD and PDF generation; a service
+    "Commerce" that prices, ships, invoices and emails; a model that renders HTML or sends mail.
+    Name the distinct responsibilities in the reason.
+  pass_example: |
+    class InvoicePdfRenderer { public function render(Invoice $i): string {...} }
+  fail_example: |
+    class ShopController { public function catalogue(){...} public function cart(){...} public function adminProducts(){...} public function invoicePdf(){...} public function importCsv(){...} }
+  na_when: Never N/A for the listed kinds.
+  evidence: 2–3 method declarations (lines) that belong to different responsibilities.
+  why_ai: Class size/coupling metrics (static SO-S01, CC-S02) correlate with SRP violations but cannot name or count responsibilities.
+
+- id: SO-02
+  title: Open/closed for variants (no growing type switches)
+  category: solid
+  decided_by: ai
+  weight: 2
+  applies_to: [controller, livewire, service, model, view]
+  definition: >-
+    Behaviour that varies by a type code (payment method, shipping method, customer group, product
+    type, document type, country rule) is dispatched via polymorphism, a strategy map, or data
+    (configuration/DB rows) — so adding a variant does not require editing several switch/if-chains.
+    FAIL when the unit contains a switch/match/if-elseif chain over such a type code with
+    variant-specific logic in each branch, especially when the same type code is switched on in more
+    than one place (check with LSP references).
+  pass_example: |
+    $method = $this->shippingMethods->get($order->shipping_method); $cost = $method->cost($order);   // one class per method
+  fail_example: |
+    if ($m === 'truck') { $cost = ...; $slots = ...; } elseif ($m === 'parcel') { $cost = ...; } elseif ($m === 'pickup') { $cost = 0; }
+  na_when: The unit has no conditional dispatch over a domain type code.
+  evidence: The switch/match/if-chain lines (start line to last branch).
+  why_ai: A switch is detectable, but whether it dispatches over a growing variant set (vs. a fixed mapping) is a design judgement.
+
+- id: SO-03
+  title: Substitutable subtypes (Liskov)
+  category: solid
+  decided_by: ai
+  weight: 1
+  applies_to: [service, model, controller, livewire, job, policy]
+  definition: >-
+    Classes that extend an application class or implement an application interface honour its
+    contract: no overridden method that throws "not supported", silently does nothing, narrows
+    accepted input, widens thrown errors, or returns a different kind of value; callers do not need
+    instanceof checks to use them. Framework base classes (Model, Controller, FormRequest, Command,
+    Job) count only when a framework contract is broken (e.g. a FormRequest::authorize() that throws).
+  pass_example: |
+    final class TruckDelivery implements DeliveryMethod { public function cost(Order $o): Money {...} }
+  fail_example: |
+    class PickupDelivery extends TruckDelivery { public function slots(Carbon $d): array { throw new LogicException('not supported'); } }
+  na_when: The class neither extends an application class nor implements an application interface, and overrides no framework contract method.
+  evidence: The overriding method declaration and the violating line.
+  why_ai: Contract compliance needs comparing behaviour of parent and child, not just signatures.
+
+- id: SO-04
+  title: Focused interfaces (interface segregation)
+  category: solid
+  decided_by: ai
+  weight: 1
+  applies_to: [service, model, controller, livewire, job, policy]
+  definition: >-
+    Application interfaces/abstract classes the unit declares or implements are small and cohesive;
+    implementers do not have to provide methods they do not need. FAIL when the unit implements an
+    application interface with methods left empty/throwing because they do not apply, or declares a
+    "fat" interface mixing unrelated capabilities.
+  pass_example: |
+    interface PriceSource { public function priceFor(Product $p, Company $c): Money; }
+  fail_example: |
+    interface ShopModule { public function price(); public function ship(); public function invoice(); public function exportCsv(); }
+  na_when: The unit neither declares nor implements an application interface or abstract class.
+  evidence: The interface declaration lines or the empty/throwing implementation.
+  why_ai: Whether interface methods belong together is a cohesion judgement.
+
+- id: SO-05
+  title: Domain logic does not depend on concrete infrastructure
+  category: solid
+  decided_by: ai
+  weight: 2
+  applies_to: [service, model, controller, livewire, job]
+  definition: >-
+    Business calculations and decisions (pricing, tax, stock, credit, order state) receive their
+    collaborators through constructor/method injection or interfaces and stay free of infrastructure
+    details. FAIL when domain logic directly calls infrastructure facades/statics/globals in the middle
+    of the calculation (Http::, Mail::, Storage::, Cache::, Session/session(), request(), now() without
+    an injected clock where results depend on it, DB::table raw queries) or instantiates collaborators
+    with `new` (new PaymentGateway(), new PdfService()) instead of injecting them. Eloquent model use
+    and Laravel validation in controllers are NOT violations; facades in controllers/jobs that only
+    orchestrate are fine.
+  pass_example: |
+    public function __construct(private TaxRates $rates, private Clock $clock) {}
+  fail_example: |
+    public function price(Product $p): float { $rate = Http::get('https://rates.example/vat')->json('de'); if (session('admin_preview')) {...} return $p->price * (1 + $rate); }
+  na_when: The unit contains no business calculation or decision.
+  evidence: The infrastructure call or `new` line inside the domain logic.
+  why_ai: Facade calls are countable, but whether they sit inside domain logic (violation) or orchestration (fine) needs judgement.
+
+# ═══════════════════════════════════════════════════════════════════════ LARAVEL / PHP — AI
+- id: LV-01
+  title: No business logic in controllers / UI components
+  category: laravel
+  decided_by: ai
+  weight: 3
+  applies_to: [controller, livewire]
+  definition: >-
+    Controller actions and UI component actions are thin: they validate (or delegate validation),
+    authorize, call a service/action/model method, and return a response. FAIL when an action
+    computes business results itself: price/discount/VAT/shipping arithmetic, stock or credit
+    decisions, order state transitions, multi-step persistence of an aggregate, document numbering.
+  pass_example: |
+    public function store(PlaceOrderRequest $r, PlaceOrder $place) { $order = $place($r->user(), $r->validated()); return redirect()->route('orders.show', $order); }
+  fail_example: |
+    public function store(Request $r) { $total = 0; foreach ($cart->lines as $l) { $total += $l->price * $l->qty * (1 - $discount); } if ($company->credit_used + $total > $company->credit_limit) {...} Order::create([...]); }
+  na_when: The class has no public action methods.
+  evidence: Lines of the business computation inside the action.
+  why_ai: Distinguishing orchestration from business computation needs semantic reading; LOC of controllers is only a proxy.
+
+- id: LV-02
+  title: No business logic or data access in Blade views
+  category: laravel
+  decided_by: ai
+  weight: 2
+  applies_to: [view]
+  definition: >-
+    Views only present data prepared for them. FAIL when the template runs queries or model lookups
+    (Model::where/find/all, ->relation()->get(), DB::), computes business values (prices, VAT,
+    discounts, totals, stock decisions, permissions other than @can/@auth), or contains @php blocks
+    with business logic. Formatting (number_format, date formatting), loops and simple conditionals on
+    prepared data are fine.
+  pass_example: |
+    <td>{{ $line->formattedTotal }}</td>   @can('update', $order) ... @endcan
+  fail_example: |
+    @php $total = 0; foreach (\App\Models\CartLine::where('cart_id', session('cart'))->get() as $l) { $total += $l->price * $l->qty * 1.19; } @endphp
+  na_when: Never N/A for views.
+  evidence: The template line(s) with the query or computation (quote a short part of the line).
+  why_ai: Simple pattern checks miss computations hidden in long expressions; deciding "formatting vs. business" needs judgement.
+
+- id: LV-03
+  title: Input is validated at the boundary
+  category: laravel
+  decided_by: ai
+  weight: 3
+  applies_to: [controller, livewire, form_request, routes]
+  definition: >-
+    Every action that accepts user input validates it before use with explicit rules (FormRequest,
+    $request->validate(), Validator::make, Livewire #[Validate]/rules()). FAIL when input reaches
+    persistence or business logic unvalidated ($request->all(), $request->input('x') written or used
+    without rules), or when rules are clearly insufficient for the field (no type/size/exists rule for
+    ids, quantities without integer|min:1, money without numeric bounds). For form_request units:
+    FAIL when rules() are incomplete for the fields the request obviously carries, or authorize()
+    returns true where authorization is needed and not done elsewhere.
+  pass_example: |
+    $data = $request->validate(['quantity' => ['required', 'integer', 'min:1', 'max:9999'], 'variant_id' => ['required', 'exists:variants,id']]);
+  fail_example: |
+    CartLine::create(['variant_id' => $request->variant_id, 'quantity' => $request->quantity]);
+  na_when: The unit accepts no user input.
+  evidence: The line where unvalidated input is used (and the missing/insufficient rule line if any).
+  why_ai: Whether a given input is validated somewhere before use, and whether the rules fit the field, requires following data flow.
+
+- id: LV-04
+  title: Authorization rules are centralised
+  category: laravel
+  decided_by: ai
+  weight: 2
+  applies_to: [controller, livewire, policy, routes, service]
+  definition: >-
+    Who may do what is expressed in policies, gates, or middleware (and, for scoping, query scopes),
+    not as ad-hoc inline checks copied across actions (if ($user->role !== 'admin') abort(403) in many
+    places, private helpers re-implementing the same check in several controllers). FAIL when the unit
+    contains repeated inline role/ownership conditions instead of a policy/gate/middleware. A single
+    helper reused within one class is acceptable. (Whether an action is protected at all is SEC-01.)
+  pass_example: |
+    $this->authorize('view', $order);   Route::middleware('can:manage-catalog')->group(...)
+  fail_example: |
+    if (! $request->user()->is_staff) abort(403); ... (same line in 12 actions)
+  na_when: The unit performs no authorization decisions.
+  evidence: Two or more of the inline checks.
+  why_ai: Whether checks are "the same rule duplicated" versus distinct needs judgement.
+
+- id: LV-05
+  title: Multi-step money/stock writes are atomic
+  category: laravel
+  decided_by: ai
+  weight: 3
+  applies_to: [controller, livewire, service, model, job, command]
+  definition: >-
+    Operations that write several related records or change money/stock/credit (place order,
+    reserve/decrement stock, record payment, issue invoice/credit note, approve return) run inside a
+    database transaction, and concurrent-sensitive reads use locking (lockForUpdate / atomic
+    increment/decrement / unique constraints). FAIL when such an operation performs two or more writes
+    without DB::transaction (or an equivalent wrapper that the LSP confirms), or decrements stock
+    via read-modify-write without lock/atomic update.
+  pass_example: |
+    return DB::transaction(function () use ($cart) { $order = Order::create([...]); foreach (...) { Variant::whereKey($id)->lockForUpdate()->first()->decrement('stock', $qty); } return $order; });
+  fail_example: |
+    $order = Order::create([...]); foreach ($lines as $l) { OrderLine::create([...]); $v->stock = $v->stock - $l->qty; $v->save(); } $company->update(['credit_used' => ...]);
+  na_when: The unit performs no multi-write or money/stock/credit change.
+  evidence: The first and last write lines of the non-atomic operation (or the read-modify-write lines).
+  why_ai: Whether writes belong to one business operation, and whether a caller already wraps them, needs semantic and cross-file reading.
+
+- id: LV-06
+  title: Slow side effects are queued or deferred
+  category: laravel
+  decided_by: ai
+  weight: 1
+  applies_to: [controller, livewire, service, job, mail_notification]
+  definition: >-
+    Side effects that are slow or may fail independently of the request (sending mail/notifications,
+    PDF generation for email attachments, calls to external HTTP services, image processing) are
+    dispatched to the queue (ShouldQueue, ->queue(), dispatch(), afterResponse) rather than executed
+    synchronously inside the request, OR the code makes an explicit, commented choice to run them
+    synchronously. FAIL when the unit sends mail / notifications / external calls inline in a request
+    path. For mail_notification units: FAIL when the class does not implement ShouldQueue and is used
+    from request paths.
+  pass_example: |
+    $user->notify(new OrderConfirmed($order));   // class OrderConfirmed extends Notification implements ShouldQueue
+  fail_example: |
+    Mail::to($user)->send(new OrderConfirmation($order)); // inside the checkout controller, mailable not queued
+  na_when: The unit triggers no mail, notification, external call or heavy processing.
+  evidence: The send/call line (and the class declaration lacking ShouldQueue if relevant).
+  why_ai: Whether an effect runs in a request path and whether queueing is appropriate depends on context.
+
+- id: LV-07
+  title: Money arithmetic is exact
+  category: laravel
+  decided_by: ai
+  weight: 3
+  applies_to: [controller, livewire, service, model, view, job]
+  definition: >-
+    Monetary amounts are computed in integer minor units (cents), a decimal/BCMath/Money library, or
+    with one explicit rounding rule applied at defined points (e.g. per line, then summed). FAIL when
+    the unit multiplies/divides/sums money as PHP floats and rounds ad hoc in several places, mixes
+    cents and euros, or rounds inconsistently (round() in one place, number_format() as rounding in
+    another). Formatting for display is fine.
+  pass_example: |
+    $lineNetCents = intdiv($unitPriceCents * $qty * (100 - $discountPct) + 50, 100);
+  fail_example: |
+    $total = $price * $qty * 0.9; $vat = round($total * 0.19, 2); $gross = $total + $vat; // floats
+  na_when: The unit performs no arithmetic on money.
+  evidence: Lines with the float arithmetic or inconsistent rounding.
+  why_ai: Whether a numeric variable is money and whether rounding is consistent needs semantic reading; the schema-side float check is static (DM-S03).
+
+- id: LV-08
+  title: Models encapsulate relations and query rules
+  category: laravel
+  decided_by: ai
+  weight: 2
+  applies_to: [model, service, controller, livewire]
+  definition: >-
+    Relationships between tables are declared as Eloquent relations and used; recurring query
+    conditions (active products, visible to company X, open orders) live in named scopes/query
+    objects. FAIL when the unit joins/filters by foreign-key ids manually where a relation exists or
+    should exist (Order::where('company_id', $c->id) repeated, manual joins), or repeats the same
+    multi-condition where-chain in several places. For model units: FAIL when obvious relations (FK
+    columns of this table) are missing as relation methods.
+  pass_example: |
+    $company->orders()->open()->latest()->paginate();
+  fail_example: |
+    Order::where('company_id', $user->company_id)->where('status', '!=', 'cancelled')->where('status', '!=', 'delivered')->get(); // same chain in 4 methods
+  na_when: The unit runs no queries and (for models) has no foreign keys.
+  evidence: The repeated query lines or the FK column without relation (cite the model's attribute/casts/fillable line or migration line).
+  why_ai: Recognising the same query rule written differently, and missing relations, requires semantic reading.
+
+# ═══════════════════════════════════════════════════════════════════════ DATA MODEL — AI (unit: schema)
+- id: DM-01
+  title: Relational data is normalised (no lists/blobs)
+  category: data_model
+  decided_by: ai
+  weight: 3
+  applies_to: [schema]
+  definition: >-
+    Data with its own identity or multiplicity (order lines, addresses, price tiers, pack sizes,
+    tags, allowed categories, product images, customer users) is stored in its own tables with keys.
+    FAIL for each case of repeating column groups (price_1, price_2, price_3), comma/pipe-separated
+    lists in a column, or JSON/text columns that hold such relational data (e.g. orders.items JSON,
+    companies.addresses JSON, products.tiers JSON). JSON for genuinely unstructured payloads (gateway
+    responses, audit diffs, free attributes) is fine.
+  pass_example: |
+    Schema::create('order_lines', fn (Blueprint $t) => [$t->id(), $t->foreignId('order_id')->constrained(), $t->string('sku'), $t->unsignedInteger('quantity')]);
+  fail_example: |
+    $table->json('items');   // on orders, holding the order lines
+    $table->text('allowed_category_ids');   // "1,4,7"
+  na_when: Never N/A.
+  evidence: The migration line(s) defining each offending column.
+  why_ai: Column types are static, but whether a JSON/text column holds relational data depends on its meaning and use.
+
+- id: DM-02
+  title: Orders snapshot the facts that must not change
+  category: data_model
+  decided_by: ai
+  weight: 3
+  applies_to: [schema]
+  definition: >-
+    Business documents (orders, order lines, invoices, credit notes) store the values valid at the
+    time of the transaction: unit price, quantity, product name/SKU, tax rate and amounts, discount,
+    shipping cost, and the billing and delivery address (as columns or a dedicated snapshot table).
+    FAIL when an order/order line/invoice only references mutable master data for these values (FK to
+    products/addresses/price lists without copied values), so a later price or address change would
+    rewrite history.
+  pass_example: |
+    order_lines: sku, name, unit_price_net_cents, tax_rate_bp, quantity, line_total_net_cents; orders: billing_street, billing_city, ..., shipping_street, ...
+  fail_example: |
+    order_lines: id, order_id, product_id, quantity   // price/name read from products at display time
+  na_when: The schema has no order/invoice-like tables.
+  evidence: The migration lines of the order/order-line/invoice tables showing the missing or present snapshot columns.
+  why_ai: Which values must be historised depends on the business meaning of each column.
+
+- id: DM-03
+  title: States and categorical values are constrained
+  category: data_model
+  decided_by: ai
+  weight: 1
+  applies_to: [schema]
+  definition: >-
+    Columns with a closed value set (status, type, role, group, method) use an enum/check constraint
+    or a reference table with FK, and booleans are booleans. FAIL when such columns are free strings
+    with no constraint anywhere in the schema and the value set is clearly closed, or when several
+    booleans encode one state machine (is_paid, is_shipped, is_cancelled on one table).
+  pass_example: |
+    $table->enum('status', ['pending', 'paid', 'shipped', 'cancelled']);   // or status_id FK to order_statuses
+  fail_example: |
+    $table->string('status'); $table->boolean('is_paid'); $table->boolean('is_cancelled'); $table->boolean('is_shipped');
+  na_when: Never N/A.
+  evidence: The migration lines of up to 3 unconstrained/boolean-encoded state columns.
+  why_ai: Whether a value set is closed and whether booleans encode one state needs domain judgement.
+
+- id: DM-04
+  title: Many-to-many and ownership are modelled with proper keys
+  category: data_model
+  decided_by: ai
+  weight: 2
+  applies_to: [schema]
+  definition: >-
+    Many-to-many relations use pivot tables with a composite unique key (or primary key) on the two
+    FKs; ownership (company→users, company→addresses, order→lines) uses FKs with deliberate
+    onDelete behaviour; no table duplicates another table's master data except for snapshots (DM-02).
+    FAIL when pivots lack the uniqueness constraint, ownership is implied without FK, or master data
+    (e.g. company name/VAT id) is copied into unrelated tables without a snapshot reason.
+  pass_example: |
+    $t->foreignId('company_id')->constrained()->cascadeOnDelete(); $t->foreignId('category_id')->constrained(); $t->unique(['company_id', 'category_id']);
+  fail_example: |
+    Schema::create('company_category', fn ($t) => [$t->unsignedBigInteger('company_id'), $t->unsignedBigInteger('category_id')]); // no unique, no FK
+  na_when: Never N/A.
+  evidence: The migration lines of the offending table(s).
+  why_ai: Recognising pivot/ownership semantics and justified denormalisation needs meaning; plain FK/index presence is static (DM-S01, DM-S02).
+
+- id: DM-05
+  title: No catch-all tables for structured domain data
+  category: data_model
+  decided_by: ai
+  weight: 2
+  applies_to: [schema]
+  definition: >-
+    Each domain entity has its own table. FAIL when structured domain data is stored in generic
+    key/value or entity-attribute-value tables (settings(key, value) holding shipping rates or price
+    lists, a generic "records"/"data" table with type + JSON payload for several entities, a
+    polymorphic "documents" table whose columns only make sense for one subtype).
+  pass_example: |
+    shipping_methods(id, code, base_fee_cents, free_from_cents)   promotions(id, code, percent_off, starts_at, ends_at)
+  fail_example: |
+    settings(key, value) with key='shipping_rates' value='{"truck":...}'   records(type, payload json)
+  na_when: Never N/A.
+  evidence: The migration line(s) creating the generic table and, if seeded/used, the seeder/usage line.
+  why_ai: Whether a generic table holds structured domain data depends on what is stored in it.
+
+# ═══════════════════════════════════════════════════════════════════════ TESTS — AI (unit: test file)
+- id: TS-01
+  title: Tests assert behaviour, not implementation
+  category: tests
+  decided_by: ai
+  weight: 2
+  applies_to: [test]
+  definition: >-
+    Tests check observable outcomes (HTTP status + visible content, database state, returned values,
+    dispatched events/mails) rather than internal implementation details (private method calls via
+    reflection, exact SQL, mock call sequences on internal collaborators, view variable internals
+    that no user sees). FAIL when the file's tests mostly verify how something is done instead of what
+    happens.
+  pass_example: |
+    $this->post('/cart', ['variant_id' => $v->id, 'quantity' => 2])->assertRedirect('/cart'); $this->assertDatabaseHas('cart_lines', ['variant_id' => $v->id, 'quantity' => 2]);
+  fail_example: |
+    $mock = Mockery::mock(PricingService::class); $mock->shouldReceive('net')->once()->with(10, 2); ... (the test only checks the call happened)
+  na_when: Never N/A for test files with at least one test.
+  evidence: Up to 3 assertion lines that check implementation details.
+  why_ai: What counts as observable behaviour versus internals is a semantic judgement.
+
+- id: TS-02
+  title: Domain and money logic is tested with edge cases
+  category: tests
+  decided_by: ai
+  weight: 3
+  applies_to: [test]
+  definition: >-
+    When the file tests domain logic (pricing, discounts, VAT, shipping, credit limit, stock, order
+    state, returns), it covers boundaries and failure paths, not only the happy path: zero/one/max
+    quantities, threshold equality (exactly at free-shipping limit), rounding, invalid input,
+    forbidden state transitions, other customer's data. FAIL when domain logic is exercised only with
+    one happy-path example.
+  pass_example: |
+    test('free shipping applies exactly at the threshold') ... test('credit limit blocks an order one cent above the limit') ...
+  fail_example: |
+    test('can place order') { ... assertStatus(302) }  // the only test touching pricing/credit
+  na_when: The file does not test domain/money logic (e.g. only page-render or auth smoke tests).
+  evidence: The test names/lines showing the only (happy-path) cases, or the missing boundary next to the tested rule.
+  why_ai: Recognising which cases are boundaries of which rule needs domain understanding.
+
+- id: TS-03
+  title: No tests that cannot fail
+  category: tests
+  decided_by: ai
+  weight: 3
+  applies_to: [test]
+  definition: >-
+    Every test can fail when the behaviour it names breaks. FAIL when the file contains tests with no
+    assertions, tautological assertions (assertTrue(true), assertSame($x, $x)), assertions only on
+    values the test itself just set up, assertions wrapped in try/catch that swallow failures, or
+    status-only assertions (assertOk()) for tests whose names promise a business outcome.
+  pass_example: |
+    test('blocked customers cannot sign in') { $this->post('/login', [...])->assertSessionHasErrors('email'); $this->assertGuest(); }
+  fail_example: |
+    test('applies tier discount') { $this->get('/products/1')->assertOk(); }
+  na_when: Never N/A for test files with at least one test.
+  evidence: The test declaration line and its (non-)assertion lines.
+  why_ai: Assertion counts are static (TS-S03), but whether an assertion can detect the named behaviour breaking is a judgement.
+
+- id: TS-04
+  title: Tests are isolated and deterministic
+  category: tests
+  decided_by: ai
+  weight: 2
+  applies_to: [test]
+  definition: >-
+    Each test creates or explicitly selects the data it needs and controls time/randomness. FAIL when
+    tests depend on the order of other tests, on seeded rows by id or position (User::find(3),
+    Product::first()) without asserting what they are, on the real clock for date-dependent rules
+    (cut-off times, expiries) without freezing time, or on the network.
+  pass_example: |
+    $this->travelTo('2026-03-02 13:59'); $company = Company::factory()->keyAccount()->create();
+  fail_example: |
+    $p = Product::first(); // relies on seeder order; date rule tested with now()
+  na_when: Never N/A for test files with at least one test.
+  evidence: The line(s) with the hidden dependency.
+  why_ai: Whether a lookup relies on incidental seed state or a rule is time-dependent requires reading the test's intent.
+
+- id: TS-05
+  title: Test names describe the behaviour
+  category: tests
+  decided_by: ai
+  weight: 1
+  applies_to: [test]
+  definition: >-
+    Test names state the scenario and expected outcome in domain terms. FAIL when names are generic
+    (test1, testCheckout, it works, test_admin) or several unrelated behaviours are packed into one
+    test whose name covers only one of them.
+  pass_example: |
+    test('pending companies see no prices until approved')
+  fail_example: |
+    public function test_it_works() {...}   test('checkout') { ...20 assertions about pricing, shipping and email... }
+  na_when: Never N/A for test files with at least one test.
+  evidence: Up to 3 test declaration lines.
+  why_ai: Whether a name describes behaviour is linguistic/semantic.
+
+# ═══════════════════════════════════════════════════════════════════════ SECURITY — AI
+- id: SEC-01
+  title: State-changing actions check authorization
+  category: security
+  decided_by: ai
+  weight: 3
+  applies_to: [controller, livewire, routes]
+  definition: >-
+    Every action that creates, changes or deletes data is protected by authentication AND an
+    authorization check appropriate to the actor (policy/gate/middleware/explicit check), including
+    admin-only actions. For routes units: FAIL when state-changing routes (POST/PUT/PATCH/DELETE) are
+    registered outside any auth/role middleware group and the controller does not authorize. Use the
+    LSP to look at middleware/route definitions when the unit does not show them.
+  pass_example: |
+    Route::middleware(['auth', 'can:admin'])->group(fn () => Route::post('/admin/products', [ProductController::class, 'store']));
+  fail_example: |
+    Route::post('/admin/products/{p}/price', [AdminController::class, 'updatePrice']); // no middleware, no authorize() in the action
+  na_when: The unit has no state-changing action/route.
+  evidence: The unprotected route or action declaration line.
+  why_ai: Protection can come from middleware, route groups, constructors or helpers in other files; deciding coverage needs following them.
+
+- id: SEC-02
+  title: Records are scoped to the acting customer
+  category: security
+  decided_by: ai
+  weight: 3
+  applies_to: [controller, livewire, service, routes]
+  definition: >-
+    Customer-facing reads and writes of owned records (orders, invoices, addresses, carts, order
+    lists, users of a company) are scoped to the current customer/company (relation query,
+    policy, where company_id = current) — an id from the URL or form alone never grants access
+    (no IDOR). FAIL when a customer-facing action loads an owned record by id without such scoping.
+  pass_example: |
+    $order = $request->user()->company->orders()->findOrFail($id);
+  fail_example: |
+    $order = Order::findOrFail($request->route('id'));   // any customer can open any order
+  na_when: The unit has no customer-facing access to owned records.
+  evidence: The unscoped lookup line.
+  why_ai: Whether a lookup is customer-facing and whether scoping happens elsewhere (policy, middleware, route binding) needs cross-file reasoning.
+
+- id: SEC-03
+  title: Unescaped output only for trusted HTML
+  category: security
+  decided_by: ai
+  weight: 2
+  applies_to: [view]
+  definition: >-
+    Blade output uses {{ }} by default. {!! !!}, Js::from misuse, or HtmlString are used only for
+    content that is generated by the application or sanitised. FAIL when unescaped output prints
+    user-controlled data (product names/descriptions editable by admins without sanitising, customer
+    notes, request parameters, addresses) or builds HTML from such data by string concatenation.
+  pass_example: |
+    {{ $product->name }}   {!! $markdownRenderer->safe($product->description) !!}
+  fail_example: |
+    {!! $order->customer_note !!}   {!! '<a href="'.request('next').'">' !!}
+  na_when: The view has no unescaped output.
+  evidence: The {!! !!} line(s) with user-controlled data.
+  why_ai: The count of {!! is static (SEC-S04); whether the printed value is trusted needs data-flow judgement.
+
+# ═══════════════════════════════════════════════════════════════════════ STATIC RULES
+# score_by:
+#   pass_rate  score = passing instances / all instances (instances listed in static.json)
+#   linear     score = 1 at <= good, 0 at >= bad, linear in between (value from the named metric)
+#   threshold  score = 1 if the condition holds, else 0
+
+# ---- clean code (static)
+- id: CC-S01
+  title: Methods are short
+  category: clean_code
+  decided_by: static
+  weight: 2
+  applies_to: [methods in app/]
+  check: inventory.method_length
+  definition: Share of methods in app/ with <= 30 statements (AST statements counted recursively, so the measure does not depend on formatting).
+  score_by: {type: pass_rate}
+  na_when: No methods in app/.
+- id: CC-S02
+  title: Classes are small
+  category: clean_code
+  decided_by: static
+  weight: 2
+  applies_to: [classes in app/]
+  check: inventory.class_length
+  definition: Share of classes in app/ with <= 300 statements (AST, recursive) and <= 20 methods.
+  score_by: {type: pass_rate}
+  na_when: No classes in app/.
+- id: CC-S03
+  title: Low cyclomatic complexity
+  category: clean_code
+  decided_by: static
+  weight: 2
+  applies_to: [methods in app/]
+  check: inventory.method_complexity
+  definition: Share of methods in app/ with cyclomatic complexity <= 10 (computed from the AST).
+  score_by: {type: pass_rate}
+  na_when: No methods in app/.
+- id: CC-S04
+  title: Shallow nesting
+  category: clean_code
+  decided_by: static
+  weight: 1
+  applies_to: [methods in app/]
+  check: inventory.method_nesting
+  definition: Share of methods in app/ whose maximum block nesting depth is <= 3.
+  score_by: {type: pass_rate}
+  na_when: No methods in app/.
+- id: CC-S05
+  title: Few parameters
+  category: clean_code
+  decided_by: static
+  weight: 1
+  applies_to: [methods in app/]
+  check: inventory.method_params
+  definition: Share of methods in app/ (constructors excluded) with <= 4 parameters.
+  score_by: {type: pass_rate}
+  na_when: No methods in app/.
+- id: CC-S06
+  title: One statement per line
+  category: clean_code
+  decided_by: static
+  weight: 2
+  applies_to: [PHP files in app/, routes/, database/]
+  check: inventory.statement_density
+  definition: Share of PHP statements that start on a line of their own (no other statement starts on the same line); catches code compressed into few very long lines.
+  score_by: {type: linear_ratio, good: 0.98, bad: 0.70}
+  na_when: No PHP statements.
+- id: CC-S07
+  title: No empty catch blocks / error suppression
+  category: clean_code
+  decided_by: static
+  weight: 1
+  applies_to: [PHP files in app/]
+  check: inventory.empty_catch
+  definition: Empty catch blocks plus @-suppressed expressions per PHP KLOC; 0 is best.
+  score_by: {type: linear, good: 0, bad: 3}
+  na_when: Never.
+- id: CC-S08
+  title: Little duplicated code
+  category: clean_code
+  decided_by: static
+  weight: 2
+  applies_to: [app code]
+  check: tools.sonarqube.duplicated_lines_density
+  definition: SonarQube duplicated_lines_density (%) from eval/tools.
+  score_by: {type: linear, good: 3, bad: 20}
+  na_when: SonarQube did not run.
+- id: CC-S09
+  title: Few magic numbers in logic
+  category: clean_code
+  decided_by: static
+  weight: 1
+  applies_to: [PHP files in app/]
+  check: inventory.magic_numbers
+  definition: Numeric literals other than -1, 0, 1, 2, 10, 100, 1000 inside method bodies of app/ (not in const/property defaults, array keys, or validation rule strings), per PHP KLOC.
+  score_by: {type: linear, good: 5, bad: 40}
+  na_when: Never.
+- id: CC-S10
+  title: No dead private code
+  category: clean_code
+  decided_by: static
+  weight: 1
+  applies_to: [classes in app/]
+  check: inventory.unused_private
+  definition: Share of private methods/properties in app/ that are referenced inside their class.
+  score_by: {type: pass_rate}
+  na_when: No private methods/properties.
+- id: CC-S11
+  title: Readable line lengths
+  category: clean_code
+  decided_by: static
+  weight: 1
+  applies_to: [PHP + Blade + JS/CSS]
+  check: tools.readability.lines_over_120_per_1000
+  definition: eval/tools readability — lines longer than 120 characters per 1,000 lines.
+  score_by: {type: linear, good: 10, bad: 150}
+  na_when: Readability tool did not run.
+- id: CC-S12
+  title: Static analysis is clean (PHPStan level 5)
+  category: clean_code
+  decided_by: static
+  weight: 2
+  applies_to: [app/, routes/]
+  check: tools.phpstan.level_5_per_php_kloc
+  definition: Larastan level-5 errors per PHP KLOC (eval/tools).
+  score_by: {type: linear, good: 0, bad: 40}
+  na_when: PHPStan did not run.
+- id: CC-S13
+  title: Consistent code style (Pint)
+  category: clean_code
+  decided_by: static
+  weight: 1
+  applies_to: [PHP files]
+  check: tools.pint.files_failing_per_php_kloc
+  definition: Files failing `pint --test` (Laravel preset) per PHP KLOC (eval/tools).
+  score_by: {type: linear, good: 0, bad: 20}
+  na_when: Pint did not run.
+- id: CC-S14
+  title: Few maintainability issues (SonarQube code smells)
+  category: clean_code
+  decided_by: static
+  weight: 1
+  applies_to: [app code]
+  check: tools.sonarqube.code_smells_per_kloc
+  definition: SonarQube code smells per app-code KLOC (eval/tools).
+  score_by: {type: linear, good: 10, bad: 150}
+  na_when: SonarQube did not run.
+
+# ---- solid (static)
+- id: SO-S01
+  title: Moderate class coupling
+  category: solid
+  decided_by: static
+  weight: 1
+  applies_to: [classes in app/]
+  check: inventory.class_coupling
+  definition: Share of classes in app/ that depend on <= 12 distinct other classes (imports, type hints, new, static calls; framework included).
+  score_by: {type: pass_rate}
+  na_when: No classes in app/.
+- id: SO-S02
+  title: Dependencies are injected, not located
+  category: solid
+  decided_by: static
+  weight: 1
+  applies_to: [PHP files in app/ except providers]
+  check: inventory.service_location
+  definition: app(), resolve(), App::make(), Container::getInstance() calls outside service providers, per PHP KLOC.
+  score_by: {type: linear, good: 0, bad: 5}
+  na_when: Never.
+
+# ---- laravel (static)
+- id: LV-S01
+  title: env() only in config
+  category: laravel
+  decided_by: static
+  weight: 2
+  applies_to: [PHP files outside config/]
+  check: inventory.env_outside_config
+  definition: Number of env() calls outside config/ (they return null once config is cached).
+  score_by: {type: linear, good: 0, bad: 3}
+  na_when: Never.
+- id: LV-S02
+  title: Mass-assignment protection
+  category: laravel
+  decided_by: static
+  weight: 2
+  applies_to: [models, controllers]
+  check: inventory.mass_assignment
+  definition: Share of models that declare non-empty $fillable or a non-empty $guarded (no `$guarded = []`, no Model::unguard()), and no create()/update()/fill() fed directly with $request->all()/input()/post() without a key list.
+  score_by: {type: pass_rate}
+  na_when: No models.
+- id: LV-S03
+  title: No N+1 query patterns at runtime
+  category: laravel
+  decided_by: static
+  weight: 2
+  applies_to: [running app]
+  check: perf.n_plus_one
+  definition: eval/perf distinct N+1 statements on the customer journey (headline.journey_server.n_plus_one_distinct_statements).
+  score_by: {type: linear, good: 0, bad: 10}
+  na_when: eval/perf did not run (gate failed).
+- id: LV-S04
+  title: Route files hold no logic
+  category: laravel
+  decided_by: static
+  weight: 1
+  applies_to: [routes/*.php except console.php]
+  check: inventory.route_closures
+  definition: Share of route registrations that point to a controller/component (closures with more than one statement or returning anything other than view()/redirect() count as failures).
+  score_by: {type: pass_rate}
+  na_when: No routes.
+- id: LV-S05
+  title: Typed attributes are cast
+  category: laravel
+  decided_by: static
+  weight: 1
+  applies_to: [models + schema]
+  check: schema.model_casts
+  definition: Share of boolean, date/datetime and json columns (from the schema dump) of model-backed tables that the model casts (casts property/method or $dates), excluding created_at/updated_at/deleted_at.
+  score_by: {type: pass_rate}
+  na_when: Schema dump unavailable or no such columns.
+
+# ---- data model (static, from the SQLite schema dump after migrate --seed)
+- id: DM-S01
+  title: Foreign keys are declared
+  category: data_model
+  decided_by: static
+  weight: 3
+  applies_to: [schema]
+  check: schema.fk_declared
+  definition: Share of *_id columns that name an existing table (singular→plural, e.g. company_id→companies) and carry a FOREIGN KEY constraint. Framework tables (sessions, jobs, cache, password_reset_tokens, failed_jobs, job_batches) excluded.
+  score_by: {type: pass_rate}
+  na_when: No *_id columns.
+- id: DM-S02
+  title: Foreign keys and lookup columns are indexed
+  category: data_model
+  decided_by: static
+  weight: 2
+  applies_to: [schema]
+  check: schema.fk_indexed
+  definition: Share of FK columns (declared or *_id) and lookup columns (sku, slug, email, code, number, status) that are the leading column of some index or primary key.
+  score_by: {type: pass_rate}
+  na_when: No such columns.
+- id: DM-S03
+  title: Money is not stored as float
+  category: data_model
+  decided_by: static
+  weight: 3
+  applies_to: [schema]
+  check: schema.money_not_float
+  definition: Share of money-like columns (name contains price, amount, total, cost, fee, net, gross, vat, tax, discount, credit, balance, surcharge, limit and is numeric) whose declared type is integer or decimal/numeric — not float/double/real.
+  score_by: {type: pass_rate}
+  na_when: No money-like columns.
+- id: DM-S04
+  title: Natural keys are unique
+  category: data_model
+  decided_by: static
+  weight: 2
+  applies_to: [schema]
+  check: schema.natural_keys_unique
+  definition: Share of natural-key columns (sku, slug, email on users/companies, order/invoice/credit-note number, promotion code) covered by a UNIQUE index (alone or as the last column of a composite unique).
+  score_by: {type: pass_rate}
+  na_when: No such columns.
+- id: DM-S05
+  title: Consistent naming
+  category: data_model
+  decided_by: static
+  weight: 1
+  applies_to: [schema]
+  check: schema.naming
+  definition: Share of tables and columns in snake_case (tables plural or pivot singular_singular, columns lowercase with underscores).
+  score_by: {type: pass_rate}
+  na_when: Never.
+
+# ---- tests (static)
+- id: TS-S01
+  title: The test suite passes
+  category: tests
+  decided_by: static
+  weight: 2
+  applies_to: [tests/]
+  check: tools.tests.pass_ratio
+  definition: Passed tests / all tests (eval/tools "tests"; offline, after migrate --seed).
+  score_by: {type: linear_ratio, good: 1.0, bad: 0.8}
+  na_when: Tests tool did not run; score 0 when there are no tests.
+- id: TS-S02
+  title: Application code is covered
+  category: tests
+  decided_by: static
+  weight: 2
+  applies_to: [app/]
+  check: tools.tests.line_coverage
+  definition: Line coverage of app/ in percent (PCOV, eval/tools).
+  score_by: {type: linear_ratio, good: 85, bad: 30}
+  na_when: Coverage not measured.
+- id: TS-S03
+  title: Tests assert
+  category: tests
+  decided_by: static
+  weight: 1
+  applies_to: [tests/]
+  check: tools.tests.assertions_per_test
+  definition: Assertions per test (eval/tools tests).
+  score_by: {type: linear_ratio, good: 3, bad: 1}
+  na_when: No tests.
+
+# ---- security (static)
+- id: SEC-S01
+  title: No raw SQL built from variables
+  category: security
+  decided_by: static
+  weight: 3
+  applies_to: [PHP files in app/, routes/]
+  check: inventory.raw_sql_interpolation
+  definition: DB::raw/selectRaw/whereRaw/havingRaw/orderByRaw/DB::select/statement/unprepared calls whose SQL argument contains variable interpolation or concatenation (bindings are fine). 0 is required.
+  score_by: {type: linear, good: 0, bad: 2}
+  na_when: Never.
+- id: SEC-S02
+  title: Semgrep security findings
+  category: security
+  decided_by: static
+  weight: 2
+  applies_to: [app code]
+  check: tools.semgrep.error_findings_per_kloc
+  definition: Semgrep ERROR-severity findings per app-code KLOC (eval/tools, community + harness rules).
+  score_by: {type: linear, good: 0, bad: 10}
+  na_when: Semgrep did not run.
+- id: SEC-S03
+  title: SonarQube vulnerabilities and hotspots
+  category: security
+  decided_by: static
+  weight: 1
+  applies_to: [app code]
+  check: tools.sonarqube.vulns_hotspots_per_kloc
+  definition: (vulnerabilities + security hotspots) per app-code KLOC.
+  score_by: {type: linear, good: 0, bad: 3}
+  na_when: SonarQube did not run.
+- id: SEC-S04
+  title: Forms carry CSRF tokens; few unescaped outputs
+  category: security
+  decided_by: static
+  weight: 2
+  applies_to: [Blade views]
+  check: inventory.blade_csrf
+  definition: Share of POST forms in Blade views (<form method="post">) that contain @csrf or csrf_field()/csrf_token() before </form>.
+  score_by: {type: pass_rate}
+  na_when: No POST forms.

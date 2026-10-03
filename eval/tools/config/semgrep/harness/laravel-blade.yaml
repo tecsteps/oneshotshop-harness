@@ -1,0 +1,30 @@
+# Harness-owned Semgrep rules (the vendored community rules have no Blade coverage).
+rules:
+  - id: harness.laravel.blade-unescaped-request-data
+    languages: [generic]
+    severity: ERROR
+    message: >-
+      Request data is echoed unescaped with {!! !!} in a Blade template (reflected XSS).
+      Use {{ }} or escape explicitly.
+    metadata:
+      category: security
+      cwe: ["CWE-79: Improper Neutralization of Input During Web Page Generation ('Cross-site Scripting')"]
+      confidence: HIGH
+    paths:
+      include: ["*.blade.php"]
+    pattern-regex: '\{!!\s*(request\(|\$request->|Request::|old\(|\$_(GET|POST|REQUEST|COOKIE)|input\()[^!]*!!\}'
+  - id: harness.laravel.blade-unescaped-echo
+    languages: [generic]
+    severity: INFO
+    message: >-
+      Unescaped Blade echo {!! !!}. Safe only if the value is trusted or sanitised HTML.
+    metadata:
+      category: security
+      subcategory: [audit]
+      cwe: ["CWE-79: Improper Neutralization of Input During Web Page Generation ('Cross-site Scripting')"]
+      confidence: LOW
+    paths:
+      include: ["*.blade.php"]
+    patterns:
+      - pattern-regex: '\{!![^!]*!!\}'
+      - pattern-not-regex: '\{!!\s*(request\(|\$request->|Request::|old\(|\$_(GET|POST|REQUEST|COOKIE)|input\()[^!]*!!\}'

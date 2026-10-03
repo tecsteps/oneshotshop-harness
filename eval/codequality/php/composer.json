@@ -1,0 +1,10 @@
+{
+    "name": "oneshotshop/codequality-php-tools",
+    "description": "Pinned PHP tools for eval/codequality extraction (vendor installed into ../.cache/php-tools, git-ignored)",
+    "type": "project",
+    "require": {
+        "php": ">=8.2",
+        "nikic/php-parser": "5.9.0"
+    },
+    "config": { "vendor-dir": "../.cache/php-tools/vendor", "platform": { "php": "8.2.0" } }
+}

@@ -1,0 +1,3041 @@
+{
+ "schema": "oneshotshop-expectations/1",
+ "plan_sha256": "20c08913d6fc883cc2bda1d53e49a28eb09ae58e9bf031ad3a9051140cd32fb1",
+ "pages": {
+  "review": {
+   "label": "final checkout review step (REVIEW, 0.5): the read-only last step before the order is placed"
+  },
+  "cart": {
+   "label": "cart page"
+  },
+  "product": {
+   "label": "product detail page"
+  },
+  "order": {
+   "label": "order detail page in the customer account"
+  },
+  "invoice": {
+   "label": "invoice, credit note or electronic invoice document",
+   "heading_any": [
+    "inv-20",
+    "cn-20",
+    "invoice",
+    "credit note"
+   ]
+  },
+  "admin": {
+   "label": "a page of the admin area (back office)"
+  },
+  "account": {
+   "label": "a page of the customer account (overview, balance, orders list)"
+  },
+  "mail": {
+   "label": "the mail log (shop-mail-log)",
+   "source": "mail"
+  },
+  "any": {
+   "label": "any page"
+  }
+ },
+ "checks": {
+  "S01-20": {
+   "mode": "mixed",
+   "values": [
+    {
+     "key": "wat001_dep_bottle",
+     "kind": "money",
+     "page": "any",
+     "calc": "D_CAT.WAT001_dep_bottle",
+     "currency": "EUR",
+     "expected": "0.15"
+    },
+    {
+     "key": "wat001_bottle",
+     "kind": "money",
+     "page": "any",
+     "calc": "D_CAT.WAT001_bottle",
+     "currency": "EUR",
+     "expected": "1.19"
+    }
+   ]
+  },
+  "S01-21": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "jui003_litre",
+     "kind": "money",
+     "page": "any",
+     "calc": "D_CAT.JUI003_litre",
+     "currency": "EUR",
+     "expected": "4.20"
+    }
+   ]
+  },
+  "S01-22": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "wat002_crate_per_bottle",
+     "kind": "money",
+     "page": "any",
+     "calc": "D_CAT.WAT002_crate_per_bottle",
+     "currency": "EUR",
+     "expected": "1.05"
+    }
+   ]
+  },
+  "S01-23": {
+   "mode": "mixed",
+   "values": [
+    {
+     "key": "soft001_tier10",
+     "kind": "money",
+     "page": "any",
+     "calc": "D_CAT.SOFT001_tier10",
+     "currency": "EUR",
+     "expected": "13.92"
+    },
+    {
+     "key": "soft001_tier50",
+     "kind": "money",
+     "page": "any",
+     "calc": "D_CAT.SOFT001_tier50",
+     "currency": "EUR",
+     "expected": "13.44"
+    }
+   ]
+  },
+  "S01-25": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "value",
+     "kind": "quantity",
+     "expected": 1,
+     "page": "any"
+    }
+   ]
+  },
+  "S01-26": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "value",
+     "kind": "quantity",
+     "expected": 0,
+     "page": "any"
+    }
+   ]
+  },
+  "S01-28": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "value",
+     "kind": "text",
+     "expected": {
+      "all": [
+       "[]"
+      ]
+     },
+     "page": "any"
+    }
+   ]
+  },
+  "S02-01": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "wat001_bottle",
+     "kind": "money",
+     "page": "any",
+     "calc": "D_CAT.WAT001_bottle",
+     "currency": "EUR",
+     "expected": "1.19"
+    }
+   ]
+  },
+  "S02-06": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "c10003_balance",
+     "kind": "money",
+     "page": "account",
+     "calc": "D_CUST.C10003_balance",
+     "currency": "EUR",
+     "expected": "1850.00"
+    }
+   ]
+  },
+  "S02-10": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "l1_unit",
+     "kind": "money",
+     "page": "any",
+     "calc": "PG_NEW.L1_unit",
+     "currency": "EUR",
+     "expected": "1.19"
+    }
+   ]
+  },
+  "S02-15": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "l1_unit",
+     "kind": "money",
+     "page": "any",
+     "calc": "P14.L1_unit",
+     "currency": "EUR",
+     "expected": "16.90"
+    }
+   ]
+  },
+  "S03-01": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "l1_net",
+     "kind": "money",
+     "page": "any",
+     "calc": "P01.L1_net",
+     "currency": "EUR",
+     "expected": "28.56"
+    }
+   ]
+  },
+  "S03-02": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "deposits",
+     "kind": "money",
+     "page": "cart",
+     "calc": "P01.deposits",
+     "currency": "EUR",
+     "expected": "6.15"
+    }
+   ]
+  },
+  "S03-03": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "gross",
+     "kind": "money",
+     "page": "review",
+     "calc": "P01.gross",
+     "currency": "EUR",
+     "expected": "51.22"
+    }
+   ]
+  },
+  "S03-04": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "l1_net",
+     "kind": "money",
+     "page": "any",
+     "calc": "P02.L1_net",
+     "currency": "EUR",
+     "expected": "54.26"
+    }
+   ]
+  },
+  "S03-05": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "deposits",
+     "kind": "money",
+     "page": "any",
+     "calc": "P02.deposits",
+     "currency": "EUR",
+     "expected": "10.20"
+    }
+   ]
+  },
+  "S03-06": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "l2_dep",
+     "kind": "money",
+     "page": "any",
+     "calc": "P03.L2_dep",
+     "currency": "EUR",
+     "expected": "0.48"
+    }
+   ]
+  },
+  "S03-07": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "deposits",
+     "kind": "money",
+     "page": "any",
+     "calc": "P03.deposits",
+     "currency": "EUR",
+     "expected": "3.98"
+    }
+   ]
+  },
+  "S03-10": {
+   "mode": "mixed",
+   "values": [
+    {
+     "key": "l1_net",
+     "kind": "money",
+     "page": "any",
+     "calc": "P07.L1_net",
+     "currency": "EUR",
+     "expected": "31.50"
+    }
+   ]
+  },
+  "S03-11": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "deposits",
+     "kind": "money",
+     "page": "any",
+     "calc": "P07.deposits",
+     "currency": "EUR",
+     "expected": "6.00"
+    }
+   ]
+  },
+  "S03-12": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "deposits",
+     "kind": "money",
+     "page": "any",
+     "calc": "P07b.deposits",
+     "currency": "EUR",
+     "expected": "6.00"
+    }
+   ]
+  },
+  "S03-13": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "result",
+     "kind": "state",
+     "expected": "rejected",
+     "page": "any",
+     "states": [
+      "accepted",
+      "rejected"
+     ]
+    }
+   ]
+  },
+  "S03-14": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "l1_net",
+     "kind": "money",
+     "page": "any",
+     "calc": "P08.L1_net",
+     "currency": "EUR",
+     "expected": "24.50"
+    }
+   ]
+  },
+  "S03-16": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "l1_net",
+     "kind": "money",
+     "page": "any",
+     "calc": "U1.L1_net",
+     "currency": "EUR",
+     "expected": "30.87"
+    }
+   ]
+  },
+  "S03-17": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "result",
+     "kind": "state",
+     "expected": "rejected",
+     "page": "any",
+     "states": [
+      "accepted",
+      "rejected"
+     ]
+    }
+   ]
+  },
+  "S03-18": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "result",
+     "kind": "state",
+     "expected": "rejected",
+     "page": "any",
+     "states": [
+      "accepted",
+      "rejected"
+     ]
+    }
+   ]
+  },
+  "S03-19": {
+   "mode": "mixed",
+   "values": [
+    {
+     "key": "l1_net",
+     "kind": "money",
+     "page": "any",
+     "calc": "U1.L1_net",
+     "currency": "EUR",
+     "expected": "30.87"
+    }
+   ]
+  },
+  "S03-20": {
+   "mode": "mixed",
+   "values": [
+    {
+     "key": "l1_net",
+     "kind": "money",
+     "page": "any",
+     "calc": "U2.L1_net",
+     "currency": "EUR",
+     "expected": "3.00"
+    }
+   ]
+  },
+  "S03-21": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "result",
+     "kind": "state",
+     "expected": "rejected",
+     "page": "any",
+     "states": [
+      "accepted",
+      "rejected"
+     ]
+    }
+   ]
+  },
+  "S03-22": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "l1_net",
+     "kind": "money",
+     "page": "any",
+     "calc": "P08g.L1_net",
+     "currency": "EUR",
+     "expected": "23.28"
+    }
+   ]
+  },
+  "S03-23": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "l1_net",
+     "kind": "money",
+     "page": "any",
+     "calc": "P11.L1_net",
+     "currency": "EUR",
+     "expected": "139.20"
+    },
+    {
+     "key": "l1_unit",
+     "kind": "money",
+     "page": "any",
+     "calc": "P11.L1_unit",
+     "currency": "EUR",
+     "expected": "13.92"
+    }
+   ]
+  },
+  "S03-24": {
+   "mode": "mixed",
+   "values": [
+    {
+     "key": "l2_net",
+     "kind": "money",
+     "page": "any",
+     "calc": "P14.L2_net",
+     "currency": "EUR",
+     "expected": "304.20"
+    }
+   ]
+  },
+  "S03-25": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "l1_net",
+     "kind": "money",
+     "page": "any",
+     "calc": "P15.L1_net",
+     "currency": "EUR",
+     "expected": "3.71"
+    }
+   ]
+  },
+  "S03-26": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "l1_net",
+     "kind": "money",
+     "page": "any",
+     "calc": "P17.L1_net",
+     "currency": "EUR",
+     "expected": "32.40"
+    }
+   ]
+  },
+  "S03-27": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "l2_net",
+     "kind": "money",
+     "page": "any",
+     "calc": "P17.L2_net",
+     "currency": "EUR",
+     "expected": "17.55"
+    }
+   ]
+  },
+  "S03-28": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "l3_net",
+     "kind": "money",
+     "page": "any",
+     "calc": "P17.L3_net",
+     "currency": "EUR",
+     "expected": "6.07"
+    }
+   ]
+  },
+  "S03-29": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "result",
+     "kind": "state",
+     "expected": "rejected",
+     "page": "any",
+     "states": [
+      "accepted",
+      "rejected"
+     ]
+    }
+   ]
+  },
+  "S03-30": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "l1_net",
+     "kind": "money",
+     "page": "any",
+     "calc": "P19.L1_net",
+     "currency": "EUR",
+     "expected": "41.23"
+    }
+   ]
+  },
+  "S03-31": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "l1_net",
+     "kind": "money",
+     "page": "any",
+     "calc": "P20.L1_net",
+     "currency": "EUR",
+     "expected": "19.80"
+    }
+   ]
+  },
+  "S03-32": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "l1_net",
+     "kind": "money",
+     "page": "cart",
+     "calc": "P24.L1_net",
+     "currency": "EUR",
+     "expected": "18.90"
+    }
+   ]
+  },
+  "S03-34": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "result",
+     "kind": "state",
+     "expected": "rejected",
+     "page": "any",
+     "states": [
+      "accepted",
+      "rejected"
+     ]
+    }
+   ]
+  },
+  "S03-35": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "vat7",
+     "kind": "money",
+     "page": "any",
+     "calc": "P22.vat7",
+     "currency": "EUR",
+     "expected": "5.65"
+    }
+   ]
+  },
+  "S03-36": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "vat19",
+     "kind": "money",
+     "page": "any",
+     "calc": "P22.vat19",
+     "currency": "EUR",
+     "expected": "6.12"
+    }
+   ]
+  },
+  "S03-37": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "gross",
+     "kind": "money",
+     "page": "any",
+     "calc": "P22.gross",
+     "currency": "EUR",
+     "expected": "124.76"
+    }
+   ]
+  },
+  "S03-38": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "vat19",
+     "kind": "money",
+     "page": "review",
+     "calc": "P23.vat19",
+     "currency": "EUR",
+     "expected": "1.93"
+    }
+   ]
+  },
+  "S03-39": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "deposits",
+     "kind": "money",
+     "page": "any",
+     "calc": "PAL1.deposits",
+     "currency": "EUR",
+     "expected": "159.00"
+    }
+   ]
+  },
+  "S03-40": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "vat19",
+     "kind": "money",
+     "page": "any",
+     "calc": "PAL1.vat19",
+     "currency": "EUR",
+     "expected": "2.85"
+    }
+   ]
+  },
+  "S03-41": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "vat7",
+     "kind": "money",
+     "page": "any",
+     "calc": "PAL1.vat7",
+     "currency": "EUR",
+     "expected": "42.08"
+    }
+   ]
+  },
+  "S03-42": {
+   "mode": "mixed",
+   "values": [
+    {
+     "key": "auto",
+     "kind": "money",
+     "page": "any",
+     "calc": "PAL2.auto",
+     "currency": "EUR",
+     "expected": "15.80"
+    }
+   ]
+  },
+  "S03-43": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "deposits",
+     "kind": "money",
+     "page": "any",
+     "calc": "PAL2.deposits",
+     "currency": "EUR",
+     "expected": "157.60"
+    }
+   ]
+  },
+  "S03-44": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "result",
+     "kind": "state",
+     "expected": "rejected",
+     "page": "any",
+     "states": [
+      "accepted",
+      "rejected"
+     ]
+    }
+   ]
+  },
+  "S04-01": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "auto",
+     "kind": "money",
+     "page": "cart",
+     "calc": "A01.auto",
+     "currency": "EUR",
+     "expected": "15.80"
+    }
+   ]
+  },
+  "S04-03": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "deposits",
+     "kind": "money",
+     "page": "any",
+     "calc": "A01.deposits",
+     "currency": "EUR",
+     "expected": "18.60"
+    }
+   ]
+  },
+  "S04-04": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "auto",
+     "kind": "money",
+     "page": "any",
+     "calc": "A05.auto",
+     "currency": "EUR",
+     "expected": "6.73"
+    }
+   ]
+  },
+  "S04-05": {
+   "mode": "mixed",
+   "values": [
+    {
+     "key": "gross",
+     "kind": "money",
+     "page": "review",
+     "calc": "A07.gross",
+     "currency": "EUR",
+     "expected": "77.11"
+    }
+   ]
+  },
+  "S04-08": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "code",
+     "kind": "money",
+     "page": "any",
+     "calc": "A11.code | A11.discounts",
+     "currency": "EUR",
+     "expected": [
+      "11.85",
+      "27.65"
+     ]
+    }
+   ]
+  },
+  "S04-09": {
+   "mode": "mixed",
+   "values": [
+    {
+     "key": "gross",
+     "kind": "money",
+     "page": "review",
+     "calc": "A01.gross",
+     "currency": "EUR",
+     "expected": "116.14"
+    }
+   ]
+  },
+  "S04-10": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "code",
+     "kind": "money",
+     "page": "any",
+     "calc": "C01.code",
+     "currency": "EUR",
+     "expected": "17.56"
+    }
+   ]
+  },
+  "S04-12": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "result",
+     "kind": "state",
+     "expected": "rejected",
+     "page": "any",
+     "states": [
+      "accepted",
+      "rejected"
+     ]
+    }
+   ]
+  },
+  "S04-13": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "result",
+     "kind": "state",
+     "expected": "rejected",
+     "page": "any",
+     "states": [
+      "accepted",
+      "rejected"
+     ]
+    }
+   ]
+  },
+  "S04-14": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "code",
+     "kind": "money",
+     "page": "any",
+     "calc": "C03.code",
+     "currency": "EUR",
+     "expected": "20.00"
+    }
+   ]
+  },
+  "S04-15": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "vat7",
+     "kind": "money",
+     "page": "any",
+     "calc": "C03.vat7",
+     "currency": "EUR",
+     "expected": "5.72"
+    }
+   ]
+  },
+  "S04-16": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "vat19",
+     "kind": "money",
+     "page": "any",
+     "calc": "C03.vat19",
+     "currency": "EUR",
+     "expected": "20.58"
+    }
+   ]
+  },
+  "S04-17": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "vat19",
+     "kind": "money",
+     "page": "review",
+     "calc": "DS1.vat19",
+     "currency": "EUR",
+     "expected": "2.55"
+    }
+   ]
+  },
+  "S04-18": {
+   "mode": "mixed",
+   "values": [
+    {
+     "key": "code",
+     "kind": "money",
+     "page": "any",
+     "calc": "C03.code | C20.code",
+     "currency": "EUR",
+     "expected": [
+      "20.00",
+      "14.70"
+     ]
+    }
+   ]
+  },
+  "S04-20": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "code",
+     "kind": "money",
+     "page": "any",
+     "calc": "C03.code",
+     "currency": "EUR",
+     "expected": "20.00"
+    }
+   ]
+  },
+  "S04-21": {
+   "mode": "mixed",
+   "values": [
+    {
+     "key": "gross",
+     "kind": "money",
+     "page": "review",
+     "calc": "C04.gross",
+     "currency": "EUR",
+     "expected": "96.62"
+    }
+   ]
+  },
+  "S04-22": {
+   "mode": "mixed",
+   "values": [
+    {
+     "key": "code",
+     "kind": "money",
+     "page": "any",
+     "calc": "C06.code",
+     "currency": "EUR",
+     "expected": "8.95"
+    }
+   ]
+  },
+  "S04-23": {
+   "mode": "mixed",
+   "values": [
+    {
+     "key": "gross",
+     "kind": "money",
+     "page": "review",
+     "calc": "C07.gross",
+     "currency": "EUR",
+     "expected": "119.20"
+    }
+   ]
+  },
+  "S04-24": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "code",
+     "kind": "money",
+     "page": "any",
+     "calc": "C09.code",
+     "currency": "EUR",
+     "expected": "60.00"
+    }
+   ]
+  },
+  "S04-25": {
+   "mode": "mixed",
+   "values": [
+    {
+     "key": "gross",
+     "kind": "money",
+     "page": "review",
+     "calc": "C12.gross",
+     "currency": "EUR",
+     "expected": "47.08"
+    }
+   ]
+  },
+  "S04-26": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "code",
+     "kind": "money",
+     "page": "any",
+     "calc": "C14.code",
+     "currency": "EUR",
+     "expected": "4.31"
+    }
+   ]
+  },
+  "S04-27": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "result",
+     "kind": "state",
+     "expected": "rejected",
+     "page": "any",
+     "states": [
+      "accepted",
+      "rejected"
+     ]
+    }
+   ]
+  },
+  "S04-28": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "code",
+     "kind": "money",
+     "page": "any",
+     "calc": "C19.code",
+     "currency": "EUR",
+     "expected": "4.90"
+    }
+   ]
+  },
+  "S04-29": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "result",
+     "kind": "state",
+     "expected": "rejected",
+     "page": "any",
+     "states": [
+      "accepted",
+      "rejected"
+     ]
+    }
+   ]
+  },
+  "S04-31": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "result",
+     "kind": "state",
+     "expected": "rejected",
+     "page": "any",
+     "states": [
+      "accepted",
+      "rejected"
+     ]
+    }
+   ]
+  },
+  "S04-32": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "result",
+     "kind": "state",
+     "expected": "rejected",
+     "page": "any",
+     "states": [
+      "accepted",
+      "rejected"
+     ]
+    }
+   ]
+  },
+  "S04-33": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "code",
+     "kind": "money",
+     "page": "any",
+     "calc": "C17.code",
+     "currency": "EUR",
+     "expected": "50.00"
+    }
+   ]
+  },
+  "S04-34": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "result",
+     "kind": "state",
+     "expected": "rejected",
+     "page": "any",
+     "states": [
+      "accepted",
+      "rejected"
+     ]
+    }
+   ]
+  },
+  "S04-35": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "result",
+     "kind": "state",
+     "expected": "rejected",
+     "page": "any",
+     "states": [
+      "accepted",
+      "rejected"
+     ]
+    }
+   ]
+  },
+  "S05-02": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "shipping",
+     "kind": "money",
+     "page": "review",
+     "calc": "SH03.shipping",
+     "currency": "EUR",
+     "expected": "0.00"
+    }
+   ]
+  },
+  "S05-03": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "shipping",
+     "kind": "money",
+     "page": "review",
+     "calc": "SH04.shipping",
+     "currency": "EUR",
+     "expected": "0.00"
+    }
+   ]
+  },
+  "S05-04": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "shipping",
+     "kind": "money",
+     "page": "review",
+     "calc": "SH02.shipping",
+     "currency": "EUR",
+     "expected": "15.00"
+    }
+   ]
+  },
+  "S05-05": {
+   "mode": "mixed",
+   "values": [
+    {
+     "key": "vat7",
+     "kind": "money",
+     "page": "any",
+     "calc": "SH02.vat7",
+     "currency": "EUR",
+     "expected": "17.97"
+    }
+   ]
+  },
+  "S05-06": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "vat7",
+     "kind": "money",
+     "page": "review",
+     "calc": "SHV.vat7",
+     "currency": "EUR",
+     "expected": "7.21"
+    }
+   ]
+  },
+  "S05-07": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "vat19",
+     "kind": "money",
+     "page": "any",
+     "calc": "SHV.vat19",
+     "currency": "EUR",
+     "expected": "8.26"
+    }
+   ]
+  },
+  "S05-11": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "shipping",
+     "kind": "money",
+     "page": "any",
+     "calc": "SH05.shipping",
+     "currency": "EUR",
+     "expected": "35.40"
+    }
+   ]
+  },
+  "S05-13": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "shipping",
+     "kind": "money",
+     "page": "review",
+     "calc": "SH07.shipping",
+     "currency": "EUR",
+     "expected": "51.00"
+    }
+   ]
+  },
+  "S05-14": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "shipping",
+     "kind": "money",
+     "page": "review",
+     "calc": "SH09b.shipping",
+     "currency": "EUR",
+     "expected": "9.95"
+    }
+   ]
+  },
+  "S05-15": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "shipping",
+     "kind": "money",
+     "page": "review",
+     "calc": "SH11.shipping",
+     "currency": "EUR",
+     "expected": "24.90"
+    }
+   ]
+  },
+  "S05-17": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "gross",
+     "kind": "money",
+     "page": "any",
+     "calc": "SH11.gross",
+     "currency": "EUR",
+     "expected": "348.90"
+    }
+   ]
+  },
+  "S05-20": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "vat7",
+     "kind": "money",
+     "page": "any",
+     "calc": "SH12.vat7",
+     "currency": "EUR",
+     "expected": "23.74"
+    }
+   ]
+  },
+  "S05-21": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "gross",
+     "kind": "money",
+     "page": "any",
+     "calc": "SH15.gross",
+     "currency": "EUR",
+     "expected": "156.10"
+    }
+   ]
+  },
+  "S05-25": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "gross",
+     "kind": "money",
+     "page": "invoice",
+     "calc": "SH11.gross",
+     "currency": "EUR",
+     "expected": "348.90"
+    }
+   ]
+  },
+  "S08-10": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "gross",
+     "kind": "money",
+     "page": "invoice",
+     "calc": "O01.gross",
+     "currency": "EUR",
+     "expected": "72.97"
+    }
+   ]
+  },
+  "S08-11": {
+   "mode": "mixed",
+   "values": [
+    {
+     "key": "deposits",
+     "kind": "money",
+     "page": "invoice",
+     "calc": "O01.deposits",
+     "currency": "EUR",
+     "expected": "4.20"
+    }
+   ]
+  },
+  "S08-15": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "l1_net",
+     "kind": "money",
+     "page": "any",
+     "calc": "O01.L1_net",
+     "currency": "EUR",
+     "expected": "18.90"
+    }
+   ]
+  },
+  "S08-16": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "beer005_backordered",
+     "kind": "quantity",
+     "page": "cart",
+     "calc": "D_STOCK.BEER005_backordered",
+     "expected": 2
+    }
+   ]
+  },
+  "S08-17": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "gross",
+     "kind": "money",
+     "page": "any",
+     "calc": "O03.gross",
+     "currency": "EUR",
+     "expected": "2315.11"
+    }
+   ]
+  },
+  "S08-19": {
+   "mode": "mixed",
+   "values": [
+    {
+     "key": "gross",
+     "kind": "money",
+     "page": "invoice",
+     "calc": "O03i1.gross",
+     "currency": "EUR",
+     "expected": "1859.11"
+    }
+   ]
+  },
+  "S08-20": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "discount",
+     "kind": "money",
+     "page": "invoice",
+     "calc": "O03i1.discount",
+     "currency": "EUR",
+     "expected": "146.35"
+    }
+   ]
+  },
+  "S08-21": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "beer005_stock",
+     "kind": "quantity",
+     "page": "order",
+     "calc": "D_STOCK.BEER005_stock",
+     "expected": 8
+    },
+    {
+     "key": "beer005_backordered",
+     "kind": "quantity",
+     "page": "order",
+     "calc": "D_STOCK.BEER005_backordered",
+     "expected": 2
+    }
+   ]
+  },
+  "S08-25": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "gross",
+     "kind": "money",
+     "page": "invoice",
+     "calc": "O03i2.gross",
+     "currency": "EUR",
+     "expected": "456.00"
+    }
+   ]
+  },
+  "S08-26": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "discount",
+     "kind": "money",
+     "page": "invoice",
+     "calc": "O03i2.discount",
+     "currency": "EUR",
+     "expected": "35.91"
+    }
+   ]
+  },
+  "S08-27": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "gross",
+     "kind": "money",
+     "page": "any",
+     "calc": "O04b.gross",
+     "currency": "EUR",
+     "expected": "83.67"
+    }
+   ]
+  },
+  "S08-28": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "gross",
+     "kind": "money",
+     "page": "any",
+     "calc": "O05.gross",
+     "currency": "EUR",
+     "expected": "41.41"
+    }
+   ]
+  },
+  "S08-31": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "gross",
+     "kind": "money",
+     "page": "invoice",
+     "calc": "O05a.gross",
+     "currency": "EUR",
+     "expected": "44.17"
+    }
+   ]
+  },
+  "S08-34": {
+   "mode": "mixed",
+   "values": [
+    {
+     "key": "gross",
+     "kind": "money",
+     "page": "invoice",
+     "calc": "O07.gross",
+     "currency": "EUR",
+     "expected": "24.28"
+    }
+   ]
+  },
+  "S08-36": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "code",
+     "kind": "money",
+     "page": "invoice",
+     "calc": "C05.code",
+     "currency": "EUR",
+     "expected": "5.61"
+    }
+   ]
+  },
+  "S09-01": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "wat001",
+     "kind": "quantity",
+     "page": "any",
+     "calc": "D_STOCK.WAT001",
+     "expected": 137
+    }
+   ]
+  },
+  "S09-06": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "result",
+     "kind": "state",
+     "expected": "accepted",
+     "page": "any",
+     "states": [
+      "accepted",
+      "rejected"
+     ]
+    }
+   ]
+  },
+  "S09-07": {
+   "mode": "mixed",
+   "values": [
+    {
+     "key": "soft002_backordered",
+     "kind": "quantity",
+     "page": "cart",
+     "calc": "D_STOCK.SOFT002_backordered",
+     "expected": 12
+    }
+   ]
+  },
+  "S09-08": {
+   "mode": "mixed",
+   "values": [
+    {
+     "key": "frz006_order",
+     "kind": "quantity",
+     "page": "any",
+     "calc": "D_STOCK.FRZ006_order",
+     "expected": 3
+    }
+   ]
+  },
+  "S10-01": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "code",
+     "kind": "money",
+     "page": "order",
+     "calc": "R01.code",
+     "currency": "EUR",
+     "expected": "35.16"
+    }
+   ]
+  },
+  "S10-04": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "gross",
+     "kind": "money",
+     "page": "invoice",
+     "calc": "RF1.gross",
+     "currency": "EUR",
+     "expected": "204.08"
+    }
+   ]
+  },
+  "S10-05": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "deposits",
+     "kind": "money",
+     "page": "invoice",
+     "calc": "RF1.deposits",
+     "currency": "EUR",
+     "expected": "30.00"
+    }
+   ]
+  },
+  "S10-06": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "vat19",
+     "kind": "money",
+     "page": "invoice",
+     "calc": "RF1.vat19",
+     "currency": "EUR",
+     "expected": "26.05"
+    }
+   ]
+  },
+  "S10-09": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "gross",
+     "kind": "money",
+     "page": "invoice",
+     "calc": "RF2.gross",
+     "currency": "EUR",
+     "expected": "40.93"
+    }
+   ]
+  },
+  "S10-11": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "gross",
+     "kind": "money",
+     "page": "invoice",
+     "calc": "RF4.gross",
+     "currency": "EUR",
+     "expected": "43.21"
+    }
+   ]
+  },
+  "S10-12": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "B1",
+     "kind": "money",
+     "record_only": true,
+     "currency": "EUR",
+     "page": "account"
+    },
+    {
+     "key": "B2",
+     "kind": "money",
+     "record_only": true,
+     "currency": "EUR",
+     "page": "account"
+    },
+    {
+     "key": "derived_gross",
+     "kind": "money",
+     "derive": "B1 - B2",
+     "inputs": [
+      "B1",
+      "B2"
+     ],
+     "expected": "43.21",
+     "currency": "EUR",
+     "calc": "RF4.gross"
+    }
+   ]
+  },
+  "S10-14": {
+   "mode": "mixed",
+   "values": [
+    {
+     "key": "net",
+     "kind": "money",
+     "page": "any",
+     "calc": "EMP.net | EMP.gross",
+     "currency": "EUR",
+     "expected": [
+      "5.10",
+      "6.07"
+     ]
+    }
+   ]
+  },
+  "S11-04": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "first_by_name",
+     "kind": "text",
+     "page": "any",
+     "calc": "D_ADM.first_by_name",
+     "expected": {
+      "all": [
+       "Aged Rum 8 Years, 0.7 l"
+      ]
+     }
+    }
+   ]
+  },
+  "S11-05": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "value",
+     "kind": "quantity",
+     "expected": 0,
+     "page": "any"
+    }
+   ]
+  },
+  "S11-06": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "value",
+     "kind": "quantity",
+     "expected": 0,
+     "page": "any"
+    }
+   ]
+  },
+  "S11-07": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "l2_unit",
+     "kind": "money",
+     "page": "admin",
+     "calc": "P17.L2_unit",
+     "currency": null,
+     "expected": "17.55"
+    }
+   ]
+  },
+  "S11-08": {
+   "mode": "mixed",
+   "values": [
+    {
+     "key": "wat002_box_old",
+     "kind": "money",
+     "page": "admin",
+     "calc": "D_ADM.wat002_box_old",
+     "currency": null,
+     "expected": "6.60"
+    }
+   ]
+  },
+  "S11-12": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "test_price",
+     "kind": "money",
+     "page": "any",
+     "calc": "AD.test_price",
+     "currency": "EUR",
+     "expected": "2.00"
+    }
+   ]
+  },
+  "S11-14": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "line",
+     "kind": "money",
+     "page": "cart",
+     "calc": "AD07t.line",
+     "currency": "EUR",
+     "expected": "34.00"
+    }
+   ]
+  },
+  "S11-17": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "l1_unit",
+     "kind": "money",
+     "page": "product",
+     "calc": "PG_GASTRO.L1_unit",
+     "currency": "EUR",
+     "expected": "1.13"
+    }
+   ]
+  },
+  "S11-22": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "result",
+     "kind": "state",
+     "expected": "rejected",
+     "page": "any",
+     "states": [
+      "accepted",
+      "rejected"
+     ]
+    }
+   ]
+  },
+  "S12-01": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "net",
+     "kind": "money",
+     "page": "any",
+     "calc": "REP.net | REP.net_incl_deposits",
+     "currency": "EUR",
+     "expected": [
+      "119.44",
+      "141.58"
+     ]
+    }
+   ]
+  },
+  "S12-02": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "vat",
+     "kind": "money",
+     "page": "any",
+     "calc": "REP.vat",
+     "currency": "EUR",
+     "expected": "26.49"
+    }
+   ]
+  },
+  "S12-03": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "deposits",
+     "kind": "money",
+     "page": "any",
+     "calc": "REP.deposits",
+     "currency": "EUR",
+     "expected": "22.14"
+    }
+   ]
+  },
+  "S12-05": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "c10007_net",
+     "kind": "money",
+     "page": "any",
+     "calc": "REP.c10007_net",
+     "currency": "EUR",
+     "expected": "60.52"
+    }
+   ]
+  },
+  "S12-07": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "beer15_discount",
+     "kind": "money",
+     "page": "any",
+     "calc": "REP.beer15_discount",
+     "currency": "EUR",
+     "expected": "5.61"
+    }
+   ]
+  },
+  "S13-04": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "nf007_33",
+     "kind": "money",
+     "page": "product",
+     "calc": "D_VAR.NF007_33",
+     "currency": "EUR",
+     "expected": "24.90"
+    }
+   ]
+  },
+  "S13-06": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "l1_net",
+     "kind": "money",
+     "page": "any",
+     "calc": "V01.L1_net",
+     "currency": "EUR",
+     "expected": "43.80"
+    }
+   ]
+  },
+  "S13-07": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "result",
+     "kind": "state",
+     "expected": "rejected",
+     "page": "any",
+     "states": [
+      "accepted",
+      "rejected"
+     ]
+    }
+   ]
+  },
+  "S13-15": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "l1_net",
+     "kind": "money",
+     "page": "any",
+     "calc": "OPT1.L1_net",
+     "currency": "EUR",
+     "expected": "12.80"
+    }
+   ]
+  },
+  "S13-16": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "l1_net",
+     "kind": "money",
+     "page": "any",
+     "calc": "OPT2.L1_net",
+     "currency": "EUR",
+     "expected": "15.80"
+    }
+   ]
+  },
+  "S13-17": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "l1_net",
+     "kind": "money",
+     "page": "any",
+     "calc": "OPT3.L1_net",
+     "currency": "EUR",
+     "expected": "12.16"
+    }
+   ]
+  },
+  "S13-24": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "result",
+     "kind": "state",
+     "expected": "rejected",
+     "page": "any",
+     "states": [
+      "accepted",
+      "rejected"
+     ]
+    }
+   ]
+  },
+  "S13-25": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "l1_net",
+     "kind": "money",
+     "page": "any",
+     "calc": "B02.L1_net",
+     "currency": "EUR",
+     "expected": "62.00"
+    }
+   ]
+  },
+  "S13-26": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "vat7",
+     "kind": "money",
+     "page": "review",
+     "calc": "B02.vat7",
+     "currency": "EUR",
+     "expected": "2.78"
+    }
+   ]
+  },
+  "S13-27": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "vat19",
+     "kind": "money",
+     "page": "any",
+     "calc": "B02.vat19",
+     "currency": "EUR",
+     "expected": "4.24"
+    }
+   ]
+  },
+  "S13-29": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "deposits",
+     "kind": "money",
+     "page": "any",
+     "calc": "B01.deposits",
+     "currency": "EUR",
+     "expected": "0.96"
+    }
+   ]
+  },
+  "S13-30": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "code",
+     "kind": "money",
+     "page": "any",
+     "calc": "B03.code",
+     "currency": "EUR",
+     "expected": "4.04"
+    }
+   ]
+  },
+  "S13-31": {
+   "mode": "mixed",
+   "values": [
+    {
+     "key": "result",
+     "kind": "state",
+     "expected": "rejected",
+     "page": "any",
+     "states": [
+      "accepted",
+      "rejected"
+     ]
+    }
+   ]
+  },
+  "S13-39": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "l1_net",
+     "kind": "money",
+     "page": "cart",
+     "calc": "SPG.L1_net",
+     "currency": "EUR",
+     "expected": "17.96"
+    }
+   ]
+  },
+  "S13-40": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "l1_unit",
+     "kind": "money",
+     "page": "any",
+     "calc": "EX1.L1_unit",
+     "currency": "EUR",
+     "expected": "8.19"
+    }
+   ]
+  },
+  "S13-46": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "gross",
+     "kind": "money",
+     "page": "review",
+     "calc": "LIST1.gross",
+     "currency": "EUR",
+     "expected": "323.21"
+    }
+   ]
+  },
+  "S14-09": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "value",
+     "kind": "boolean",
+     "expected": true,
+     "page": "any"
+    }
+   ]
+  },
+  "S14-10": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "value",
+     "kind": "boolean",
+     "expected": true,
+     "page": "any"
+    }
+   ]
+  },
+  "S14-11": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "value",
+     "kind": "text",
+     "expected": {
+      "all": [
+       "[]"
+      ]
+     },
+     "page": "any"
+    }
+   ]
+  },
+  "S14-13": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "value",
+     "kind": "boolean",
+     "expected": true,
+     "page": "any"
+    }
+   ]
+  },
+  "S15-06": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "gross",
+     "kind": "money",
+     "page": "any",
+     "calc": "RC.gross",
+     "currency": "EUR",
+     "expected": "45.48"
+    }
+   ]
+  },
+  "S15-07": {
+   "mode": "mixed",
+   "values": [
+    {
+     "key": "gross",
+     "kind": "money",
+     "page": "any",
+     "calc": "RC.gross",
+     "currency": "EUR",
+     "expected": "45.48"
+    }
+   ]
+  },
+  "S15-11": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "l1_unit",
+     "kind": "money",
+     "page": "any",
+     "calc": "P14.L1_unit",
+     "currency": "EUR",
+     "expected": "16.90"
+    }
+   ]
+  },
+  "S15-20": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "vat7",
+     "kind": "money",
+     "page": "review",
+     "calc": "VU.vat7",
+     "currency": "EUR",
+     "expected": "24.42"
+    }
+   ]
+  },
+  "S15-21": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "gross",
+     "kind": "money",
+     "page": "review",
+     "calc": "VV.gross",
+     "currency": "EUR",
+     "expected": "348.90"
+    }
+   ]
+  },
+  "S15-27": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "beverages_for_guests",
+     "kind": "quantity",
+     "page": "any",
+     "calc": "D_S15.beverages_for_guests",
+     "expected": 41
+    }
+   ]
+  },
+  "S15-28": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "wat002_crate",
+     "kind": "money",
+     "page": "cart",
+     "calc": "D_CAT.WAT002_crate",
+     "currency": "EUR",
+     "expected": "18.90"
+    }
+   ]
+  },
+  "S15-29": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "wat002_crate",
+     "kind": "money",
+     "page": "product",
+     "calc": "D_CAT.WAT002_crate",
+     "currency": "EUR",
+     "expected": "18.90"
+    }
+   ]
+  },
+  "S15-40": {
+   "mode": "mixed",
+   "values": [
+    {
+     "key": "wat002_box_old",
+     "kind": "money",
+     "page": "admin",
+     "calc": "D_ADM.wat002_box_old",
+     "currency": null,
+     "expected": "6.60"
+    }
+   ]
+  },
+  "S15-42": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "c10004_balance",
+     "kind": "money",
+     "page": "any",
+     "calc": "D_CUST.C10004_balance",
+     "currency": "EUR",
+     "expected": "3200.00"
+    }
+   ]
+  },
+  "S15-44": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "value",
+     "kind": "text",
+     "expected": {
+      "all": [
+       "[]"
+      ]
+     },
+     "page": "any"
+    }
+   ]
+  },
+  "S15-46": {
+   "mode": "mixed",
+   "values": [
+    {
+     "key": "wat002_box_old",
+     "kind": "money",
+     "page": "product",
+     "calc": "D_ADM.wat002_box_old",
+     "currency": "EUR",
+     "expected": "6.60"
+    },
+    {
+     "key": "wat002_crate",
+     "kind": "money",
+     "page": "product",
+     "calc": "D_CAT.WAT002_crate",
+     "currency": "EUR",
+     "expected": "18.90"
+    }
+   ]
+  },
+  "S15-47": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "value",
+     "kind": "quantity",
+     "expected": 0,
+     "page": "any"
+    }
+   ]
+  },
+  "S15-48": {
+   "mode": "mixed",
+   "values": [
+    {
+     "key": "wat002_crate",
+     "kind": "money",
+     "page": "review",
+     "calc": "D_CAT.WAT002_crate",
+     "currency": "EUR",
+     "expected": "18.90"
+    }
+   ]
+  },
+  "S16-10": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "l1_unit",
+     "kind": "money",
+     "page": "any",
+     "calc": "P14.L1_unit",
+     "currency": "EUR",
+     "expected": "16.90"
+    }
+   ]
+  },
+  "S17-04": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "l1_net",
+     "kind": "money",
+     "page": "any",
+     "calc": "Q1.L1_net",
+     "currency": "EUR",
+     "expected": "130.00"
+    }
+   ]
+  },
+  "S17-05": {
+   "mode": "mixed",
+   "values": [
+    {
+     "key": "gross",
+     "kind": "money",
+     "page": "review",
+     "calc": "Q1b.gross",
+     "currency": "EUR",
+     "expected": "226.10"
+    }
+   ]
+  },
+  "S17-11": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "gross",
+     "kind": "money",
+     "page": "any",
+     "calc": "STO1.gross",
+     "currency": "EUR",
+     "expected": "156.49"
+    }
+   ]
+  },
+  "S18-01": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "discount",
+     "kind": "money",
+     "page": "invoice",
+     "calc": "ED1d.discount",
+     "currency": "EUR",
+     "expected": "2.53"
+    }
+   ]
+  },
+  "S18-02": {
+   "mode": "mixed",
+   "values": [
+    {
+     "key": "payable",
+     "kind": "money",
+     "page": "invoice",
+     "calc": "ED1d.payable",
+     "currency": "EUR",
+     "expected": "123.84"
+    }
+   ]
+  },
+  "S18-05": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "vatcorr7",
+     "kind": "money",
+     "page": "admin",
+     "calc": "ED1d.vatcorr7",
+     "currency": "EUR",
+     "expected": "0.11"
+    }
+   ]
+  },
+  "S18-06": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "vatcorr19",
+     "kind": "money",
+     "page": "any",
+     "calc": "ED1d.vatcorr19",
+     "currency": "EUR",
+     "expected": "0.14"
+    }
+   ]
+  },
+  "S18-08": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "vat7",
+     "kind": "money",
+     "page": "invoice",
+     "calc": "ED1.vat7",
+     "currency": "EUR",
+     "expected": "5.47"
+    },
+    {
+     "key": "vat19",
+     "kind": "money",
+     "page": "invoice",
+     "calc": "ED1.vat19",
+     "currency": "EUR",
+     "expected": "6.82"
+    }
+   ]
+  },
+  "S18-10": {
+   "mode": "mixed",
+   "values": [
+    {
+     "key": "remaining",
+     "kind": "money",
+     "page": [
+      "invoice",
+      "order"
+     ],
+     "calc": "PART.remaining",
+     "currency": "EUR",
+     "expected": "36.41"
+    }
+   ]
+  },
+  "S18-12": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "fee1",
+     "kind": "money",
+     "page": "any",
+     "calc": "DUN.fee1",
+     "currency": "EUR",
+     "expected": "5.00"
+    }
+   ]
+  },
+  "S18-13": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "fee2",
+     "kind": "money",
+     "page": "any",
+     "calc": "DUN.fee2",
+     "currency": "EUR",
+     "expected": "10.00"
+    }
+   ]
+  },
+  "S18-15": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "balance_after",
+     "kind": "money",
+     "page": "any",
+     "calc": "DUN.balance_after",
+     "currency": "EUR",
+     "expected": "1255.00"
+    }
+   ]
+  },
+  "S18-18": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "balance_after",
+     "kind": "money",
+     "page": "any",
+     "calc": "DUN.balance_after",
+     "currency": "EUR",
+     "expected": "1255.00"
+    }
+   ]
+  },
+  "S19-01": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "l1_unit",
+     "kind": "money",
+     "page": "product",
+     "calc": "X1.L1_unit",
+     "currency": "CHF",
+     "expected": "38.35"
+    }
+   ]
+  },
+  "S19-02": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "l1_unit",
+     "kind": "money",
+     "page": "product",
+     "calc": "X6.L1_unit",
+     "currency": "GBP",
+     "expected": "35.46"
+    }
+   ]
+  },
+  "S19-06": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "shipping",
+     "kind": "money",
+     "page": "any",
+     "calc": "X2.shipping",
+     "currency": "CHF",
+     "expected": "45.00"
+    }
+   ]
+  },
+  "S19-07": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "vat",
+     "kind": "money",
+     "page": "any",
+     "calc": "X2.vat",
+     "currency": "CHF",
+     "expected": "0.00"
+    }
+   ]
+  },
+  "S19-08": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "gross",
+     "kind": "money",
+     "page": "any",
+     "calc": "X2.gross",
+     "currency": "CHF",
+     "expected": "337.40"
+    }
+   ]
+  },
+  "S19-09": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "gross",
+     "kind": "money",
+     "page": "review",
+     "calc": "X3.gross",
+     "currency": "GBP",
+     "expected": "309.28"
+    }
+   ]
+  },
+  "S19-11": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "gross",
+     "kind": "money",
+     "page": "invoice",
+     "calc": "X2.gross",
+     "currency": "CHF",
+     "expected": "337.40"
+    }
+   ]
+  },
+  "S19-13": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "gross",
+     "kind": "money",
+     "page": "any",
+     "calc": "X2.gross",
+     "currency": "CHF",
+     "expected": "337.40"
+    },
+    {
+     "key": "x2_eur",
+     "kind": "money",
+     "page": "any",
+     "calc": "FX.x2_eur",
+     "currency": "EUR",
+     "expected": "355.16"
+    }
+   ]
+  },
+  "S19-14": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "gross",
+     "kind": "money",
+     "page": "any",
+     "calc": "X2.gross",
+     "currency": "CHF",
+     "expected": "337.40"
+    }
+   ]
+  },
+  "S19-15": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "l1_net",
+     "kind": "money",
+     "page": "any",
+     "calc": "X5.L1_net",
+     "currency": "CHF",
+     "expected": "39.15"
+    }
+   ]
+  },
+  "S21-02": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "credit",
+     "kind": "money",
+     "page": "account",
+     "calc": "BT.credit",
+     "currency": "EUR",
+     "expected": "10.00"
+    }
+   ]
+  },
+  "S21-03": {
+   "mode": "mixed",
+   "values": [
+    {
+     "key": "remaining",
+     "kind": "money",
+     "page": "any",
+     "calc": "BT.remaining",
+     "currency": "EUR",
+     "expected": "5.00"
+    }
+   ]
+  },
+  "S21-07": {
+   "mode": "mixed",
+   "values": [
+    {
+     "key": "credit_used",
+     "kind": "money",
+     "page": "any",
+     "calc": "SPLIT.credit_used",
+     "currency": "EUR",
+     "expected": "10.00"
+    },
+    {
+     "key": "card",
+     "kind": "money",
+     "page": "any",
+     "calc": "SPLIT.card",
+     "currency": "EUR",
+     "expected": "35.48"
+    }
+   ]
+  },
+  "S21-08": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "refund_credit",
+     "kind": "money",
+     "page": "any",
+     "calc": "SPLIT.refund_credit",
+     "currency": "EUR",
+     "expected": "10.00"
+    },
+    {
+     "key": "refund_card",
+     "kind": "money",
+     "page": "any",
+     "calc": "SPLIT.refund_card",
+     "currency": "EUR",
+     "expected": "35.48"
+    }
+   ]
+  },
+  "S21-09": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "dup_credit",
+     "kind": "money",
+     "page": "any",
+     "calc": "BT.dup_credit",
+     "currency": "EUR",
+     "expected": "55.48"
+    }
+   ]
+  },
+  "S21-11": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "after_payout",
+     "kind": "money",
+     "page": "account",
+     "calc": "BT.after_payout",
+     "currency": "EUR",
+     "expected": "0.00"
+    },
+    {
+     "key": "dup_credit",
+     "kind": "money",
+     "page": "admin",
+     "calc": "BT.dup_credit",
+     "currency": "EUR",
+     "expected": "55.48"
+    }
+   ]
+  },
+  "S21-12": {
+   "mode": "mixed",
+   "values": [
+    {
+     "key": "gross",
+     "kind": "money",
+     "page": "any",
+     "calc": "RC.gross",
+     "currency": "EUR",
+     "expected": "45.48"
+    }
+   ]
+  },
+  "S21-16": {
+   "mode": "mixed",
+   "values": [
+    {
+     "key": "capture_32",
+     "kind": "money",
+     "page": "any",
+     "calc": "CAP.capture_32",
+     "currency": "EUR",
+     "expected": "44.17"
+    }
+   ]
+  },
+  "S21-18": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "gross",
+     "kind": "money",
+     "page": "admin",
+     "calc": "RC.gross",
+     "currency": "EUR",
+     "expected": "45.48"
+    }
+   ]
+  },
+  "S22-01": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "beer_ber",
+     "kind": "quantity",
+     "page": "any",
+     "calc": "D_WH.beer_ber",
+     "expected": 1200
+    },
+    {
+     "key": "beer_brb",
+     "kind": "quantity",
+     "page": "any",
+     "calc": "D_WH.beer_brb",
+     "expected": 800
+    }
+   ]
+  },
+  "S22-02": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "beer_alloc_ber_crates",
+     "kind": "quantity",
+     "page": "any",
+     "calc": "D_WH.beer_alloc_ber_crates",
+     "expected": 60
+    },
+    {
+     "key": "beer_alloc_brb_crates",
+     "kind": "quantity",
+     "page": "any",
+     "calc": "D_WH.beer_alloc_brb_crates",
+     "expected": 5
+    }
+   ]
+  },
+  "S22-03": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "beer_alloc_brb_crates",
+     "kind": "quantity",
+     "page": "any",
+     "calc": "D_WH.beer_alloc_brb_crates",
+     "expected": 5
+    }
+   ]
+  },
+  "S22-04": {
+   "mode": "mixed",
+   "values": [
+    {
+     "key": "beer_alloc_brb_crates",
+     "kind": "quantity",
+     "page": "any",
+     "calc": "D_WH.beer_alloc_brb_crates",
+     "expected": 5
+    }
+   ]
+  },
+  "S22-05": {
+   "mode": "mixed",
+   "values": [
+    {
+     "key": "gross",
+     "kind": "money",
+     "page": "any",
+     "calc": "AL1.gross",
+     "currency": "EUR",
+     "expected": "1118.78"
+    }
+   ]
+  },
+  "S22-06": {
+   "mode": "mixed",
+   "values": [
+    {
+     "key": "result",
+     "kind": "state",
+     "expected": "rejected",
+     "page": "any",
+     "states": [
+      "accepted",
+      "rejected"
+     ]
+    }
+   ]
+  },
+  "S22-07": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "result",
+     "kind": "state",
+     "expected": "accepted",
+     "page": "any",
+     "states": [
+      "accepted",
+      "rejected"
+     ]
+    }
+   ]
+  },
+  "S22-09": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "wine006_order",
+     "kind": "quantity",
+     "page": "any",
+     "calc": "D_WH.wine006_order",
+     "expected": 6
+    }
+   ]
+  },
+  "S23-01": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "gross",
+     "kind": "money",
+     "page": "order",
+     "calc": "PC1.gross",
+     "currency": "EUR",
+     "expected": "90.95"
+    }
+   ]
+  },
+  "S23-03": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "gross",
+     "kind": "money",
+     "page": "any",
+     "calc": "PC1.gross",
+     "currency": "EUR",
+     "expected": "90.95"
+    }
+   ]
+  },
+  "S23-04": {
+   "mode": "mixed",
+   "values": [
+    {
+     "key": "gross",
+     "kind": "money",
+     "page": "any",
+     "calc": "PC2b.gross",
+     "currency": "EUR",
+     "expected": "43.21"
+    }
+   ]
+  },
+  "S23-05": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "restocking_fee",
+     "kind": "money",
+     "page": "invoice",
+     "calc": "RS1.restocking_fee",
+     "currency": "EUR",
+     "expected": "4.25"
+    }
+   ]
+  },
+  "S23-06": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "gross",
+     "kind": "money",
+     "page": "invoice",
+     "calc": "RS1.gross",
+     "currency": "EUR",
+     "expected": "40.93"
+    }
+   ]
+  },
+  "S23-07": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "deposits",
+     "kind": "money",
+     "page": "invoice",
+     "calc": "QA1.deposits",
+     "currency": "EUR",
+     "expected": "5.10"
+    }
+   ]
+  },
+  "S23-08": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "gross",
+     "kind": "money",
+     "page": "invoice",
+     "calc": "QA1.gross",
+     "currency": "EUR",
+     "expected": "40.06"
+    }
+   ]
+  },
+  "S23-09": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "gross",
+     "kind": "money",
+     "page": "invoice",
+     "calc": "CW1.gross",
+     "currency": "EUR",
+     "expected": "13.80"
+    }
+   ]
+  },
+  "S23-13": {
+   "mode": "mechanical",
+   "values": [
+    {
+     "key": "oil_brb_after_restock",
+     "kind": "quantity",
+     "page": "any",
+     "calc": "D_WH.oil_brb_after_restock",
+     "expected": 21
+    }
+   ]
+  }
+ },
+ "setup_depends_on": {}
+}

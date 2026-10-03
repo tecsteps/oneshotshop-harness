@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+# Expected truck/pickup dates for the current Berlin time (test plan 0.6). No arguments.
+set -uo pipefail
+[[ $# -eq 0 ]] || { echo "delivery takes no arguments" >&2; exit 2; }
+[[ -n "${EVAL_HELPER_LOG:-}" ]] && printf '%s delivery\n' "$(date -u +%FT%TZ)" >> "$EVAL_HELPER_LOG"
+exec python3 "$(cd "$(dirname "$0")/../.." && pwd)/calc/delivery.py"

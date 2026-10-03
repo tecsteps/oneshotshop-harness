@@ -1,0 +1,14 @@
+# Harness-owned .semgrepignore (copied over the agent's own before every scan).
+.git/
+vendor/
+node_modules/
+public/build/
+public/vendor/
+public/hot
+storage/
+bootstrap/cache/
+lang/vendor/
+tests/
+*.min.js
+*.min.css
+*.map

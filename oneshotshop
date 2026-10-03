@@ -1,0 +1,514 @@
+#!/usr/bin/env bash
+# shellcheck disable=SC2016  # jq filters reference $vars on purpose
+# oneshotshop — start, resume, finish and push #OneShotShop benchmark runs.
+#
+#   ./oneshotshop <agent> "<model label>" [options]   start a run, open the interactive shell
+#   ./oneshotshop resume <branch>                      re-enter an unfinished run
+#   ./oneshotshop finish <branch>                      collect transcripts, commit leftovers, stop
+#   ./oneshotshop push <branch>                        push the finished run branch (host git creds)
+#   ./oneshotshop verify <branch> [verify.sh options]  gate check (fresh clone, README command)
+#   ./oneshotshop list                                 all runs and their status
+# Whole script in main(): bash parses it completely before running, so editing this file
+# while a long run/evaluation is in progress cannot corrupt the running process.
+main() {
+set -euo pipefail
+# shellcheck source=lib/common.sh
+source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/lib/common.sh"
+# shellcheck source=lib/versions.sh
+source "$HARNESS_DIR/lib/versions.sh"
+
+DEFAULT_SPEC="${ONESHOTSHOP_SPEC:-git@github.com:tecsteps/oneshotshop.git}"
+# The standard limits every comparable run gets (fits a Docker Desktop VM of ~7.75 GB).
+STANDARD_CPUS=8
+STANDARD_MEMORY=7g
+# The prompt is ALWAYS the "## Prompt" section of the spec repo's README.md (versioned with the
+# spec). It is extracted per run into runs/<branch>/prompt.md and meta.json (prompt.text).
+# Never committed by the harness's leftover commit (anything the agent committed stays).
+LEFTOVER_EXCLUDES=(':(exclude,glob)**/vendor/**' ':(exclude,glob)**/node_modules/**'
+                   ':(exclude,glob)**/.env' ':(exclude,glob)**/.env.*')
+# Never copied out with transcripts.
+TRANSCRIPT_EXCLUDES=(--exclude='auth.json' --exclude='.credentials.json' --exclude='*credential*'
+                     --exclude='*.key' --exclude='*token*')
+
+usage() {
+  cat <<EOF
+Usage:
+  ./oneshotshop <agent> "<model label>" [options]   start a run (branch <YYYY-MM-DD>-<agent>-<model-slug>)
+  ./oneshotshop resume <branch> [--exec <cmd>] [--finish|--pause]
+  ./oneshotshop finish <branch>
+  ./oneshotshop push <branch>
+  ./oneshotshop verify <branch> [verify.sh options]
+  ./oneshotshop evaluate <branch> [--steps gate,tools,testplan,perf,insights,human,report] [--from <step>] [--force]
+                       [--detach | --foreground]       (default: detached worker + follow the log)
+  ./oneshotshop status <branch>                      evaluation step status
+  ./oneshotshop serve <branch> [--port 8000] [--from-remote]
+                                                     browse a finished shop at http://127.0.0.1:<port>/
+  ./oneshotshop list
+
+Agents: $(find "$HARNESS_DIR/agents" -mindepth 1 -maxdepth 1 -type d -exec basename {} \; | sort | tr '\n' ' ')
+
+Start options:
+  --suffix <s>         Appended to the branch name (e.g. a second run of the same model)
+  --spec <url|path>    Spec repo to clone 'main' from (default: $DEFAULT_SPEC)
+  --spec-branch <b>    Branch holding the challenge input (default: main)
+  --cpus <n>           CPU limit (default: $STANDARD_CPUS; other values make the run not comparable)
+  --memory <size>      Memory limit (default: $STANDARD_MEMORY; other values make the run not comparable)
+  --timeout <dur>      Optional hard limit: the container stops after <dur> (e.g. 12h)
+  --image <ref>        Run image (default: $IMAGE)
+  --with-credentials   Opt-in: pass ONE credential for this agent from .env into the container
+                       (default: none; log in yourself inside the shell)
+
+Non-interactive testing (no tokens spent):
+  --exec "<cmd>"       Run <cmd> in /workspace instead of the interactive shell
+  --finish | --pause   After the shell/cmd ends: finish the run, or keep it open (default: ask;
+                       without a TTY: finish)
+EOF
+}
+
+# ------------------------------------------------------------------------------- helpers
+slugify() { printf '%s' "$1" | tr '[:upper:]' '[:lower:]' | sed -E 's/[^a-z0-9]+/-/g; s/^-+//; s/-+$//'; }
+container_name() { printf 'oneshotshop-%s' "$1"; }
+run_dir() { printf '%s/%s' "$RUNS_DIR" "$1"; }
+meta_file() { printf '%s/meta.json' "$(run_dir "$1")"; }
+# meta_update <branch> <jq filter> [jq args...]
+meta_update() {
+  local b="$1" f="$2"; shift 2
+  local m; m="$(meta_file "$b")"
+  jq "$@" "$f" "$m" > "$m.tmp" && mv "$m.tmp" "$m"
+}
+meta_get() { jq -r "$2 // empty" "$(meta_file "$1")"; }
+load_agent() {
+  AGENT_DIR="$HARNESS_DIR/agents/$1"
+  [[ -f "$AGENT_DIR/agent.conf" ]] || die "unknown agent '$1' (no agents/$1/agent.conf)"
+  AGENT_CHECK_CMD="" AGENT_CHECK_HINT="" AGENT_NOTE="" AGENT_TITLE="" AGENT_VERSION_CMD="" AGENT_START="" AGENT_LOGIN="" AGENT_MCP_LIST="" AGENT_TRANSCRIPTS="" AGENT_CREDENTIALS=""
+  # shellcheck source=/dev/null
+  source "$AGENT_DIR/agent.conf"
+}
+cexec() { docker exec -u agent -w /workspace "$CONTAINER" bash -lc "$1"; }
+strip_ansi() { sed -E $'s/\x1b\\[[0-9;?]*[a-zA-Z]//g'; }
+require_run() {
+  [[ -n "${1:-}" ]] || die "missing <branch>"
+  [[ -f "$(meta_file "$1")" ]] || die "no run '$1' in runs/ (see ./oneshotshop list)"
+  BRANCH="$1"; RUN_DIR="$(run_dir "$1")"; WS="$RUN_DIR/workspace"; CONTAINER="$(container_name "$1")"
+  load_agent "$(meta_get "$1" .agent)"
+}
+ensure_container_running() {
+  local state
+  state="$(docker inspect --format '{{.State.Status}}' "$CONTAINER" 2>/dev/null || echo missing)"
+  case "$state" in
+    running) ;;
+    missing) die "container $CONTAINER no longer exists (run was finished or removed)" ;;
+    *) log "starting stopped container $CONTAINER"; docker start "$CONTAINER" >/dev/null ;;
+  esac
+}
+
+# ~/.local/bin/check-mcp in the container: a real (tiny) agent call that must list the Playwright tools.
+install_check_mcp() {
+  [[ -n "$AGENT_CHECK_CMD" ]] || { warn "agent.conf has no AGENT_CHECK_CMD; check-mcp not installed"; return 0; }
+  local tpl; tpl="$(cat "$HARNESS_DIR/lib/check-mcp.sh")"
+  shopt -u patsub_replacement 2>/dev/null || true
+  tpl="${tpl//__AGENT__/$AGENT_TITLE}"; tpl="${tpl//__HINT__/$AGENT_CHECK_HINT}"; tpl="${tpl//__CMD__/$AGENT_CHECK_CMD}"
+  printf '%s\n' "$tpl" | docker exec -i -u agent "$CONTAINER" bash -c 'mkdir -p ~/.local/bin && cat > ~/.local/bin/check-mcp && chmod 755 ~/.local/bin/check-mcp'
+}
+
+# Effective container limits as Docker applies them (catches `docker update` during a run).
+effective_limits() {
+  docker inspect -f '{{json .HostConfig}}' "$CONTAINER" 2>/dev/null | jq -c --arg t "$(now_iso)" \
+    '{at: $t, cpus: ((.NanoCpus // 0) / 1e9), memory_bytes: .Memory, memory_swap_bytes: .MemorySwap,
+      memory_gib: (if (.Memory // 0) > 0 then ((.Memory / 1073741824 * 100 | round) / 100) else null end),
+      pids_limit: .PidsLimit}' || echo null
+}
+
+# The run's prompt (README.md "## Prompt" section) in a box that is easy to select and copy.
+prompt_box() {
+  local f="$RUN_DIR/prompt.md" line width=0
+  while IFS= read -r line || [[ -n "$line" ]]; do (( ${#line} > width )) && width=${#line}; done < "$f"
+  local bar; bar="$(printf '%*s' $((width > 76 ? 80 : width + 4)) '' | tr ' ' '=')"
+  printf '   %s\n\n' "$bar"
+  while IFS= read -r line || [[ -n "$line" ]]; do printf '%s\n' "$line"; done < "$f"
+  printf '\n   %s\n' "$bar"
+  printf '   (%s, sha256 %s; also in the container: cat ~/PROMPT.md)\n' "$(meta_get "$BRANCH" .prompt.source)" "$(meta_get "$BRANCH" .prompt.sha256 | cut -c1-12)"
+}
+
+# extract_prompt <README.md>: the "## Prompt" section (heading excluded) up to the next "## "
+# heading or EOF, with leading/trailing blank lines trimmed.
+extract_prompt() {
+  awk '/^## Prompt[[:space:]]*$/{f=1; next} f && /^## /{exit} f' "$1" \
+    | sed -e '/./,$!d' | awk '{a[NR]=$0} END{n=NR; while (n>0 && a[n] ~ /^[[:space:]]*$/) n--; for(i=1;i<=n;i++) print a[i]}'
+}
+
+banner() {
+  local version mcp
+  version="$(meta_get "$BRANCH" .agent_version)"
+  mcp="$(meta_get "$BRANCH" .mcp.list_output | grep -i playwright | head -n1)"
+  cat <<EOF
+
+================================================================================
+ #OneShotShop run   $BRANCH
+================================================================================
+ Agent      $AGENT_TITLE  ($version)
+ Workspace  /workspace  (branch $BRANCH, no git remote)
+ MCP        ${mcp:-playwright: see runs/$BRANCH/mcp-list.txt}
+
+ 1. Log in     $AGENT_LOGIN
+ 2. Check MCP  check-mcp      (one tiny call on your login; must print PASS before you paste)
+ 3. Start      $AGENT_START
+              a FRESH agent session for the build: experiments (screenshots, questions) only
+              before, in a separate session or via check-mcp, then quit that session
+ 4. Paste the prompt below as the FIRST message of that fresh session, then leave the agent
+    alone (finish checks this in the transcripts).
+$( [[ -n "$AGENT_NOTE" ]] && printf ' Note       %s\n' "${AGENT_NOTE//<branch>/$BRANCH}" )
+ Tip        start ./oneshotshop inside host tmux (tmux new -s oss): Ctrl-b d detaches, the
+            agent keeps working; come back with tmux attach -t oss
+
+ PASTE EXACTLY THIS as the first message of a fresh agent session (the README's "## Prompt"
+ section; the whole text between the bars, nothing else, no follow-ups). Copy it from here or
+ inside the container with:  cat ~/PROMPT.md
+
+$(prompt_box)
+
+ Exit the shell to finish the run. Closed by accident?  ./oneshotshop resume $BRANCH
+================================================================================
+
+EOF
+}
+
+# One shell session: measured from shell start to shell exit.
+session() {
+  local exec_cmd="$1" open="$RUN_DIR/.session-open" start start_epoch end code=0
+  if [[ -f "$open" ]]; then   # previous session ended without the harness noticing (closed terminal)
+    jq -c '. + {end: null, seconds: null, interrupted: true}' "$open" >> "$RUN_DIR/sessions.jsonl"
+    rm -f "$open"
+  fi
+  ensure_container_running
+  start="$(now_iso)"; start_epoch="$(now_epoch)"
+  jq -nc --arg s "$start" --argjson e "$start_epoch" --arg mode "${exec_cmd:+exec}" \
+    '{start: $s, start_epoch: $e, mode: (if $mode == "" then "interactive" else $mode end)}' > "$open"
+  meta_update "$BRANCH" '.status = "in-session" | .first_session_start = (.first_session_start // $s)' --arg s "$start"
+  if [[ -n "$exec_cmd" ]]; then
+    docker exec -u agent -w /workspace "$CONTAINER" bash -lc "$exec_cmd" || code=$?
+  else
+    banner
+    docker exec -it -u agent -w /workspace -e TERM="${TERM:-xterm-256color}" \
+      -e ONESHOTSHOP_BRANCH="$BRANCH" "$CONTAINER" bash -l || code=$?
+  fi
+  end="$(now_iso)"
+  jq -c --arg end "$end" --argjson secs "$(( $(now_epoch) - start_epoch ))" --argjson code "$code" \
+    '. + {end: $end, seconds: $secs, exit_code: $code}' "$open" >> "$RUN_DIR/sessions.jsonl"
+  rm -f "$open"
+  meta_update "$BRANCH" '.status = "open" | .last_session_end = $e' --arg e "$end"
+  log "session ended after $(( $(now_epoch) - start_epoch ))s (exit $code)"
+}
+
+after_session() {
+  local mode="$1" answer
+  case "$mode" in
+    finish) cmd_finish "$BRANCH" ;;
+    pause) log "run stays open; container $CONTAINER keeps running. Continue: ./oneshotshop resume $BRANCH" ;;
+    ask)
+      if [[ -t 0 ]]; then
+        read -r -p "[harness] Finish run $BRANCH now? [Y/n] " answer || answer=n
+        if [[ "$answer" =~ ^[Nn] ]]; then after_session pause; else cmd_finish "$BRANCH"; fi
+      else
+        cmd_finish "$BRANCH"
+      fi ;;
+  esac
+}
+
+# --------------------------------------------------------------------------------- start
+cmd_start() {
+  local agent="$1" label="$2"; shift 2
+  local suffix="" spec="$DEFAULT_SPEC" spec_branch="main" cpus="$STANDARD_CPUS" memory="$STANDARD_MEMORY" timeout="" with_creds=false
+  local exec_cmd="" after="ask"
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      --suffix) suffix="$2"; shift 2 ;;
+      --spec) spec="$2"; shift 2 ;;
+      --spec-branch) spec_branch="$2"; shift 2 ;;
+      --cpus) cpus="$2"; shift 2 ;;
+      --memory) memory="$2"; shift 2 ;;
+      --timeout) timeout="$2"; shift 2 ;;
+      --image) IMAGE="$2"; shift 2 ;;
+      --with-credentials) with_creds=true; shift ;;
+      --exec) exec_cmd="$2"; shift 2 ;;
+      --finish) after=finish; shift ;;
+      --pause) after=pause; shift ;;
+      *) die "unknown option $1 (see --help)" ;;
+    esac
+  done
+  load_agent "$agent"
+  [[ -n "$label" ]] || die "missing model label, e.g. ./oneshotshop $agent \"GLM 5.3\""
+  local slug; slug="$(slugify "$label")"
+  [[ -n "$slug" ]] || die "model label '$label' has no letters or digits"
+  BRANCH="$(date +%Y-%m-%d)-${agent}-${slug}${suffix:+-$(slugify "$suffix")}"
+  git check-ref-format --branch "$BRANCH" >/dev/null 2>&1 || die "invalid branch name: $BRANCH"
+  RUN_DIR="$(run_dir "$BRANCH")"; WS="$RUN_DIR/workspace"; CONTAINER="$(container_name "$BRANCH")"
+  [[ ! -e "$RUN_DIR" ]] || die "run $BRANCH already exists (resume it, or use --suffix)"
+  require_docker
+
+  # --- fresh clone of main only, run branch, no remote ---
+  mkdir -p "$RUN_DIR"
+  if [[ -d "$spec" ]]; then spec="$(cd "$spec" && pwd)"; fi
+  log "cloning $spec ($spec_branch) -> runs/$BRANCH/workspace"
+  if ! git clone --quiet --no-local --no-tags --single-branch --branch "$spec_branch" "$spec" "$WS" 2>"$RUN_DIR/clone.err"; then
+    cat "$RUN_DIR/clone.err" >&2; rm -rf "$RUN_DIR"
+    die "could not clone branch '$spec_branch' of $spec (does it have a first commit?)"
+  fi
+  rm -f "$RUN_DIR/clone.err"
+  git -C "$WS" switch -q -c "$BRANCH"
+  git -C "$WS" remote remove origin
+  local spec_commit; spec_commit="$(git -C "$WS" rev-parse HEAD)"
+  # --- the prompt: README.md "## Prompt" section of the cloned spec ---
+  extract_prompt "$WS/README.md" > "$RUN_DIR/prompt.md" 2>/dev/null || true
+  if [[ ! -s "$RUN_DIR/prompt.md" ]]; then
+    rm -rf "$RUN_DIR"; die "README.md of $spec ($spec_branch) has no \"## Prompt\" section; the prompt must come from there"
+  fi
+
+  # --- opt-in credential (exactly one; deploy secrets are never candidates) ---
+  local cred="" c v env_args=()
+  if $with_creds; then
+    for c in $AGENT_CREDENTIALS; do
+      if v="$(secret_get "$c")"; then export "$c=$v"; cred="$c"; env_args+=(-e "$c"); break; fi
+    done
+    unset v
+    [[ -n "$cred" ]] || die "--with-credentials: none of [$AGENT_CREDENTIALS] is set in .env or the environment"
+  fi
+
+  # --- fairness: every comparable run gets the same limits ---
+  local standard=true
+  if [[ "$cpus" != "$STANDARD_CPUS" || "$memory" != "$STANDARD_MEMORY" ]]; then
+    standard=false
+    warn "limits differ from the standard run ($STANDARD_CPUS CPUs, $STANDARD_MEMORY): --cpus $cpus --memory $memory — results not comparable"
+  fi
+
+  # --- resources check ---
+  local docker_mem; docker_mem="$(docker info --format '{{.MemTotal}}')"
+  local n="${memory%[bkmgBKMG]}" u="${memory#"${memory%[bkmgBKMG]}"}" mem_b
+  case "$u" in g|G) mem_b=$((n*1024*1024*1024));; m|M) mem_b=$((n*1024*1024));; *) mem_b="$n";; esac
+  [[ "$mem_b" -gt "$docker_mem" ]] && warn "--memory $memory exceeds the Docker VM's $((docker_mem/1024/1024)) MiB (Docker Desktop > Settings > Resources)"
+
+  local image_id; image_id="$(image_id)"
+  local sleep_arg="infinity" timeout_secs=null
+  if [[ -n "$timeout" ]]; then timeout_secs="$(parse_duration "$timeout")"; sleep_arg="$timeout_secs"; fi
+
+  jq -n --arg branch "$BRANCH" --arg agent "$agent" --arg title "$AGENT_TITLE" \
+    --arg label "$label" --arg slug "$slug" --arg suffix "$suffix" \
+    --arg image "$IMAGE" --arg image_id "$image_id" \
+    --arg spec "$spec" --arg spec_branch "$spec_branch" --arg spec_commit "$spec_commit" \
+    --arg spec_tree "$(git -C "$WS" rev-parse 'HEAD^{tree}')" \
+    --arg prompt_source "README.md#Prompt @ $spec_commit" --arg prompt_sha "$(sha256_file "$RUN_DIR/prompt.md")" \
+    --rawfile prompt_text "$RUN_DIR/prompt.md" \
+    --arg cpus "$cpus" --arg memory "$memory" --argjson timeout_secs "$timeout_secs" \
+    --argjson standard "$standard" --arg std_cpus "$STANDARD_CPUS" --arg std_mem "$STANDARD_MEMORY" \
+    --arg cred "$cred" --arg created "$(now_iso)" --arg host "$(uname -s) $(uname -m)" \
+    '{branch: $branch, status: "preparing", agent: $agent, agent_title: $title,
+      model_label: $label, model_slug: $slug, suffix: (if $suffix == "" then null else $suffix end),
+      agent_version: null, image: {tag: $image, id: $image_id},
+      spec: {source: $spec, branch: $spec_branch, commit: $spec_commit, tree: $spec_tree},
+      prompt: {source: $prompt_source, sha256: $prompt_sha, text: $prompt_text, file: "runs/\($branch)/prompt.md"},
+      limits: {cpus: $cpus, memory: $memory, timeout_secs: $timeout_secs, standard: $standard,
+               standard_values: {cpus: $std_cpus, memory: $std_mem}},
+      credential_injected: (if $cred == "" then null else $cred end),
+      created_at: $created, host: $host}' > "$(meta_file "$BRANCH")"
+
+  # --- container: only the workspace is mounted; main process just keeps it alive ---
+  docker create --name "$CONTAINER" --hostname oneshotshop --init \
+    --cpus "$cpus" --memory "$memory" --memory-swap "$memory" --pids-limit 8192 --shm-size 2g \
+    --cap-drop ALL --security-opt no-new-privileges --network bridge \
+    -v "$WS:/workspace" "${env_args[@]}" \
+    --label oneshotshop.branch="$BRANCH" \
+    "$image_id" sleep "$sleep_arg" >/dev/null
+  [[ -n "$cred" ]] && unset "$cred"
+  docker start "$CONTAINER" >/dev/null
+  meta_update "$BRANCH" '.limits_effective = ((.limits_effective // {}) + {start: $e})' --argjson e "$(effective_limits)"
+
+  # --- install the agent CLI + register Playwright MCP (scripts piped in, never stored) ---
+  log "installing $AGENT_TITLE (latest) in the container"
+  if ! docker exec -i -u agent -w /home/agent "$CONTAINER" bash -s < "$AGENT_DIR/install.sh" >"$RUN_DIR/install.log" 2>&1; then
+    tail -n 20 "$RUN_DIR/install.log" >&2
+    meta_update "$BRANCH" '.status = "install-failed"'
+    die "agent install failed (container $CONTAINER kept for inspection; remove with docker rm -f $CONTAINER)"
+  fi
+  local version; version="$(cexec "$AGENT_VERSION_CMD" 2>/dev/null | head -n1 | strip_ansi)"
+  log "installing Playwright MCP (pinned) + Chromium in the container"
+  local pw
+  pw="$(docker exec -i -u agent -w /home/agent -e PLAYWRIGHT_MCP_VERSION="$PLAYWRIGHT_MCP_VERSION" "$CONTAINER" bash -s < "$HARNESS_DIR/lib/playwright-mcp-install.sh" 2>>"$RUN_DIR/install.log" | tail -n1)" \
+    || die "Playwright MCP install failed (see runs/$BRANCH/install.log)"
+  docker exec -i -u agent -w /home/agent "$CONTAINER" bash -s < "$AGENT_DIR/mcp.sh" >>"$RUN_DIR/install.log" 2>&1 \
+    || die "Playwright MCP registration failed (see runs/$BRANCH/install.log)"
+  install_check_mcp
+  # The prompt also lives in the container HOME (never in /workspace) for easy copying.
+  docker exec -i -u agent "$CONTAINER" bash -c 'cat > ~/PROMPT.md' < "$RUN_DIR/prompt.md"
+  cexec "timeout 120 $AGENT_MCP_LIST" 2>&1 | strip_ansi > "$RUN_DIR/mcp-list.txt" || true
+  local mcp_ok=false; grep -qiE 'playwright.*(connected|ready|enabled)' "$RUN_DIR/mcp-list.txt" && mcp_ok=true
+  $mcp_ok || warn "Playwright MCP not reported as available by '$AGENT_MCP_LIST' (see runs/$BRANCH/mcp-list.txt)"
+
+  local tools; tools="$(cexec 'jq -n --arg php "$(php -r "echo PHP_VERSION;")" --arg composer "$(composer --version --no-ansi 2>/dev/null | head -n1)" --arg node "$(node -v)" --arg npm "$(npm -v)" "{php: \$php, composer: \$composer, node: \$node, npm: \$npm}"')"
+  meta_update "$BRANCH" '.status = "open" | .agent_version = $v | .tools = $tools
+      | .mcp = ({server: "playwright", available: $ok, list_cmd: $cmd, list_output: $out} + $pw)' \
+    --arg v "$version" --argjson tools "$tools" --argjson pw "$pw" --argjson ok "$mcp_ok" --arg cmd "$AGENT_MCP_LIST" \
+    --arg out "$(cat "$RUN_DIR/mcp-list.txt")"
+  log "$AGENT_TITLE $version ready; Playwright MCP $(jq -r .playwright_mcp <<<"$pw") (Chromium $(jq -r .chromium <<<"$pw")) available: $mcp_ok"
+
+  session "$exec_cmd"
+  after_session "$after"
+}
+
+# -------------------------------------------------------------------------------- resume
+cmd_resume() {
+  require_run "${1:-}"; shift
+  local exec_cmd="" after="ask"
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      --exec) exec_cmd="$2"; shift 2 ;;
+      --finish) after=finish; shift ;;
+      --pause) after=pause; shift ;;
+      *) die "unknown option $1" ;;
+    esac
+  done
+  [[ "$(meta_get "$BRANCH" .status)" != finished ]] || die "run $BRANCH is already finished"
+  session "$exec_cmd"
+  after_session "$after"
+}
+
+# -------------------------------------------------------------------------------- finish
+cmd_finish() {
+  require_run "${1:-}"
+  [[ "$(meta_get "$BRANCH" .status)" != finished ]] || die "run $BRANCH is already finished"
+  ensure_container_running
+  local open="$RUN_DIR/.session-open"
+  if [[ -f "$open" ]]; then
+    jq -c '. + {end: null, seconds: null, interrupted: true}' "$open" >> "$RUN_DIR/sessions.jsonl"; rm -f "$open"
+  fi
+
+  # --- transcripts out of the container HOME (credential files excluded) ---
+  local paths p
+  paths="$(cexec "cd ~ && for p in $AGENT_TRANSCRIPTS .bash_history; do [ -e \"\$p\" ] && echo \"\$p\"; done" || true)"
+  mkdir -p "$RUN_DIR/transcripts"
+  if [[ -n "$paths" ]]; then
+    # shellcheck disable=SC2086
+    docker exec -u agent -w /home/agent "$CONTAINER" tar -cf - "${TRANSCRIPT_EXCLUDES[@]}" $paths \
+      | tar -x -C "$RUN_DIR/transcripts"
+    for p in $paths; do log "transcripts: ~/$p"; done
+  else
+    warn "no transcripts found at: $AGENT_TRANSCRIPTS"
+  fi
+  # Best effort: first timestamp in the agent's own session files = agent start.
+  local agent_first
+  agent_first="$(grep -rhoE '"(timestamp|created_at|createdAt|time)" ?: ?"20[0-9]{2}-[0-9]{2}-[0-9]{2}T[0-9:.]+Z?"' \
+    "$RUN_DIR/transcripts" --exclude=.bash_history 2>/dev/null | grep -oE '20[0-9]{2}-[^"]+' | sort | head -n1 || true)"
+
+  # --- fairness: the prompt must be the first user message of a fresh build session ---
+  # Compare against the prompt recorded for THIS run (meta.prompt.text), not today's prompt file.
+  local pcheck ptext="$RUN_DIR/.prompt-at-start.txt"
+  if jq -e '.prompt.text | type == "string"' "$(meta_file "$BRANCH")" >/dev/null 2>&1; then
+    jq -j '.prompt.text' "$(meta_file "$BRANCH")" > "$ptext"
+  else
+    ptext=""
+  fi
+  if [[ -n "$ptext" ]]; then
+    pcheck="$(node "$HARNESS_DIR/lib/prompt-first-check.mjs" "$RUN_DIR/transcripts" "$ptext" 2>/dev/null || echo null)"
+    rm -f "$ptext"
+  else
+    pcheck='{"checked":0,"prompt_first":null,"note":"prompt text of this run not recorded in meta.json"}'
+  fi
+  [[ -n "$pcheck" ]] || pcheck=null
+  meta_update "$BRANCH" '.prompt_check = $p' --argjson p "$pcheck"
+  case "$(jq -r 'if . == null or .prompt_first == null then "unchecked" else (.prompt_first | tostring) end' <<<"$pcheck")" in
+    true) log "prompt check: the prompt was the first message of the build session" ;;
+    false) warn "prompt check FAILED: the pasted prompt was not the first user message of a fresh session (or was not found):"
+           jq -r '.problems[] | if .error then "  - " + .error else "  - " + .file + ": before the prompt: " + (.before_prompt | join(" | ")) end' <<<"$pcheck" >&2
+           warn "the run may not be comparable; see prompt_check in meta.json" ;;
+    *) log "prompt check: not available for this agent's transcript format (see prompt_check in meta.json)" ;;
+  esac
+
+  # --- leftover commit on the host, with the safety exclude list ---
+  local harness_commit=null
+  git -C "$WS" add -A -- . "${LEFTOVER_EXCLUDES[@]}"
+  git -C "$WS" add -A -- ':(glob)**/.env.example' 2>/dev/null || true
+  if ! git -C "$WS" diff --cached --quiet; then
+    git -C "$WS" -c user.name="OneShotShop Harness" -c user.email="harness@oneshotshop.invalid" \
+      commit -q --no-verify -m "Run $BRANCH: final state (uncommitted changes)"
+    harness_commit="\"$(git -C "$WS" rev-parse HEAD)\""
+    log "committed leftovers: $(git -C "$WS" rev-parse --short HEAD)"
+  fi
+  local current; current="$(git -C "$WS" branch --show-current || true)"
+  if [[ "$current" != "$BRANCH" ]]; then
+    warn "HEAD is on '${current:-detached}'; pointing $BRANCH at HEAD"
+    git -C "$WS" branch -f "$BRANCH" HEAD
+  fi
+  local head base changed left
+  head="$(git -C "$WS" rev-parse HEAD)"; base="$(meta_get "$BRANCH" .spec.commit)"
+  changed="$(git -C "$WS" diff --name-only "$base" HEAD | wc -l | tr -d ' ')"
+  left="$(git -C "$WS" status --porcelain --untracked-files=normal | sed 's/^...//' | jq -R . | jq -sc .)"
+
+  # --- timing ---
+  local active elapsed=null first last end
+  end="$(now_iso)"
+  active="$(jq -s '[.[].seconds // 0] | add // 0' "$RUN_DIR/sessions.jsonl" 2>/dev/null || echo 0)"
+  first="$(jq -s 'map(.start_epoch) | min // empty' "$RUN_DIR/sessions.jsonl" 2>/dev/null || true)"
+  last="$(jq -s 'map(select(.seconds != null) | .start_epoch + .seconds) | max // empty' "$RUN_DIR/sessions.jsonl" 2>/dev/null || true)"
+  [[ -n "$first" && -n "$last" ]] && elapsed=$(( last - first ))
+
+  meta_update "$BRANCH" '.status = "finished" | .finished_at = $end
+      | .sessions = $sessions
+      | .wall_time = {active_shell_secs: $active, first_start_to_last_exit_secs: $elapsed,
+                      agent_first_event: (if $af == "" then null else $af end)}
+      | .result = {head: $head, base_commit: .spec.commit, harness_commit: $hc,
+                   changed_files_vs_base: ($changed | tonumber), not_committed: $left}
+      | .pushed = false' \
+    --arg end "$end" --slurpfile sessions "$RUN_DIR/sessions.jsonl" --argjson active "$active" \
+    --argjson elapsed "$elapsed" --arg af "$agent_first" --arg head "$head" --argjson hc "$harness_commit" \
+    --arg changed "$changed" --argjson left "$left"
+
+  # finish-time effective limits (merged into the existing meta.json; unknown keys such as a
+  # hand-written limit_changes array are preserved, because meta_update edits in place)
+  meta_update "$BRANCH" '.limits_effective = ((.limits_effective // {}) + {finish: $e})
+      | .limits_effective.changed_during_run = (if (.limits_effective.start != null and $e != null)
+          then ((.limits_effective.start | del(.at)) != ($e | del(.at))) else null end)' \
+    --argjson e "$(effective_limits)"
+  if [[ "$(meta_get "$BRANCH" .limits_effective.changed_during_run)" == true ]] || [[ "$(jq -r '(.limit_changes // []) | length' "$(meta_file "$BRANCH")")" != 0 ]]; then
+    warn "container limits changed during the run (see limits_effective / limit_changes in meta.json)"
+  fi
+  docker rm -f "$CONTAINER" >/dev/null
+  log "finished $BRANCH: head $head, $changed files changed vs. challenge input, active ${active}s"
+  log "not committed (safety list / ignored): $(jq -r 'join(", ")' <<<"$left")"
+  [[ -n "$AGENT_NOTE" ]] && log "TODO: ${AGENT_NOTE//<branch>/$BRANCH}"
+  log "next: ./oneshotshop verify $BRANCH   then   ./oneshotshop push $BRANCH"
+}
+
+# ---------------------------------------------------------------------------------- push
+cmd_push() {
+  require_run "${1:-}"
+  [[ "$(meta_get "$BRANCH" .status)" == finished ]] || die "finish the run first: ./oneshotshop finish $BRANCH"
+  local remote; remote="$(meta_get "$BRANCH" .spec.source)"
+  log "pushing $BRANCH -> $remote"
+  git -C "$WS" push "$remote" "refs/heads/$BRANCH:refs/heads/$BRANCH"
+  meta_update "$BRANCH" '.pushed = true | .pushed_at = $t | .pushed_to = $r' --arg t "$(now_iso)" --arg r "$remote"
+}
+
+cmd_list() {
+  local m
+  printf '%-48s %-12s %-26s %-8s %s\n' BRANCH STATUS AGENT ACTIVE PUSHED
+  for m in "$RUNS_DIR"/*/meta.json; do
+    [[ -f "$m" ]] || continue
+    jq -r '[.branch, .status, (.agent + " " + (.agent_version // "?")), ((.wall_time.active_shell_secs // 0 | tostring) + "s"), (.pushed // false | tostring)] | @tsv' "$m" \
+      | awk -F'\t' '{printf "%-48s %-12s %-26s %-8s %s\n", $1, $2, $3, $4, $5}'
+  done
+}
+
+case "${1:-}" in
+  ""|-h|--help|help) usage ;;
+  resume) shift; cmd_resume "$@" ;;
+  finish) shift; cmd_finish "$@" ;;
+  push) shift; cmd_push "$@" ;;
+  verify) shift; exec "$HARNESS_DIR/verify.sh" "$@" ;;
+  evaluate) shift; [[ $# -ge 1 ]] || die "usage: ./oneshotshop evaluate <branch> [--steps a,b] [--from step] [--force]"
+            exec "$HARNESS_DIR/lib/evaluate.sh" run "$@" ;;
+  serve) shift; exec "$HARNESS_DIR/lib/serve.sh" "$@" ;;
+  status) shift; [[ $# -ge 1 ]] || die "usage: ./oneshotshop status <branch>"; exec "$HARNESS_DIR/lib/evaluate.sh" status "$@" ;;
+  list) cmd_list ;;
+  *) [[ $# -ge 2 ]] || { usage; exit 1; }; cmd_start "$@" ;;
+esac
+}
+main "$@"; exit $?

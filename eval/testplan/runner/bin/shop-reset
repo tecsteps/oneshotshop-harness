@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+# Reset the shop under test (test plan 0.2) inside the app container and set MAILMARK.
+# Env: EVAL_APP_CONTAINER, EVAL_HELPER_LOG (optional).
+set -uo pipefail
+C="${EVAL_APP_CONTAINER:?EVAL_APP_CONTAINER not set}"
+[[ -n "${EVAL_HELPER_LOG:-}" ]] && printf '%s shop-reset %s\n' "$(date -u +%FT%TZ)" "$*" >> "$EVAL_HELPER_LOG"
+docker exec -u agent -w /workspace "$C" bash -c '
+  set -o pipefail
+  php artisan migrate:fresh --seed --force 2>&1 | tail -n 20; code=${PIPESTATUS[0]}
+  mkdir -p /tmp/oss-eval
+  # MAILMARK: current size of every log file (storage/logs/*.log); files created later start at 0.
+  : > /tmp/oss-eval/mailmarks
+  for f in storage/logs/*.log; do [ -f "$f" ] && printf "%s\t%s\n" "$(stat -c %s "$f")" "$f" >> /tmp/oss-eval/mailmarks; done
+  echo "MAILMARK: $(wc -l < /tmp/oss-eval/mailmarks) log file(s) marked"
+  exit $code'

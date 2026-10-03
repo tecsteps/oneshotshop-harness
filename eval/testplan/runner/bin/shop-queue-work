@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+# Process queued jobs (mail) of the shop once: php artisan queue:work --stop-when-empty.
+# Takes no arguments. Env: EVAL_APP_CONTAINER, EVAL_HELPER_LOG (optional).
+set -uo pipefail
+C="${EVAL_APP_CONTAINER:?EVAL_APP_CONTAINER not set}"
+[[ $# -eq 0 ]] || { echo "shop-queue-work takes no arguments" >&2; exit 2; }
+[[ -n "${EVAL_HELPER_LOG:-}" ]] && printf '%s shop-queue-work\n' "$(date -u +%FT%TZ)" >> "$EVAL_HELPER_LOG"
+docker exec -u agent -w /workspace "$C" timeout --kill-after=10 300 php artisan queue:work --stop-when-empty 2>&1 | tail -n 40
+echo "exit code: ${PIPESTATUS[0]}"

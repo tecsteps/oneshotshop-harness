@@ -1,0 +1,16 @@
+{
+    "name": "oneshotshop/perf-probe",
+    "description": "#OneShotShop harness: server-side work probe (queries, N+1, memory, payload) for Laravel apps. Installed only into throwaway copies of a run workspace.",
+    "type": "library",
+    "version": "1.0.0",
+    "license": "MIT",
+    "require": {},
+    "autoload": {
+        "psr-4": { "OneShotShop\\PerfProbe\\": "src/" }
+    },
+    "extra": {
+        "laravel": {
+            "providers": ["OneShotShop\\PerfProbe\\PerfProbeServiceProvider"]
+        }
+    }
+}

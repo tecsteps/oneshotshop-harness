@@ -1,0 +1,11 @@
+.env
+secrets.env
+runs/
+.idea/
+.DS_Store
+
+# Harness credentials never leave the host (see README "Secrets")
+.env.*
+!.env.example
+__pycache__/
+*.pyc
