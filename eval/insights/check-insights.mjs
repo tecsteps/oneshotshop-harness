@@ -31,6 +31,10 @@ try {
 
 const CASES = ["packaging_and_deposits", "catch_weight_fractional", "negotiated_prices", "promotions", "vat_reverse_charge", "delivery_restrictions", "lots_expiry", "backorders_substitution", "refunds_returns"];
 need(ins.schemaVersion === 1, "schemaVersion must be 1");
+// integrity must mirror the deterministic scan, and be prominent when access was detected
+const acc = !!stats.integrity?.harness_access;
+need(ins.integrity && ins.integrity.harnessAccess === acc, `integrity.harnessAccess must be ${acc} (stats.json integrity.harness_access)`);
+if (acc) need((ins.integrity?.evidence || []).length >= Math.min(stats.integrity.hits.length, 1), "integrity.evidence must cite the hits");
 need(Array.isArray(ins.tldr) && ins.tldr.length === 3, "tldr must have exactly 3 sentences");
 need(Array.isArray(ins.linkedinTakeaways) && ins.linkedinTakeaways.length === 5, "linkedinTakeaways must have exactly 5 entries");
 for (const t of ins.linkedinTakeaways || []) need(String(t.text || "").length <= 280, `takeaway over 280 chars: ${String(t.text).slice(0, 60)}…`);
@@ -74,6 +78,8 @@ for (const n of ins.numbers || []) {
   }
 }
 const md = readFileSync(join(dir, "insights.md"), "utf8");
+const firstLines = md.split("\n").slice(0, 5).join("\n");
+need(acc ? /HARNESS ACCESS DETECTED/i.test(firstLines) : /Integrity: no access detected/i.test(firstLines), `insights.md must start with the Integrity note (${acc ? "HARNESS ACCESS DETECTED" : "Integrity: no access detected"})`);
 for (const h of ["TL;DR", "Key decisions", "Technology choices", "special", "Struggles", "hard B2B", "Spec interpretation", "Self-testing", "Numbers", "LinkedIn", "Open questions"])
   if (!md.toLowerCase().includes(h.toLowerCase())) warn.push(`insights.md: section containing "${h}" not found`);
 

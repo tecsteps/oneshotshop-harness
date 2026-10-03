@@ -12,6 +12,7 @@ import { fileURLToPath } from "node:url";
 import { spawnSync } from "node:child_process";
 import { randomBytes } from "node:crypto";
 import { Redactor } from "../lib/redact.mjs";
+import { scanIntegrity } from "../lib/integrity.mjs";
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(HERE, "..");
@@ -83,6 +84,14 @@ for (const [k, v] of Object.entries(S)) {
 }
 for (const b of benign) ok(r.redact(b) === b, `unit: benign kept: ${b.slice(0, 60)}`);
 
+// integrity unit cases
+const iv = (events) => scanIntegrity(events);
+ok(iv([{ kind: "tool", name: "WebFetch", input: { url: "https://github.com/tecsteps/oneshotshop-harness" } }]).harness_access, "integrity: web fetch of the harness repo = hit");
+ok(iv([{ kind: "tool", name: "mcp__playwright__browser_navigate", input: { url: "https://agentic-engineers.dev/" } }]).harness_access, "integrity: navigating to agentic-engineers.dev = hit");
+ok(!iv([{ kind: "tool", name: "Bash", commands: ["cat README.md"], input: { command: "cat README.md" }, output: "Website: [agentic-engineers.dev](https://agentic-engineers.dev/)" }]).harness_access, "integrity: README mentioning agentic-engineers.dev = weak signal only");
+ok(!iv([{ kind: "tool", name: "Write", input: { file_path: "/workspace/docs/testplan.md" } }]).harness_access, "integrity: agent's own testplan.md = weak signal only");
+ok(iv([{ kind: "tool", name: "Bash", commands: ["cat ../eval/testplan/testplan.evaluator.md"], output: "" }]).harness_access, "integrity: reading eval/testplan = hit");
+
 // ---------------------------------------------------------------- 2. end-to-end
 const dir = mkdtempSync(join(tmpdir(), "insights-selftest-"));
 const filler = (i) => `filler line ${i} ${"lorem ipsum dolor sit amet ".repeat(8)}`;
@@ -100,8 +109,9 @@ let tot = { input_tokens: 0, cached_input_tokens: 0, output_tokens: 0 };
 for (let i = 0; i < 1500; i++) {
   t += 2;
   cx.push({ timestamp: iso(t), type: "response_item", payload: { type: "message", role: "assistant", content: [{ type: "output_text", text: i === 7 ? `I will configure the key ${S.openai} now. ${filler(i)}` : `Step ${i}: ${filler(i)}` }] } });
-  const cmd = i === 3 ? `echo APP_KEY=${S.appKey} >> .env && cat .env` : i % 50 === 0 ? "php artisan test --compact" : `sed -n '1,80p' app/Models/Product${i}.php`;
+  const cmd = i === 600 ? "curl -sL https://raw.githubusercontent.com/tecsteps/oneshotshop-harness/main/eval/testplan/testplan.md" : i === 3 ? `echo APP_KEY=${S.appKey} >> .env && cat .env` : i % 50 === 0 ? "php artisan test --compact" : `sed -n '1,80p' app/Models/Product${i}.php`;
   cx.push({ timestamp: iso(t), type: "response_item", payload: { type: "custom_tool_call", call_id: `c${i}`, name: "exec", input: `text(await tools.exec_command({cmd:${JSON.stringify(cmd)}}))` } });
+  if (i === 700) cx.push({ timestamp: iso(t), type: "response_item", payload: { type: "function_call", call_id: `nav${i}`, namespace: "mcp__playwright__", name: "browser_navigate", arguments: JSON.stringify({ url: "https://agentic-engineers.dev/testplan" }) } });
   const out = i === 3 ? planted : i % 50 === 0 ? `{"exit_code":${i % 100 === 0 ? 1 : 0},"output":"Tests: ${i % 100 === 0 ? "2 failed, " : ""}40 passed"}` : `${filler(i)}\n`.repeat(6);
   cx.push({ timestamp: iso(t + 1), type: "response_item", payload: { type: "custom_tool_call_output", call_id: `c${i}`, output: [{ type: "input_text", text: `Script completed\nOutput:\n${out}` }] } });
   const last = { input_tokens: 20000 + i * 10, cached_input_tokens: 18000 + i * 10, output_tokens: 300 };
@@ -121,7 +131,7 @@ for (let i = 0; i < 1200; i++) {
   t += 3;
   const id = `toolu_${i}`;
   const cmd = i === 5 ? `export DB_PASSWORD=${S.dbPassword}; php artisan migrate` : i === 9 ? `curl -H "Authorization: Bearer ${S.bearer}" http://localhost` : "ls -la app/";
-  cc.push({ type: "assistant", sessionId: "s1", requestId: `req_${i}`, timestamp: iso(t), message: { id: `msg_${i}`, model: "claude-opus-4-8", usage: { input_tokens: 5, output_tokens: 200, cache_creation_input_tokens: 1000, cache_read_input_tokens: 50000 }, content: [{ type: "text", text: i === 11 ? `Found ${S.github} in config. ${filler(i)}` : `Working on ${i}. ${filler(i)}` }, { type: "tool_use", id, name: "Bash", input: { command: cmd } }] } });
+  cc.push({ type: "assistant", sessionId: "s1", requestId: `req_${i}`, timestamp: iso(t), message: { id: `msg_${i}`, model: "claude-opus-4-8", usage: { input_tokens: 5, output_tokens: 200, cache_creation_input_tokens: 1000, cache_read_input_tokens: 50000 }, content: [{ type: "text", text: i === 13 ? "I will write my own testplan.md; the README links agentic-engineers.dev for results." : i === 11 ? `Found ${S.github} in config. ${filler(i)}` : `Working on ${i}. ${filler(i)}` }, { type: "tool_use", id, name: "Bash", input: { command: cmd } }] } });
   cc.push({ type: "user", sessionId: "s1", timestamp: iso(t + 1), message: { role: "user", content: [{ type: "tool_result", tool_use_id: id, is_error: i % 97 === 0, content: i === 5 ? planted : `${filler(i)}\n`.repeat(5) }] } });
   if (i === 20) cc.push({ type: "assistant", sessionId: "s1", requestId: "req_spawn", timestamp: iso(t + 2), message: { id: "msg_spawn", model: "claude-opus-4-8", usage: { input_tokens: 5, output_tokens: 50, cache_creation_input_tokens: 0, cache_read_input_tokens: 1000 }, content: [{ type: "tool_use", id: "toolu_spawn", name: "Agent", input: { description: "QA tester", subagent_type: "general-purpose", prompt: `Test checkout. Use key ${S.stripe}.` } }] } });
 }
@@ -150,6 +160,14 @@ for (const run of ["codex-run", "claude-run"]) {
   ok(st.cost && st.cost.totalCost > 0, `${run}: cost computed ($${st.cost?.totalCost})`);
   ok(st.activity.toolCalls.total > 0 && st.activity.shellCommands.total > 0, `${run}: tool calls ${st.activity.toolCalls.total}, shell ${st.activity.shellCommands.total}`);
   if (run === "claude-run") ok(st.activity.playwrightMcpCalls === 50, `${run}: playwright MCP calls = ${st.activity.playwrightMcpCalls}`);
+  const dg = digest.slice(0, 3000);
+  if (run === "codex-run") {
+    ok(st.integrity.harness_access === true && st.integrity.hits.length >= 2, `${run}: integrity hit detected (${st.integrity.hits.length} hits: ${st.integrity.hits.map((h) => h.match).join(", ")})`);
+    ok(/HARNESS ACCESS DETECTED/.test(dg), `${run}: digest header carries the integrity alert`);
+  } else {
+    ok(st.integrity.harness_access === false && st.integrity.weakSignals.count >= 1, `${run}: clean transcript -> no access (weak signals for review: ${st.integrity.weakSignals.count})`);
+    ok(/no access to the harness repo/.test(dg), `${run}: digest header says no access detected`);
+  }
   if (run === "codex-run") ok(st.activity.testRuns.failed > 0 && st.activity.testRuns.passed > 0, `${run}: test runs passed ${st.activity.testRuns.passed} / failed ${st.activity.testRuns.failed}`);
 }
 if (!process.argv.includes("--keep")) rmSync(dir, { recursive: true, force: true });

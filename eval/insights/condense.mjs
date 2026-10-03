@@ -14,6 +14,7 @@ import { loadPricing } from "./lib/pricing.mjs";
 import { loadRun } from "./lib/transcripts.mjs";
 import { durationWithIdle, oneLine, errorLines, categorizeCommand, plainOutput } from "./lib/util.mjs";
 import { Redactor } from "./lib/redact.mjs";
+import { scanIntegrity } from "./lib/integrity.mjs";
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const args = parseArgs(process.argv.slice(2), { multi: ["transcripts", "secrets-file"] });
@@ -290,8 +291,13 @@ function render(L) {
 
 // ------------------------------------------------------------------ header
 const dur = durationWithIdle(run.timestamps || []);
+const integrity = scanIntegrity(run.events, (s) => redactor.redact(s), 10);
 const header = [
   `# Transcript digest: ${meta?.branch || (runDir ? runDir.split("/").pop() : "run")}`,
+  "",
+  integrity.harness_access
+    ? `**INTEGRITY: ${integrity.summary}.** Hits: ${integrity.hits.map((h) => `[${h.ts}] ${h.agent} ${h.kind}: ${h.snippet}`).join(" | ")}`
+    : "Integrity: no access to the harness repo or hidden test plan detected.",
   "",
   `agent: ${run.agent}${meta?.agent_version ? ` (${meta.agent_version})` : ""} | models (requests): ${Object.entries(run.models || {}).map(([m, n]) => `${m} ${n}`).join(", ") || "n/a"}`,
   `time (UTC): ${dur?.start ?? "?"} -> ${dur?.end ?? "?"} | wall ${dur?.wallFormatted ?? "?"} | active ${dur?.activeFormatted ?? "?"} (idle gaps > 30 min removed)`,

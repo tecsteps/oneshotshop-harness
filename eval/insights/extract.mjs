@@ -15,6 +15,7 @@ import { loadRun } from "./lib/transcripts.mjs";
 import { durationWithIdle, categorizeCommand, commandCategories, inc, sortedCounts, oneLine, toMs, fmtDuration } from "./lib/util.mjs";
 import * as G from "./lib/git.mjs";
 import { Redactor } from "./lib/redact.mjs";
+import { scanIntegrity } from "./lib/integrity.mjs";
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const USAGE = `usage: extract.mjs (--run-dir DIR | --transcripts PATH...) [--repo DIR] [--ref REF] [--base REF]
@@ -42,7 +43,7 @@ const t0 = Date.now();
 const run = await loadRun({
   inputs: transcripts.filter((p) => existsSync(p)),
   agent: args.agent || (meta?.agent ? String(meta.agent) : "auto"),
-  events: false,
+  events: true, // full events: the integrity scan needs texts and tool outputs
   pricing,
   usageCsv: args["usage-csv"],
   modelMap: args["model-map"] ? JSON.parse(args["model-map"]) : {},
@@ -209,6 +210,7 @@ const stats = {
   tokens: run.accounting ? { method: run.accounting.method, counterMode: run.accounting.counterMode ?? null, totals: run.accounting.totals ?? null, byModel: run.accounting.byModel, membership: run.accounting.membership, websiteRule: run.accounting.websiteRule, csv: run.accounting.rowsKept != null ? { rowsKept: run.accounting.rowsKept, rowsSkipped: run.accounting.rowsSkipped, window: run.accounting.window } : undefined } : null,
   cost: run.accounting?.cost ? { ...run.accounting.cost, pricingTakenAt: pricing.takenAt, note: "API list-price equivalent (subscription runs are not billed per token)" } : null,
   agentReported: { ...(agentReported || {}), claudeCodeCostState: run.meta?.claudeReportedCost ?? null, opencodeReportedCost: run.meta?.opencodeReportedCost ?? null },
+  integrity: scanIntegrity(run.events, (s) => redactor.redact(s)),
   git: gitStats,
   files: run.files,
   warnings: [...warnings, ...(run.accounting?.notes || [])],
@@ -224,6 +226,7 @@ const c = out.cost?.totalCost;
 console.error(
   [
     `wrote ${outPath}`,
+    `INTEGRITY: ${out.integrity.summary}`,
     `agent ${out.agent.kind}  models ${Object.keys(out.agent.modelsByRequests || {}).join(", ") || "-"}`,
     `duration wall ${duration?.wallFormatted ?? "-"}  active ${duration?.activeFormatted ?? "-"}  (${duration?.idleGaps.length ?? 0} idle gaps)`,
     `requests ${out.activity.modelRequests?.total ?? "-"}  tool calls ${out.activity.toolCalls.total}  shell ${shell.total}  playwright-mcp ${playwrightMcp}`,

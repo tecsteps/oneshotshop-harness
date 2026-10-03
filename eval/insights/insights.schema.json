@@ -4,7 +4,24 @@
   "title": "#OneShotShop v2 run insights",
   "type": "object",
   "additionalProperties": false,
-  "required": ["schemaVersion", "runId", "generatedAt", "analyst", "tldr", "keyDecisions", "technologyChoices", "surprises", "struggles", "hardCases", "specDeviations", "selfTesting", "numbers", "linkedinTakeaways", "openQuestions"],
+  "required": [
+    "schemaVersion",
+    "runId",
+    "generatedAt",
+    "analyst",
+    "integrity",
+    "tldr",
+    "keyDecisions",
+    "technologyChoices",
+    "surprises",
+    "struggles",
+    "hardCases",
+    "specDeviations",
+    "selfTesting",
+    "numbers",
+    "linkedinTakeaways",
+    "openQuestions"
+  ],
   "$defs": {
     "evidence": {
       "type": "array",
@@ -12,40 +29,101 @@
       "items": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["type", "ref"],
+        "required": [
+          "type",
+          "ref"
+        ],
         "properties": {
-          "type": { "enum": ["transcript", "commit", "file", "stats", "spec"] },
-          "ref": { "type": "string", "minLength": 1, "description": "transcript: HH:MM:SSZ or ISO time; commit: short hash; file/spec: path:line; stats: JSON path in stats.json" },
-          "quote": { "type": "string" }
+          "type": {
+            "enum": [
+              "transcript",
+              "commit",
+              "file",
+              "stats",
+              "spec"
+            ]
+          },
+          "ref": {
+            "type": "string",
+            "minLength": 1,
+            "description": "transcript: HH:MM:SSZ or ISO time; commit: short hash; file/spec: path:line; stats: JSON path in stats.json"
+          },
+          "quote": {
+            "type": "string"
+          }
         }
       }
     },
-    "text": { "type": "string", "minLength": 1 }
+    "text": {
+      "type": "string",
+      "minLength": 1
+    }
   },
   "properties": {
-    "schemaVersion": { "const": 1 },
-    "runId": { "$ref": "#/$defs/text" },
-    "generatedAt": { "type": "string", "format": "date-time" },
+    "schemaVersion": {
+      "const": 1
+    },
+    "runId": {
+      "$ref": "#/$defs/text"
+    },
+    "generatedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
     "analyst": {
       "type": "object",
-      "required": ["agent", "model"],
-      "properties": { "agent": { "type": "string" }, "model": { "type": "string" } }
+      "required": [
+        "agent",
+        "model"
+      ],
+      "properties": {
+        "agent": {
+          "type": "string"
+        },
+        "model": {
+          "type": "string"
+        }
+      }
     },
-    "tldr": { "type": "array", "minItems": 3, "maxItems": 3, "items": { "$ref": "#/$defs/text" } },
+    "tldr": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 3,
+      "items": {
+        "$ref": "#/$defs/text"
+      }
+    },
     "keyDecisions": {
       "type": "array",
       "minItems": 1,
       "items": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["decision", "why", "consequence", "evidence"],
+        "required": [
+          "decision",
+          "why",
+          "consequence",
+          "evidence"
+        ],
         "properties": {
-          "decision": { "$ref": "#/$defs/text" },
-          "why": { "$ref": "#/$defs/text" },
-          "quote": { "type": "string" },
-          "quoteAt": { "type": "string" },
-          "consequence": { "$ref": "#/$defs/text" },
-          "evidence": { "$ref": "#/$defs/evidence" }
+          "decision": {
+            "$ref": "#/$defs/text"
+          },
+          "why": {
+            "$ref": "#/$defs/text"
+          },
+          "quote": {
+            "type": "string"
+          },
+          "quoteAt": {
+            "type": "string"
+          },
+          "consequence": {
+            "$ref": "#/$defs/text"
+          },
+          "evidence": {
+            "$ref": "#/$defs/evidence"
+          }
         }
       }
     },
@@ -54,34 +132,99 @@
       "items": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["area", "choice", "evidence"],
+        "required": [
+          "area",
+          "choice",
+          "evidence"
+        ],
         "properties": {
-          "area": { "enum": ["framework", "frontend", "admin", "testing", "search", "pdf", "auth", "money", "queue", "media", "tooling", "other"] },
-          "choice": { "$ref": "#/$defs/text" },
-          "version": { "type": "string" },
-          "rationale": { "type": "string" },
-          "evidence": { "$ref": "#/$defs/evidence" }
+          "area": {
+            "enum": [
+              "framework",
+              "frontend",
+              "admin",
+              "testing",
+              "search",
+              "pdf",
+              "auth",
+              "money",
+              "queue",
+              "media",
+              "tooling",
+              "other"
+            ]
+          },
+          "choice": {
+            "$ref": "#/$defs/text"
+          },
+          "version": {
+            "type": "string"
+          },
+          "rationale": {
+            "type": "string"
+          },
+          "evidence": {
+            "$ref": "#/$defs/evidence"
+          }
         }
       }
     },
     "surprises": {
       "type": "array",
-      "items": { "type": "object", "additionalProperties": false, "required": ["finding", "evidence"], "properties": { "finding": { "$ref": "#/$defs/text" }, "evidence": { "$ref": "#/$defs/evidence" } } }
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "finding",
+          "evidence"
+        ],
+        "properties": {
+          "finding": {
+            "$ref": "#/$defs/text"
+          },
+          "evidence": {
+            "$ref": "#/$defs/evidence"
+          }
+        }
+      }
     },
     "struggles": {
       "type": "array",
       "items": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["problem", "recovery", "resolved", "evidence"],
+        "required": [
+          "problem",
+          "recovery",
+          "resolved",
+          "evidence"
+        ],
         "properties": {
-          "problem": { "$ref": "#/$defs/text" },
-          "firstSeenAt": { "type": "string" },
-          "attempts": { "type": "integer", "minimum": 1 },
-          "recovery": { "type": "string" },
-          "resolved": { "type": ["boolean", "null"] },
-          "resolvedAt": { "type": "string" },
-          "evidence": { "$ref": "#/$defs/evidence" }
+          "problem": {
+            "$ref": "#/$defs/text"
+          },
+          "firstSeenAt": {
+            "type": "string"
+          },
+          "attempts": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "recovery": {
+            "type": "string"
+          },
+          "resolved": {
+            "type": [
+              "boolean",
+              "null"
+            ]
+          },
+          "resolvedAt": {
+            "type": "string"
+          },
+          "evidence": {
+            "$ref": "#/$defs/evidence"
+          }
         }
       }
     },
@@ -92,12 +235,40 @@
       "items": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["case", "status", "summary", "evidence"],
+        "required": [
+          "case",
+          "status",
+          "summary",
+          "evidence"
+        ],
         "properties": {
-          "case": { "enum": ["packaging_and_deposits", "catch_weight_fractional", "negotiated_prices", "promotions", "vat_reverse_charge", "delivery_restrictions", "lots_expiry", "backorders_substitution", "refunds_returns"] },
-          "status": { "enum": ["handled", "partial", "not_found", "unverified"] },
-          "summary": { "$ref": "#/$defs/text" },
-          "evidence": { "$ref": "#/$defs/evidence" }
+          "case": {
+            "enum": [
+              "packaging_and_deposits",
+              "catch_weight_fractional",
+              "negotiated_prices",
+              "promotions",
+              "vat_reverse_charge",
+              "delivery_restrictions",
+              "lots_expiry",
+              "backorders_substitution",
+              "refunds_returns"
+            ]
+          },
+          "status": {
+            "enum": [
+              "handled",
+              "partial",
+              "not_found",
+              "unverified"
+            ]
+          },
+          "summary": {
+            "$ref": "#/$defs/text"
+          },
+          "evidence": {
+            "$ref": "#/$defs/evidence"
+          }
         }
       }
     },
@@ -106,25 +277,58 @@
       "items": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["spec", "kind", "description", "evidence"],
+        "required": [
+          "spec",
+          "kind",
+          "description",
+          "evidence"
+        ],
         "properties": {
-          "spec": { "$ref": "#/$defs/text" },
-          "kind": { "enum": ["interpretation", "deviation", "omission"] },
-          "description": { "$ref": "#/$defs/text" },
-          "evidence": { "$ref": "#/$defs/evidence" }
+          "spec": {
+            "$ref": "#/$defs/text"
+          },
+          "kind": {
+            "enum": [
+              "interpretation",
+              "deviation",
+              "omission"
+            ]
+          },
+          "description": {
+            "$ref": "#/$defs/text"
+          },
+          "evidence": {
+            "$ref": "#/$defs/evidence"
+          }
         }
       }
     },
     "selfTesting": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["summary", "evidence"],
+      "required": [
+        "summary",
+        "evidence"
+      ],
       "properties": {
-        "summary": { "$ref": "#/$defs/text" },
-        "firstTestRunAt": { "type": "string" },
-        "finalStatus": { "type": "string" },
-        "playwrightMcpCalls": { "type": ["integer", "null"] },
-        "evidence": { "$ref": "#/$defs/evidence" }
+        "summary": {
+          "$ref": "#/$defs/text"
+        },
+        "firstTestRunAt": {
+          "type": "string"
+        },
+        "finalStatus": {
+          "type": "string"
+        },
+        "playwrightMcpCalls": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "evidence": {
+          "$ref": "#/$defs/evidence"
+        }
       }
     },
     "numbers": {
@@ -133,12 +337,28 @@
       "items": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["label", "value", "statsPath"],
+        "required": [
+          "label",
+          "value",
+          "statsPath"
+        ],
         "properties": {
-          "label": { "$ref": "#/$defs/text" },
-          "value": { "type": ["string", "number", "null"] },
-          "statsPath": { "$ref": "#/$defs/text" },
-          "note": { "type": "string" }
+          "label": {
+            "$ref": "#/$defs/text"
+          },
+          "value": {
+            "type": [
+              "string",
+              "number",
+              "null"
+            ]
+          },
+          "statsPath": {
+            "$ref": "#/$defs/text"
+          },
+          "note": {
+            "type": "string"
+          }
         }
       }
     },
@@ -149,10 +369,51 @@
       "items": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["text", "evidence"],
-        "properties": { "text": { "type": "string", "minLength": 1, "maxLength": 280 }, "evidence": { "$ref": "#/$defs/evidence" } }
+        "required": [
+          "text",
+          "evidence"
+        ],
+        "properties": {
+          "text": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 280
+          },
+          "evidence": {
+            "$ref": "#/$defs/evidence"
+          }
+        }
       }
     },
-    "openQuestions": { "type": "array", "items": { "type": "string" } }
+    "openQuestions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "integrity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "harnessAccess",
+        "summary",
+        "evidence"
+      ],
+      "description": "Must mirror stats.json integrity.harness_access; evidence cites every hit when true.",
+      "properties": {
+        "harnessAccess": {
+          "type": "boolean"
+        },
+        "summary": {
+          "$ref": "#/$defs/text"
+        },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        }
+      }
+    }
   }
 }

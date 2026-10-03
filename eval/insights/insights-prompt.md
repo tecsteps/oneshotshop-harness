@@ -25,6 +25,18 @@ with its error lines indented below, `(retry #n)` marks a command re-run after a
 with `~` come from a sub-agent log without per-event timestamps: their order is real, their time
 is not. `[REDACTED:*]` marks removed secrets: never try to reconstruct them.
 
+## Integrity first
+
+The harness repository (which contains the hidden acceptance test plan) is public, but the building
+agent was given no hint of it. `stats.json → integrity` records whether the transcripts show any
+access to it (`harness_access`, `hits` with timestamp, kind and snippet; `weakSignals` are generic
+mentions to review, not evidence). Read it before anything else.
+
+- If `integrity.harness_access` is `true`: open the digest at each hit's timestamp, establish what
+  the agent accessed and whether it used it (quote the lines), and put this at the very top of both
+  outputs. Treat every spec-compliance claim in the report as potentially contaminated and say so.
+- If it is `false`: state "Integrity: no access detected" (and mention reviewed weak signals, if any).
+
 ## Hard rules
 
 1. **Evidence or it did not happen.** Every claim cites at least one piece of evidence:
@@ -96,6 +108,9 @@ which are missing), `not_found` (searched, nothing), `unverified` (could not det
 
 Markdown, English, plain and precise. Sections in this order:
 
+0. **Integrity** – first line of the file: `> **Integrity: no access detected**` or
+   `> **Integrity: HARNESS ACCESS DETECTED** – …` with each hit (timestamp, what was accessed,
+   whether it was used, evidence).
 1. **TL;DR** – exactly 3 sentences.
 2. **Key decisions** – 4 to 8 items. Each: *Decision* · *Why (agent's words)* with quote +
    timestamp · *Consequence* (what it led to, with evidence).
@@ -130,6 +145,7 @@ Same content, structured for the website. It must validate against
   "runId": "{{RUN_ID}}",
   "generatedAt": "<ISO 8601>",
   "analyst": { "agent": "<e.g. claude-code>", "model": "<model id>" },
+  "integrity": { "harnessAccess": false, "summary": "no access detected", "evidence": [] },
   "tldr": ["<sentence>", "<sentence>", "<sentence>"],
   "keyDecisions": [
     { "decision": "", "why": "", "quote": "", "quoteAt": "<HH:MM:SSZ or ISO>", "consequence": "", "evidence": [ { "type": "transcript|commit|file|stats", "ref": "", "quote": "" } ] }
@@ -146,7 +162,8 @@ Same content, structured for the website. It must validate against
 }
 ```
 
-`hardCases` has exactly one entry per key in the table above (9 entries). `linkedinTakeaways` has
+`integrity.harnessAccess` must equal `stats.json → integrity.harness_access`; when it is `true`,
+`integrity.evidence` cites every hit. `hardCases` has exactly one entry per key in the table above (9 entries). `linkedinTakeaways` has
 exactly 5 entries. Every `evidence` array is non-empty. Numbers in `numbers[].value` are copied
 from the `statsPath` they name.
 

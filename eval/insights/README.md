@@ -74,6 +74,16 @@ Codex session).
   `hardCaseKeywordHits` (pointers for the analyst, **not** evidence that a case works).
 - `agentReported` — the agent's own numbers where they exist (Claude `result.total_cost_usd` in
   `agent.jsonl`, Claude Code `cost-state`, OpenCode cost), for cross-checks only.
+- `integrity` — `{harness_access, summary, hits: [{ts, agent, kind, match, snippet}], weakSignals}`.
+  The harness repo (with the hidden test plan) is public; the agent gets no hint of it. Every event
+  (commands, tool inputs incl. web search/fetch and Playwright navigations, tool outputs, agent
+  text) is scanned. **Strong** (sets `harness_access`): `oneshotshop-harness`, its GitHub/raw URLs,
+  `eval/testplan`, `testplan.evaluator.md`, and any request (fetch/navigate/curl/wget) to
+  `agentic-engineers.dev`. **Weak** (listed for review only): `testplan.md`, `expectations.json`,
+  `results-template.json` (common names for an agent's own files) and `agentic-engineers.dev`
+  merely mentioned (the spec README links it). `digest.md` starts with the integrity line, the
+  analysis prompt makes "Integrity" the first section of `insights.md`, `insights.json` carries
+  `integrity`, and `check-insights.mjs` fails if it does not mirror `stats.json`.
 - `warnings` — read them; they carry caveats that must travel with the numbers.
 
 ## Token and cost rules (comparable with v1)
@@ -201,9 +211,12 @@ node eval/insights/test/selftest.mjs
 ```
 
 Unit-tests the redactor (15 planted fake secret formats removed, 11 benign evidence strings
-kept) and runs extract + condense end to end on generated Codex and Claude Code transcripts
+kept) and the integrity scan (5 cases: harness fetch, site navigation and `eval/testplan` read are
+hits; a README mention and the agent's own `testplan.md` are weak signals only) and runs extract + condense end to end on generated Codex and Claude Code transcripts
 (> 2 MB each, planted secrets in prompts, commands, outputs, sub-agent briefs and URLs) with a
-20k budget: digest within budget, no planted secret in `digest.md` or `stats.json`, cost, tool,
+20k budget; the Codex fixture contains a planted harness access (curl of the raw test plan +
+Playwright navigation to the site) that must be detected, the Claude fixture is clean apart from a
+weak mention and must report "no access"; digest within budget, no planted secret in `digest.md` or `stats.json`, cost, tool,
 test-run and Playwright counts present.
 
 ## Limitations
